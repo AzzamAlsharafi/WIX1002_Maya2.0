@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class Account {
+public class Account {
     final String email;
     final String username;
     final String password;
