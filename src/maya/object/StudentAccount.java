@@ -1,5 +1,7 @@
 package maya.object;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
 public class StudentAccount extends Account{
@@ -34,5 +36,14 @@ public class StudentAccount extends Account{
         this.programme = programme;
         this.englishBand = englishBand;
         this.citizenship = citizenship;
+    }
+
+    @Override
+    public void storeAccount(ObjectOutputStream out) throws IOException {
+        out.writeUTF("Student");
+        super.storeAccount(out);
+        out.writeInt(programme);
+        out.writeInt(englishBand);
+        out.writeInt(citizenship);
     }
 }
