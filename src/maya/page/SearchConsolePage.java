@@ -47,7 +47,11 @@ class OccurrenceComparator implements Comparator<Occurrence> {
     @Override
     public int compare(Occurrence o1, Occurrence o2) {
         if(o1.getOccurrenceNumber() == o2.getOccurrenceNumber()){
-            return o1.getActivityType() < o2.getActivityType() ? -1 : 1;
+            if(o1.getActivityType() == o2.getActivityType()){
+                return 0;
+            } else {
+                return o1.getActivityType() < o2.getActivityType() ? -1 : 1;
+            }
         } else {
             return o1.getOccurrenceNumber() < o2.getOccurrenceNumber() ? -1 : 1;
         }
