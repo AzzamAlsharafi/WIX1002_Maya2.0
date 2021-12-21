@@ -2,8 +2,8 @@ package maya;
 
 import maya.object.Account;
 import maya.object.Module;
-import maya.page.LoginPage;
-import maya.page.WelcomePage;
+import maya.page.LoginConsolePage;
+import maya.page.WelcomeConsolePage;
 import maya.util.DataManager;
 
 import java.util.*;
@@ -26,11 +26,11 @@ public class Main {
         }
 
         if(currentUser == null){
-            LoginPage.run();
+            LoginConsolePage.run();
         }
 
         if(currentUser != null){
-            WelcomePage.run();
+            WelcomeConsolePage.run();
         }
     }
 }

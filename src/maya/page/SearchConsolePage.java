@@ -6,14 +6,14 @@ import maya.object.Occurrence;
 
 import java.util.Comparator;
 
-public class SearchPage {
+public class SearchConsolePage {
     public static void run(){
         System.out.print("1. View all modules\n2. Search specific module\n3. Return\nEnter your choice: ");
 
         switch (Main.scanner.nextInt()){
             case 1 -> viewCourses("");
             case 2 -> searchModule();
-            case 3 -> WelcomePage.run();
+            case 3 -> WelcomeConsolePage.run();
         }
     }
 

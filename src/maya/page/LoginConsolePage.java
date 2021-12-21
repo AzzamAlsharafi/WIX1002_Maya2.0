@@ -9,7 +9,7 @@ import maya.util.DataManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginPage {
+public class LoginConsolePage {
     public static void run(){
         System.out.print("1. Log in\n2. Sign in\n3. Exit\nEnter your choice: ");
 
