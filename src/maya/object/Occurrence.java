@@ -47,6 +47,14 @@ public class Occurrence {
         return activityType;
     }
 
+    public String getActivityString(){
+        switch (activityType){
+            case OCC_TYPE_LECTURE -> {return "Lecture";}
+            case OCC_TYPE_TUTORIAL -> {return "Tutorial";}
+            default -> {return "Default";}
+        }
+    }
+
     public List<String> getStudents() {
         return students;
     }
