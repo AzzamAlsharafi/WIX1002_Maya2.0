@@ -22,7 +22,7 @@ public class LoginPanel extends JPanel{
 
         JButton loginButton = new JButton("Log in");
 
-        JButton signinButton = new JButton("Sign in");
+        JButton signupButton = new JButton("Sign up");
 
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
@@ -52,7 +52,7 @@ public class LoginPanel extends JPanel{
         c.ipadx = 75;
         c.ipady = 10;
         insets.top = 5;
-        add(signinButton, c);
+        add(signupButton, c);
 
         c.gridx = 1;
         c.gridy = 4;
