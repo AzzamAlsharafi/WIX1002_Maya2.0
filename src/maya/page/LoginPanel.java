@@ -3,9 +3,7 @@ package maya.page;
 import javax.swing.*;
 import java.awt.*;
 
-public class LoginPanel {
-    public JPanel panel;
-
+public class LoginPanel extends JPanel{
     public LoginPanel(){
         Dimension fieldSize = new Dimension(300, 30);
         Insets fieldInsets = new Insets(2, 5, 3, 5);
@@ -29,8 +27,7 @@ public class LoginPanel {
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
 
-        panel = new JPanel();
-        panel.setLayout(layout);
+        setLayout(layout);
 
         Insets insets = new Insets(2, 0, 2, 0);
 
@@ -39,34 +36,34 @@ public class LoginPanel {
         c.gridwidth = 2;
         c.anchor = GridBagConstraints.LINE_START;
         c.insets = insets;
-        panel.add(usernameLabel, c);
+        add(usernameLabel, c);
 
         c.gridy = 1;
-        panel.add(usernameField, c);
+        add(usernameField, c);
 
         c.gridy = 2;
-        panel.add(passwordLabel, c);
+        add(passwordLabel, c);
 
         c.gridy = 3;
-        panel.add(passwordField, c);
+        add(passwordField, c);
 
         c.gridy = 4;
         c.gridwidth = 1;
         c.ipadx = 75;
         c.ipady = 10;
         insets.top = 5;
-        panel.add(signinButton, c);
+        add(signinButton, c);
 
         c.gridx = 1;
         c.gridy = 4;
         c.anchor = GridBagConstraints.LINE_END;
-        panel.add(loginButton, c);
+        add(loginButton, c);
 
         Dimension size = new Dimension(400, 400);
-        panel.setMinimumSize(size);
-        panel.setPreferredSize(size);
-        panel.setMaximumSize(size);
+        setMinimumSize(size);
+        setPreferredSize(size);
+        setMaximumSize(size);
 
-        panel.setBackground(new Color(180, 180, 180));
+        setBackground(new Color(180, 180, 180));
     }
 }

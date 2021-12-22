@@ -6,7 +6,7 @@ public class MainFrame extends JFrame{
     public MainFrame(){
         setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
 
-        add(new LoginPanel().panel);
+        add(new LoginPanel());
 
         setSize(500, 500);
 //        pack();
