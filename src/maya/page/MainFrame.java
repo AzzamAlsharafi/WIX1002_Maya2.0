@@ -1,12 +1,20 @@
 package maya.page;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class MainFrame extends JFrame{
-    public MainFrame(){
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
+    CardLayout cardLayout;
 
-        add(new LoginPanel());
+    static final String LOGIN_KEY = "login";
+    static final String SIGNUP_KEY = "signup";
+
+    public MainFrame(){
+        cardLayout = new CardLayout();
+        setLayout(cardLayout);
+
+        add(new LoginPanel(this), LOGIN_KEY);
+        add(new SignupPanel(), SIGNUP_KEY);
 
         setSize(500, 500);
 //        pack();
@@ -14,4 +22,7 @@ public class MainFrame extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    public void showCard(String key){
+        cardLayout.show(getContentPane(), key);
+    }
 }
