@@ -6,14 +6,15 @@ import java.awt.*;
 public class MainFrame extends JFrame{
     CardLayout cardLayout;
 
+    static MainFrame frame = null;
+
     static final String LOGIN_AND_SIGNUP_KEY = "login&signup";
 
-    public MainFrame(){
+    private MainFrame(){
         cardLayout = new CardLayout();
         setLayout(cardLayout);
 
         add(new LoginAndSignupPanel(), LOGIN_AND_SIGNUP_KEY);
-
         setSize(600, 600);
 //        pack();
         setLocationRelativeTo(null);
@@ -22,5 +23,12 @@ public class MainFrame extends JFrame{
 
     public void showCard(String key){
         cardLayout.show(getContentPane(), key);
+    }
+
+    public static MainFrame getFrame(){
+        if(frame == null){
+            frame = new MainFrame();
+        }
+        return frame;
     }
 }

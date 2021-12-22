@@ -26,7 +26,7 @@ public class Main {
             currentUser = accounts.get("S1234567");
         }
 
-        new MainFrame().setVisible(true);
+        MainFrame.getFrame().setVisible(true);
 
         if(currentUser == null){
             LoginConsolePage.run();
