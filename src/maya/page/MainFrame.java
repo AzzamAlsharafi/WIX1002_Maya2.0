@@ -24,7 +24,7 @@ public class MainFrame extends JFrame{
             showCard(STUDENT_MODULE_KEY);
         }
 
-        setSize(1000, 800);
+        setSize(1200, 800);
 //        pack();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

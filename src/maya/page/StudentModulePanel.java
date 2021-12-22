@@ -71,6 +71,7 @@ class OccurrencePanel extends JPanel{
     JLabel activityLabel = new JLabel();
     JLabel timeLabel = new JLabel();
     JLabel tutorLabel = new JLabel();
+    JLabel creditsLabel = new JLabel();
     JLabel targetLabel = new JLabel();
     JLabel actualLabel = new JLabel();
 
@@ -84,6 +85,7 @@ class OccurrencePanel extends JPanel{
         activityLabel.setText(occurrence.getActivityString());
         timeLabel.setText(occurrence.getTime());
         tutorLabel.setText(String.format("<html>%s</html>", occurrence.getTutor()));
+        creditsLabel.setText(Integer.toString(module.getCredit()));
         targetLabel.setText(Integer.toString(occurrence.getTargetStudents()));
         actualLabel.setText(Integer.toString(occurrence.getActualStudents()));
 
@@ -96,6 +98,7 @@ class OccurrencePanel extends JPanel{
         activityLabel.setText("Activity");
         timeLabel.setText("Time");
         tutorLabel.setText("Tutor");
+        creditsLabel.setText("Credits");
         targetLabel.setText("Target");
         actualLabel.setText("Actual");
 
@@ -109,7 +112,7 @@ class OccurrencePanel extends JPanel{
 
     void setHeights(int height){
         Dimension bigLabelSize = new Dimension(200, height);
-        Dimension smallLabelSize = new Dimension(60, height);
+        Dimension smallLabelSize = new Dimension(70, height);
         Dimension occurrenceLabelSize = new Dimension(90, height);
         Dimension activityLabelSize = new Dimension(75, height);
 
@@ -118,6 +121,7 @@ class OccurrencePanel extends JPanel{
         activityLabel.setPreferredSize(activityLabelSize);
         timeLabel.setPreferredSize(bigLabelSize);
         tutorLabel.setPreferredSize(bigLabelSize);
+        creditsLabel.setPreferredSize(smallLabelSize);
         targetLabel.setPreferredSize(smallLabelSize);
         actualLabel.setPreferredSize(smallLabelSize);
     }
@@ -132,6 +136,7 @@ class OccurrencePanel extends JPanel{
         activityLabel.setBorder(paddingBorder);
         timeLabel.setBorder(paddingBorder);
         tutorLabel.setBorder(paddingBorder);
+        creditsLabel.setBorder(paddingBorder);
         targetLabel.setBorder(paddingBorder);
         actualLabel.setBorder(paddingBorder);
 
@@ -156,9 +161,12 @@ class OccurrencePanel extends JPanel{
         add(tutorLabel, c);
 
         c.gridx = 5;
-        add(targetLabel, c);
+        add(creditsLabel);
 
         c.gridx = 6;
+        add(targetLabel, c);
+
+        c.gridx = 7;
         add(actualLabel, c);
     }
 }
