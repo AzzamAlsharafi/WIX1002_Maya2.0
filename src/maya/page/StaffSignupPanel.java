@@ -60,7 +60,7 @@ public class StaffSignupPanel extends JPanel{
                 if(password.equals(confirmPassword)){
                     Account newStaff = new StaffAccount(umMail, username, password, fullName, new ArrayList<>());
                     Main.accounts.put(username, newStaff);
-                    DataManager.storeModules();
+                    DataManager.storeAccounts();
                 }
             }
         });

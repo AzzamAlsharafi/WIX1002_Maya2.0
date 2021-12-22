@@ -2,9 +2,7 @@ package maya;
 
 import maya.object.Account;
 import maya.object.Module;
-import maya.page.LoginConsolePage;
 import maya.page.MainFrame;
-import maya.page.WelcomeConsolePage;
 import maya.util.DataManager;
 
 import java.util.*;
@@ -22,18 +20,6 @@ public class Main {
         DataManager.loadAccounts();
         DataManager.loadModules();
 
-        if(accounts.containsKey("S1234567")){
-            currentUser = accounts.get("S1234567");
-        }
-
         MainFrame.getFrame().setVisible(true);
-
-        if(currentUser == null){
-            LoginConsolePage.run();
-        }
-
-        if(currentUser != null){
-            WelcomeConsolePage.run();
-        }
     }
 }

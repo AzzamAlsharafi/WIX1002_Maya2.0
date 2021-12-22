@@ -92,7 +92,7 @@ public class StudentSignupPanel extends JPanel{
                     Account newStudent = new StudentAccount(siswaMail, matricNumber, password, fullName,
                             new ArrayList<>(), programme, StudentAccount.calculateMUETBand(englishTest, englishScore), citizenship);
                     Main.accounts.put(matricNumber, newStudent);
-                    DataManager.storeModules();
+                    DataManager.storeAccounts();
                 }
             }
         });

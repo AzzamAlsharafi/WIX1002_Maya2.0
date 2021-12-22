@@ -7,6 +7,8 @@ import java.awt.*;
 
 public class LoginPanel extends JPanel{
     public LoginPanel(){
+        Color background = new Color(180, 180, 180);
+
         Dimension fieldSize = new Dimension(300, 30);
         Insets fieldInsets = new Insets(2, 5, 3, 5);
 
@@ -17,6 +19,10 @@ public class LoginPanel extends JPanel{
         JTextField passwordField = new JPasswordField();
         passwordField.setPreferredSize(fieldSize);
         passwordField.setMargin(fieldInsets);
+
+        JCheckBox rememberMeCheckBox = new JCheckBox("Remember me");
+        rememberMeCheckBox.setFocusPainted(false);
+        rememberMeCheckBox.setBackground(background);
 
         JLabel usernameLabel = new JLabel("Username / Matric Number");
 
@@ -58,14 +64,17 @@ public class LoginPanel extends JPanel{
         c.gridy = 3;
         add(passwordField, c);
 
-        c.gridx = 1;
         c.gridy = 4;
+        add(rememberMeCheckBox, c);
+
+        c.gridx = 1;
+        c.gridy = 5;
         c.anchor = GridBagConstraints.CENTER;
         c.ipadx = 75;
         c.ipady = 10;
         insets.top = 10;
         add(loginButton, c);
 
-        setBackground(new Color(180, 180, 180));
+        setBackground(background);
     }
 }
