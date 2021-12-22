@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class StaffSignupPanel extends JPanel{
     public StaffSignupPanel(){
-        Dimension fieldSize = new Dimension(300, 30);
+        Dimension fieldSize = new Dimension(400, 30);
         Insets fieldInsets = new Insets(2, 5, 3, 5);
 
         JTextField emailField = new JTextField();
@@ -16,7 +16,7 @@ public class StaffSignupPanel extends JPanel{
         usernameField.setPreferredSize(fieldSize);
         usernameField.setMargin(fieldInsets);
 
-        Dimension passwordFieldSize = new Dimension(150, 30);
+        Dimension passwordFieldSize = new Dimension(200, 30);
         JTextField passwordField = new JPasswordField();
         passwordField.setPreferredSize(passwordFieldSize);
         passwordField.setMargin(fieldInsets);

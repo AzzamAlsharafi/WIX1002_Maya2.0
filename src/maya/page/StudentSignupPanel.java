@@ -5,35 +5,44 @@ import java.awt.*;
 
 public class StudentSignupPanel extends JPanel{
     public StudentSignupPanel(){
-        Dimension fieldSize = new Dimension(300, 30);
+        Dimension bigFieldSize = new Dimension(400, 30);
         Insets fieldInsets = new Insets(2, 5, 3, 5);
 
         JTextField emailField = new JTextField();
-        emailField.setPreferredSize(fieldSize);
+        emailField.setPreferredSize(bigFieldSize);
         emailField.setMargin(fieldInsets);
 
         JTextField usernameField = new JTextField();
-        usernameField.setPreferredSize(fieldSize);
+        usernameField.setPreferredSize(bigFieldSize);
         usernameField.setMargin(fieldInsets);
 
-        Dimension passwordFieldSize = new Dimension(150, 30);
+        Dimension smallFieldSize = new Dimension(200, 30);
         JTextField passwordField = new JPasswordField();
-        passwordField.setPreferredSize(passwordFieldSize);
+        passwordField.setPreferredSize(smallFieldSize);
         passwordField.setMargin(fieldInsets);
 
         JTextField confirmPasswordField = new JPasswordField();
-        confirmPasswordField.setPreferredSize(passwordFieldSize);
+        confirmPasswordField.setPreferredSize(smallFieldSize);
         confirmPasswordField.setMargin(fieldInsets);
 
         JTextField fullNameField = new JTextField();
-        fullNameField.setPreferredSize(fieldSize);
+        fullNameField.setPreferredSize(bigFieldSize);
         fullNameField.setMargin(fieldInsets);
+
+        JTextField englishScoreField = new JTextField();
+        englishScoreField.setPreferredSize(smallFieldSize);
+        englishScoreField.setMargin(fieldInsets);
 
         String comboBoxEmptyOption = "SELECT";
 
         String[] programmes = new String[]{comboBoxEmptyOption, "Computer System & Network", "Artificial Intelligence", "Information Systems",
                 "Software Engineering", "Multimedia", "Data Science"};
         JComboBox<String> programmeComboBox = new JComboBox<>(programmes);
+
+        String[] englishTestOptions = new String[]{comboBoxEmptyOption, "MUET", "IELTS",
+                "TOEFL Paper–Based Test", "TOEFL Computer–Based Test", "TOEFL Internet–Based Test",
+                "PTE (Academic)", "FCE", "GCE A Level (English)", "IGCSE/GCSE (English)"};
+        JComboBox<String> englishTestComboBox = new JComboBox<>(englishTestOptions);
 
         String[] citizenshipOptions = new String[]{comboBoxEmptyOption, "Malaysian", "Non-Malaysian"};
         JComboBox<String> citizenshipComboBox = new JComboBox<>(citizenshipOptions);
@@ -52,6 +61,10 @@ public class StudentSignupPanel extends JPanel{
         JLabel programmeLabel = new JLabel("Programme");
 
         JLabel citizenshipLabel = new JLabel("Citizenship");
+
+        JLabel englishTestLabel = new JLabel("English Test");
+
+        JLabel englishScoreLabel = new JLabel("Band/Score");
 
         JButton signupButton = new JButton("Sign up");
 
@@ -107,12 +120,28 @@ public class StudentSignupPanel extends JPanel{
         add(programmeComboBox, c);
 
         c.gridy = 10;
-        add(citizenshipLabel, c);
+        add(englishTestLabel, c);
 
         c.gridy = 11;
+        c.gridwidth = 1;
+        add(englishTestComboBox, c);
+
+        c.gridx = 1;
+        c.gridy = 10;
+        add(englishScoreLabel, c);
+
+        c.gridy = 11;
+        add(englishScoreField, c);
+
+        c.gridx = 0;
+        c.gridy = 12;
+        c.gridwidth = 2;
+        add(citizenshipLabel, c);
+
+        c.gridy = 13;
         add(citizenshipComboBox, c);
 
-        c.gridy = 12;
+        c.gridy = 14;
         c.anchor = GridBagConstraints.CENTER;
         c.ipadx = 75;
         c.ipady = 10;
