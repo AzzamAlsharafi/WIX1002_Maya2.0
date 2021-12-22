@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LoginPanel extends JPanel{
-    public LoginPanel(MainFrame frame){
+    public LoginPanel(){
         Dimension fieldSize = new Dimension(300, 30);
         Insets fieldInsets = new Insets(2, 5, 3, 5);
 
@@ -21,9 +21,6 @@ public class LoginPanel extends JPanel{
         JLabel passwordLabel = new JLabel("Password");
 
         JButton loginButton = new JButton("Log in");
-
-        JButton signupButton = new JButton("Sign up");
-        signupButton.addActionListener(e -> frame.showCard(MainFrame.SIGNUP_KEY));
 
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
@@ -48,16 +45,12 @@ public class LoginPanel extends JPanel{
         c.gridy = 3;
         add(passwordField, c);
 
-        c.gridy = 4;
-        c.gridwidth = 1;
-        c.ipadx = 75;
-        c.ipady = 10;
-        insets.top = 5;
-        add(signupButton, c);
-
         c.gridx = 1;
         c.gridy = 4;
-        c.anchor = GridBagConstraints.LINE_END;
+        c.anchor = GridBagConstraints.CENTER;
+        c.ipadx = 75;
+        c.ipady = 10;
+        insets.top = 10;
         add(loginButton, c);
 
         setBackground(new Color(180, 180, 180));

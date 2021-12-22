@@ -6,15 +6,13 @@ import java.awt.*;
 public class MainFrame extends JFrame{
     CardLayout cardLayout;
 
-    static final String LOGIN_KEY = "login";
-    static final String SIGNUP_KEY = "signup";
+    static final String LOGIN_AND_SIGNUP_KEY = "login&signup";
 
     public MainFrame(){
         cardLayout = new CardLayout();
         setLayout(cardLayout);
 
-        add(new LoginPanel(this), LOGIN_KEY);
-        add(new SignupPanel(), SIGNUP_KEY);
+        add(new LoginAndSignupPanel(), LOGIN_AND_SIGNUP_KEY);
 
         setSize(500, 500);
 //        pack();
