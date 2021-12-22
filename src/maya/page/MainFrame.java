@@ -14,7 +14,7 @@ public class MainFrame extends JFrame{
 
         add(new LoginAndSignupPanel(), LOGIN_AND_SIGNUP_KEY);
 
-        setSize(500, 500);
+        setSize(600, 600);
 //        pack();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
