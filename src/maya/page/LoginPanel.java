@@ -1,6 +1,7 @@
 package maya.page;
 
 import maya.Main;
+import maya.util.DataManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,7 +37,8 @@ public class LoginPanel extends JPanel{
             if (Main.accounts.containsKey(username)) {
                 if (Main.accounts.get(username).getPassword().equals(password)) {
                     Main.currentUser = Main.accounts.get(username);
-                    System.out.printf("\nLogin: %s!\n", Main.currentUser.getFullName());
+                    DataManager.updateRememberMe(rememberMeCheckBox.isSelected());
+                    MainFrame.frame.showCard(MainFrame.STUDENT_MODULE_KEY);
                 }
             }
         });

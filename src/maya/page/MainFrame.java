@@ -1,5 +1,7 @@
 package maya.page;
 
+import maya.Main;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,12 +11,19 @@ public class MainFrame extends JFrame{
     static MainFrame frame = null;
 
     static final String LOGIN_AND_SIGNUP_KEY = "login&signup";
+    static final String STUDENT_MODULE_KEY = "student module";
 
     private MainFrame(){
         cardLayout = new CardLayout();
         setLayout(cardLayout);
 
         add(new LoginAndSignupPanel(), LOGIN_AND_SIGNUP_KEY);
+        add(new StudentModulePanel(), STUDENT_MODULE_KEY);
+
+        if(Main.currentUser != null){
+            showCard(STUDENT_MODULE_KEY);
+        }
+
         setSize(600, 600);
 //        pack();
         setLocationRelativeTo(null);

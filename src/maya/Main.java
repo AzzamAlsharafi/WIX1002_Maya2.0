@@ -19,6 +19,7 @@ public class Main {
         scanner = new Scanner(System.in);
         DataManager.loadAccounts();
         DataManager.loadModules();
+        DataManager.loadRememberMe();
 
         MainFrame.getFrame().setVisible(true);
     }

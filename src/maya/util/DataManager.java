@@ -10,6 +10,7 @@ public class DataManager {
 
     static final String ACCOUNTS_FILE = "accounts";
     static final String MODULES_FILE = "modules";
+    static final String REMEMBER_ME_FILE = "remember me";
 
     public static void storeAccounts(){
         try {
@@ -73,6 +74,38 @@ public class DataManager {
                 for(int i = 0; i < modulesNumber; i++){
                     Module module = Module.loadModule(in);
                     Main.modules.put(module.getCode(), module);
+                }
+
+                in.close();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateRememberMe(boolean rememberMe){
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(REMEMBER_ME_FILE));
+
+            out.writeBoolean(rememberMe);
+            out.writeUTF(rememberMe ? Main.currentUser.getUsername() : "");
+
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadRememberMe(){
+        try {
+            File rememberMeFile = new File(REMEMBER_ME_FILE);
+
+            if(rememberMeFile.exists()){
+                ObjectInputStream in = new ObjectInputStream(new FileInputStream(REMEMBER_ME_FILE));
+
+                if(in.readBoolean()){
+                    Main.currentUser = Main.accounts.get(in.readUTF());
                 }
 
                 in.close();
