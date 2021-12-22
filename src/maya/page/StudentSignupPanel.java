@@ -1,20 +1,26 @@
 package maya.page;
 
+import maya.Main;
+import maya.object.Account;
+import maya.object.StudentAccount;
+import maya.util.DataManager;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class StudentSignupPanel extends JPanel{
     public StudentSignupPanel(){
         Dimension bigFieldSize = new Dimension(400, 30);
         Insets fieldInsets = new Insets(2, 5, 3, 5);
 
-        JTextField emailField = new JTextField();
-        emailField.setPreferredSize(bigFieldSize);
-        emailField.setMargin(fieldInsets);
+        JTextField siswaMailField = new JTextField();
+        siswaMailField.setPreferredSize(bigFieldSize);
+        siswaMailField.setMargin(fieldInsets);
 
-        JTextField usernameField = new JTextField();
-        usernameField.setPreferredSize(bigFieldSize);
-        usernameField.setMargin(fieldInsets);
+        JTextField matricNumberField = new JTextField();
+        matricNumberField.setPreferredSize(bigFieldSize);
+        matricNumberField.setMargin(fieldInsets);
 
         Dimension smallFieldSize = new Dimension(200, 30);
         JTextField passwordField = new JPasswordField();
@@ -67,6 +73,29 @@ public class StudentSignupPanel extends JPanel{
         JLabel englishScoreLabel = new JLabel("Band/Score");
 
         JButton signupButton = new JButton("Sign up");
+        signupButton.setFocusPainted(false);
+        signupButton.addActionListener(e -> {
+            String siswaMail = siswaMailField.getText();
+            String matricNumber = matricNumberField.getText();
+            String password = passwordField.getText();
+            String confirmPassword = confirmPasswordField.getText();
+            String fullName = fullNameField.getText();
+            int programme = programmeComboBox.getSelectedIndex();
+            int englishTest = englishTestComboBox.getSelectedIndex();
+            String englishScore = englishScoreField.getText();
+            int citizenship = citizenshipComboBox.getSelectedIndex();
+
+            if(!siswaMail.isBlank() &&  !matricNumber.isBlank() && !password.isBlank()
+                    && !confirmPassword.isBlank() && !fullName.isBlank() && programme != 0
+                    && englishTest != 0 && !englishScore.isBlank() && citizenship != 0){
+                if(password.equals(confirmPassword)){
+                    Account newStudent = new StudentAccount(siswaMail, matricNumber, password, fullName,
+                            new ArrayList<>(), programme, StudentAccount.calculateMUETBand(englishTest, englishScore), citizenship);
+                    Main.accounts.put(matricNumber, newStudent);
+                    DataManager.storeModules();
+                }
+            }
+        });
 
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
@@ -83,13 +112,13 @@ public class StudentSignupPanel extends JPanel{
         add(emailLabel, c);
 
         c.gridy = 1;
-        add(emailField, c);
+        add(siswaMailField, c);
 
         c.gridy = 2;
         add(usernameLabel, c);
 
         c.gridy = 3;
-        add(usernameField, c);
+        add(matricNumberField, c);
 
         c.gridwidth = 1;
         c.gridy = 4;

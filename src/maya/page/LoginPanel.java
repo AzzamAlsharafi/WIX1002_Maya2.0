@@ -1,5 +1,7 @@
 package maya.page;
 
+import maya.Main;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -21,6 +23,17 @@ public class LoginPanel extends JPanel{
         JLabel passwordLabel = new JLabel("Password");
 
         JButton loginButton = new JButton("Log in");
+        loginButton.setFocusPainted(false);
+        loginButton.addActionListener(e -> {
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+            if (Main.accounts.containsKey(username)) {
+                if (Main.accounts.get(username).getPassword().equals(password)) {
+                    Main.currentUser = Main.accounts.get(username);
+                    System.out.printf("\nLogin: %s!\n", Main.currentUser.getFullName());
+                }
+            }
+        });
 
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();

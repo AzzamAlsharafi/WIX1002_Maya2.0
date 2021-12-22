@@ -1,16 +1,23 @@
 package maya.page;
 
+import maya.Main;
+import maya.object.Account;
+import maya.object.StaffAccount;
+import maya.object.StudentAccount;
+import maya.util.DataManager;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class StaffSignupPanel extends JPanel{
     public StaffSignupPanel(){
         Dimension fieldSize = new Dimension(400, 30);
         Insets fieldInsets = new Insets(2, 5, 3, 5);
 
-        JTextField emailField = new JTextField();
-        emailField.setPreferredSize(fieldSize);
-        emailField.setMargin(fieldInsets);
+        JTextField umMailField = new JTextField();
+        umMailField.setPreferredSize(fieldSize);
+        umMailField.setMargin(fieldInsets);
 
         JTextField usernameField = new JTextField();
         usernameField.setPreferredSize(fieldSize);
@@ -40,6 +47,23 @@ public class StaffSignupPanel extends JPanel{
         JLabel fullNameLabel = new JLabel("Full Name");
 
         JButton signupButton = new JButton("Sign up");
+        signupButton.setFocusPainted(false);
+        signupButton.addActionListener(e -> {
+            String umMail = umMailField.getText();
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+            String confirmPassword = confirmPasswordField.getText();
+            String fullName = fullNameField.getText();
+
+            if(!umMail.isBlank() &&  !username.isBlank() && !password.isBlank()
+                    && !confirmPassword.isBlank() && !fullName.isBlank()){
+                if(password.equals(confirmPassword)){
+                    Account newStaff = new StaffAccount(umMail, username, password, fullName, new ArrayList<>());
+                    Main.accounts.put(username, newStaff);
+                    DataManager.storeModules();
+                }
+            }
+        });
 
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
@@ -56,7 +80,7 @@ public class StaffSignupPanel extends JPanel{
         add(emailLabel, c);
 
         c.gridy = 1;
-        add(emailField, c);
+        add(umMailField, c);
 
         c.gridy = 2;
         add(usernameLabel, c);
