@@ -10,6 +10,8 @@ import java.util.*;
 public class Main {
     public static Scanner scanner;
 
+    public static final int maxCreditsPerStudent = 22;
+
     public static Map<String, Account> accounts = new HashMap<>();
     public static Map<String, Module> modules = new HashMap<>();
 

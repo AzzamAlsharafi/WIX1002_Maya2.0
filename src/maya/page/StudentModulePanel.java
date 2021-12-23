@@ -23,6 +23,9 @@ public class StudentModulePanel extends JPanel {
     List<Occurrence> availableOccurrences = new ArrayList<>();
     JPanel container;
     JPanel registeredContainer;
+    TotalCreditsPanel creditsPanel;
+
+    int currentCredits = 0;
 
     public StudentModulePanel(){
         Main.modules.values().forEach(m -> allOccurrences.addAll(m.getOccurrences()));
@@ -31,7 +34,6 @@ public class StudentModulePanel extends JPanel {
 
         container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-        redrawContainer();
 
         JScrollPane scrollPane = new JScrollPane(container);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -43,13 +45,16 @@ public class StudentModulePanel extends JPanel {
 
         registeredContainer = new JPanel();
         registeredContainer.setLayout(new BoxLayout(registeredContainer, BoxLayout.Y_AXIS));
-        redrawRegisteredContainer();
 
         JScrollPane registeredScrollPane = new JScrollPane(registeredContainer);
         registeredScrollPane.setPreferredSize(new Dimension(200, 303));
         registeredScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         RegisteredOccurrenceHeaderPanel registeredHeader = new RegisteredOccurrenceHeaderPanel();
+
+        creditsPanel = new TotalCreditsPanel(currentCredits);
+
+        redraw();
 
         setLayout(new GridBagLayout());
 
@@ -60,10 +65,12 @@ public class StudentModulePanel extends JPanel {
         add(header, c);
 
         c.gridy = 1;
+        c.gridheight = 2;
         add(scrollPane, c);
 
         c.gridx = 1;
         c.gridy = 0;
+        c.gridheight = 1;
         c.insets = new Insets(0, 30, 0, 0);
         c.anchor = GridBagConstraints.PAGE_END;
         add(registeredHeader, c);
@@ -72,26 +79,18 @@ public class StudentModulePanel extends JPanel {
         c.anchor = GridBagConstraints.PAGE_START;
         add(registeredScrollPane, c);
 
+        c.gridy = 2;
+        c.insets = new Insets(30, 30, 0, 0);
+        add(creditsPanel, c);
+
 
         setBackground(new Color(180, 230, 230));
     }
 
-    void redrawRegisteredContainer(){
-        registeredContainer.removeAll();
-
-        for(String occString: Main.currentUser.getOccurrences()){
-            if(!occString.isBlank()){
-                RegisteredOccurrencePanel registeredOccPanel = new RegisteredOccurrencePanel(occString, this);
-                registeredContainer.add(registeredOccPanel);
-            }
-        }
-
-        registeredContainer.revalidate();
-        registeredContainer.repaint();
-    }
-
-    void redrawContainer(){
+    void redraw(){
         container.removeAll();
+        registeredContainer.removeAll();
+        currentCredits = 0;
 
         for (Occurrence occ: availableOccurrences) {
             OccurrencePanel occPanel = new OccurrencePanel();
@@ -99,8 +98,20 @@ public class StudentModulePanel extends JPanel {
             container.add(occPanel);
         }
 
+        for(String occString: Main.currentUser.getOccurrences()){
+            if(!occString.isBlank()){
+                RegisteredOccurrencePanel registeredOccPanel = new RegisteredOccurrencePanel(occString, this);
+                registeredContainer.add(registeredOccPanel);
+
+                currentCredits += Main.modules.get(occString.split("_")[0]).getCredit();
+            }
+        }
+        creditsPanel.currentBodyLabel.setText(Integer.toString(currentCredits));
+
         container.revalidate();
         container.repaint();
+        registeredContainer.revalidate();
+        registeredContainer.repaint();
     }
 
     void filter(String toFilter){
@@ -117,7 +128,44 @@ public class StudentModulePanel extends JPanel {
         }
 
         availableOccurrences.sort(new OccurrenceComparator());
-        redrawContainer();
+        redraw();
+    }
+}
+
+class TotalCreditsPanel extends JPanel{
+    JPanel header = new JPanel();
+    JLabel maxHeaderLabel = new JLabel("Max Credits");
+    JLabel currentHeaderLabel = new JLabel("Current");
+
+    JPanel body = new JPanel();
+    JLabel maxBodyLabel = new JLabel(Integer.toString(Main.maxCreditsPerStudent));
+    JLabel currentBodyLabel = new JLabel();
+
+    TotalCreditsPanel(int currentCredits){
+        currentBodyLabel.setText(Integer.toString(currentCredits));
+
+        header.add(maxHeaderLabel);
+        header.add(currentHeaderLabel);
+        Border border1 = BorderFactory.createCompoundBorder(new BevelBorder(BevelBorder.RAISED), new BevelBorder(BevelBorder.LOWERED));
+        Border border = BorderFactory.createCompoundBorder(border1, new BevelBorder(BevelBorder.RAISED));
+        header.setBorder(border);
+        Color background = new Color(5, 49, 121);
+        header.setBackground(background);
+        maxHeaderLabel.setForeground(Color.WHITE);
+        maxHeaderLabel.setBorder(new EmptyBorder(0, 0, 0, 50));
+        currentHeaderLabel.setForeground(Color.WHITE);
+
+        body.add(maxBodyLabel);
+        body.add(currentBodyLabel);
+        body.setLayout(new FlowLayout(FlowLayout.LEFT));
+        body.setBorder(new BevelBorder(BevelBorder.RAISED));
+        maxBodyLabel.setBorder(new EmptyBorder(0, 12, 0, 35));
+        currentBodyLabel.setBorder(new EmptyBorder(0, 70, 0, 0));
+
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        add(header);
+        add(body);
     }
 }
 
@@ -156,8 +204,7 @@ class RegisteredOccurrencePanel extends JPanel{
                 int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
                 if(answer == JOptionPane.YES_OPTION){
                     Main.currentUser.getOccurrences().remove(occ);
-                    parent.redrawContainer();
-                    parent.redrawRegisteredContainer();
+                    parent.redraw();
                     DataManager.storeAccounts();
                 }
             }
@@ -285,8 +332,7 @@ class OccurrencePanel extends JPanel{
                             if(answer == JOptionPane.YES_OPTION){
                                 Main.currentUser.getOccurrences().remove(module);
                                 Main.currentUser.getOccurrences().add(moduleOcc);
-                                parent.redrawContainer();
-                                parent.redrawRegisteredContainer();
+                                parent.redraw();
                                 DataManager.storeAccounts();
                             }
                             return;
@@ -297,8 +343,7 @@ class OccurrencePanel extends JPanel{
                     int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
                     if(answer == JOptionPane.YES_OPTION){
                         Main.currentUser.getOccurrences().add(moduleOcc);
-                        parent.redrawContainer();
-                        parent.redrawRegisteredContainer();
+                        parent.redraw();
                         DataManager.storeAccounts();
                     }
                 }

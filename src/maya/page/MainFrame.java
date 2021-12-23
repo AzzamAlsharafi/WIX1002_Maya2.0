@@ -25,7 +25,7 @@ public class MainFrame extends JFrame{
         }
 
         setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
-        setSize(1200, 800);
+        setSize(1400, 800);
 //        pack();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
