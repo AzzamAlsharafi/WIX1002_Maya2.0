@@ -118,7 +118,7 @@ public class StudentModulePanel extends JPanel {
         for (Occurrence occ: allOccurrences) {
             String title = String.format("%s - %s", occ.getCode(), Main.modules.get(occ.getCode()).getTitle());
 
-            if(title.toLowerCase().contains(toFilter.toLowerCase()) && occ.getOccurrenceNumber() == 1){
+            if(title.toLowerCase().contains(toFilter.toLowerCase())){
                 if(!availableOccurrences.contains(occ)){
                     availableOccurrences.add(occ);
                 }
