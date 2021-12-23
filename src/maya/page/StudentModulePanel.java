@@ -8,15 +8,22 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class StudentModulePanel extends JPanel {
-    public StudentModulePanel(){
-        DefaultListModel<Occurrence> listModel = new DefaultListModel<>();
 
-        List<Occurrence> occurrences = new ArrayList<>();
+    DefaultListModel<Occurrence> listModel;
+    List<Occurrence> occurrences;
+
+    public StudentModulePanel(){
+        listModel = new DefaultListModel<>();
+
+        occurrences = new ArrayList<>();
 
         Main.modules.values().forEach(m -> occurrences.addAll(m.getOccurrences()));
 
@@ -29,9 +36,10 @@ public class StudentModulePanel extends JPanel {
         list.setCellRenderer(new OccurrenceRenderer());
 
         JScrollPane scrollPane = new JScrollPane(list);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         OccurrencePanel header = new OccurrencePanel();
-        header.setHeaderMode();
+        header.setHeaderMode(this);
 
         setLayout(new GridBagLayout());
 
@@ -45,6 +53,27 @@ public class StudentModulePanel extends JPanel {
         add(scrollPane, c);
 
         setBackground(new Color(180, 230, 230));
+    }
+
+    void filter(String toFilter){
+        for (Occurrence occ: occurrences) {
+            String title = String.format("%s - %s", occ.getCode(), Main.modules.get(occ.getCode()).getTitle());
+
+            if(title.toLowerCase().contains(toFilter.toLowerCase())){
+                if(!listModel.contains(occ)){
+                    listModel.addElement(occ);
+                }
+            } else {
+                if(listModel.contains(occ)){
+                    listModel.removeElement(occ);
+                }
+            }
+        }
+
+        List<Occurrence> newList = Collections.list(listModel.elements());
+        newList.sort(new OccurrenceComparator());
+        listModel.clear();
+        listModel.addAll(newList);
     }
 }
 
@@ -92,8 +121,7 @@ class OccurrencePanel extends JPanel{
         setHeights(75);
     }
 
-    void setHeaderMode(){
-        moduleTitleLabel.setText("Module");
+    void setHeaderMode(StudentModulePanel parent){
         occurrenceNumberLabel.setText("Occurrence");
         activityLabel.setText("Activity");
         timeLabel.setText("Time");
@@ -103,7 +131,38 @@ class OccurrencePanel extends JPanel{
         actualLabel.setText("Actual");
 
         setHeights(40);
-        moduleTitleLabel.setPreferredSize(new Dimension(180, 40));
+
+        JPanel holder = new JPanel();
+        holder.setPreferredSize(new Dimension(184, 39));
+
+        JTextField moduleSearchField = new JTextField();
+        moduleSearchField.setToolTipText("Module Search");
+        moduleSearchField.setPreferredSize(new Dimension(150, 30));
+        moduleSearchField.setMargin(new Insets(0, 5, 0, 5));
+        moduleSearchField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                parent.filter(moduleSearchField.getText());
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                parent.filter(moduleSearchField.getText());
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {}
+        });
+
+        holder.setLayout(new FlowLayout(FlowLayout.LEFT));
+        holder.add(moduleSearchField);
+
+        remove(moduleTitleLabel);
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        add(holder, c);
 
         Border border1 = BorderFactory.createCompoundBorder(new BevelBorder(BevelBorder.RAISED), new BevelBorder(BevelBorder.LOWERED));
         Border border = BorderFactory.createCompoundBorder(border1, new BevelBorder(BevelBorder.RAISED));
