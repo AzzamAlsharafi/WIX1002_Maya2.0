@@ -24,6 +24,7 @@ public class MainFrame extends JFrame{
             showCard(STUDENT_MODULE_KEY);
         }
 
+        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         setSize(1200, 800);
 //        pack();
         setLocationRelativeTo(null);

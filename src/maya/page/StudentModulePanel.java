@@ -22,6 +22,7 @@ public class StudentModulePanel extends JPanel {
     List<Occurrence> allOccurrences = new ArrayList<>();
     List<Occurrence> availableOccurrences = new ArrayList<>();
     JPanel container;
+    JPanel registeredContainer;
 
     public StudentModulePanel(){
         Main.modules.values().forEach(m -> allOccurrences.addAll(m.getOccurrences()));
@@ -30,7 +31,6 @@ public class StudentModulePanel extends JPanel {
 
         container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-
         redrawContainer();
 
         JScrollPane scrollPane = new JScrollPane(container);
@@ -40,6 +40,16 @@ public class StudentModulePanel extends JPanel {
 
         OccurrencePanel header = new OccurrencePanel();
         header.setHeaderMode(this);
+
+        registeredContainer = new JPanel();
+        registeredContainer.setLayout(new BoxLayout(registeredContainer, BoxLayout.Y_AXIS));
+        redrawRegisteredContainer();
+
+        JScrollPane registeredScrollPane = new JScrollPane(registeredContainer);
+        registeredScrollPane.setPreferredSize(new Dimension(200, 303));
+        registeredScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        RegisteredOccurrenceHeaderPanel registeredHeader = new RegisteredOccurrenceHeaderPanel();
 
         setLayout(new GridBagLayout());
 
@@ -52,7 +62,32 @@ public class StudentModulePanel extends JPanel {
         c.gridy = 1;
         add(scrollPane, c);
 
+        c.gridx = 1;
+        c.gridy = 0;
+        c.insets = new Insets(0, 30, 0, 0);
+        c.anchor = GridBagConstraints.PAGE_END;
+        add(registeredHeader, c);
+
+        c.gridy = 1;
+        c.anchor = GridBagConstraints.PAGE_START;
+        add(registeredScrollPane, c);
+
+
         setBackground(new Color(180, 230, 230));
+    }
+
+    void redrawRegisteredContainer(){
+        registeredContainer.removeAll();
+
+        for(String occString: Main.currentUser.getOccurrences()){
+            if(!occString.isBlank()){
+                RegisteredOccurrencePanel registeredOccPanel = new RegisteredOccurrencePanel(occString, this);
+                registeredContainer.add(registeredOccPanel);
+            }
+        }
+
+        registeredContainer.revalidate();
+        registeredContainer.repaint();
     }
 
     void redrawContainer(){
@@ -72,7 +107,7 @@ public class StudentModulePanel extends JPanel {
         for (Occurrence occ: allOccurrences) {
             String title = String.format("%s - %s", occ.getCode(), Main.modules.get(occ.getCode()).getTitle());
 
-            if(title.toLowerCase().contains(toFilter.toLowerCase())){
+            if(title.toLowerCase().contains(toFilter.toLowerCase()) && occ.getOccurrenceNumber() == 1){
                 if(!availableOccurrences.contains(occ)){
                     availableOccurrences.add(occ);
                 }
@@ -83,6 +118,118 @@ public class StudentModulePanel extends JPanel {
 
         availableOccurrences.sort(new OccurrenceComparator());
         redrawContainer();
+    }
+}
+
+class RegisteredOccurrencePanel extends JPanel{
+    JLabel moduleTitleLabel = new JLabel();
+    JLabel occurrenceNumberLabel = new JLabel();
+    JLabel creditsLabel = new JLabel();
+
+    RegisteredOccurrencePanel thisPanel = this;
+
+    RegisteredOccurrencePanel(String occ, StudentModulePanel parent){
+        String[] codeAndOcc = occ.split("_");
+        Module module = Main.modules.get(codeAndOcc[0]);
+
+        moduleTitleLabel.setText(codeAndOcc[0]);
+        occurrenceNumberLabel.setText(codeAndOcc[1]);
+        creditsLabel.setText(Integer.toString(module.getCredit()));
+
+        moduleTitleLabel.setToolTipText(module.getTitle());
+
+        moduleTitleLabel.setBorder(new EmptyBorder(0, 0, 0, 27));
+        occurrenceNumberLabel.setBorder(new EmptyBorder(0, 0, 0, 38));
+        creditsLabel.setBorder(new EmptyBorder(0, 0, 0, 35));
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                setBorder(new BevelBorder(BevelBorder.LOWERED));
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                setBorder(new BevelBorder(BevelBorder.RAISED));
+                String title = "Remove Module";
+                String message = String.format("Do you want to remove %s?", codeAndOcc[0]);
+                int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
+                if(answer == JOptionPane.YES_OPTION){
+                    Main.currentUser.getOccurrences().remove(occ);
+                    parent.redrawContainer();
+                    parent.redrawRegisteredContainer();
+                    DataManager.storeAccounts();
+                }
+            }
+        });
+
+        Dimension size = new Dimension(200, 50);
+        setMinimumSize(size);
+        setPreferredSize(size);
+        setMaximumSize(size);
+
+        setBorder(new BevelBorder(BevelBorder.RAISED));
+
+        setLayout(new GridBagLayout());
+
+        GridBagConstraints c = new GridBagConstraints();
+
+        c.gridx = 0;
+        c.gridy = 0;
+        add(moduleTitleLabel, c);
+
+        c.gridx = 1;
+        add(occurrenceNumberLabel, c);
+
+        c.gridx = 2;
+        add(creditsLabel, c);
+    }
+}
+
+class RegisteredOccurrenceHeaderPanel extends JPanel{
+    JLabel moduleTitleLabel = new JLabel();
+    JLabel occurrenceNumberLabel = new JLabel();
+    JLabel creditsLabel = new JLabel();
+
+    RegisteredOccurrenceHeaderPanel(){
+        moduleTitleLabel.setText("Module");
+        occurrenceNumberLabel.setText("Occ");
+        creditsLabel.setText("Credits");
+
+        moduleTitleLabel.setBorder(new EmptyBorder(0, 10, 0, 30));
+        occurrenceNumberLabel.setBorder(new EmptyBorder(0, 0, 0, 20));
+        creditsLabel.setBorder(new EmptyBorder(0, 0, 0, 15));
+
+        Color fontColor = Color.WHITE;
+        moduleTitleLabel.setForeground(fontColor);
+        occurrenceNumberLabel.setForeground(fontColor);
+        creditsLabel.setForeground(fontColor);
+
+        Dimension size = new Dimension(200, 39);
+        setMinimumSize(size);
+        setPreferredSize(size);
+        setMaximumSize(size);
+
+        Border border1 = BorderFactory.createCompoundBorder(new BevelBorder(BevelBorder.RAISED), new BevelBorder(BevelBorder.LOWERED));
+        Border border = BorderFactory.createCompoundBorder(border1, new BevelBorder(BevelBorder.RAISED));
+        setBorder(border);
+
+        Color background = new Color(5, 49, 121);
+        setBackground(background);
+
+        setLayout(new GridBagLayout());
+
+        GridBagConstraints c = new GridBagConstraints();
+
+        c.gridx = 0;
+        c.gridy = 0;
+        add(moduleTitleLabel, c);
+
+        c.gridx = 1;
+        add(occurrenceNumberLabel, c);
+
+        c.gridx = 2;
+        add(creditsLabel, c);
     }
 }
 
@@ -139,6 +286,7 @@ class OccurrencePanel extends JPanel{
                                 Main.currentUser.getOccurrences().remove(module);
                                 Main.currentUser.getOccurrences().add(moduleOcc);
                                 parent.redrawContainer();
+                                parent.redrawRegisteredContainer();
                                 DataManager.storeAccounts();
                             }
                             return;
@@ -150,12 +298,18 @@ class OccurrencePanel extends JPanel{
                     if(answer == JOptionPane.YES_OPTION){
                         Main.currentUser.getOccurrences().add(moduleOcc);
                         parent.redrawContainer();
+                        parent.redrawRegisteredContainer();
                         DataManager.storeAccounts();
                     }
                 }
             }
 
         });
+
+        Dimension size = new Dimension(982, 80);
+        setMinimumSize(size);
+        setPreferredSize(size);
+        setMaximumSize(size);
 
         if(isRegistered){
             setBackground(new Color(217, 237, 247));
