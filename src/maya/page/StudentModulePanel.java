@@ -12,31 +12,28 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class StudentModulePanel extends JPanel {
 
-    DefaultListModel<Occurrence> listModel;
-    List<Occurrence> occurrences;
+    List<Occurrence> allOccurrences = new ArrayList<>();
+    List<Occurrence> availableOccurrences = new ArrayList<>();
+    JPanel container;
 
     public StudentModulePanel(){
-        listModel = new DefaultListModel<>();
+        Main.modules.values().forEach(m -> allOccurrences.addAll(m.getOccurrences()));
+        allOccurrences.sort(new OccurrenceComparator());
+        availableOccurrences.addAll(allOccurrences);
 
-        occurrences = new ArrayList<>();
+        container = new JPanel();
+        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
-        Main.modules.values().forEach(m -> occurrences.addAll(m.getOccurrences()));
+        redrawContainer();
 
-        occurrences.sort(new OccurrenceComparator());
-
-        listModel.addAll(occurrences);
-
-
-        JList<Occurrence> list = new JList<>(listModel);
-        list.setCellRenderer(new OccurrenceRenderer());
-
-        JScrollPane scrollPane = new JScrollPane(list);
+        JScrollPane scrollPane = new JScrollPane(container);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setPreferredSize(new Dimension(1000, 550));
+        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
 
         OccurrencePanel header = new OccurrencePanel();
         header.setHeaderMode(this);
@@ -55,40 +52,34 @@ public class StudentModulePanel extends JPanel {
         setBackground(new Color(180, 230, 230));
     }
 
+    void redrawContainer(){
+        container.removeAll();
+
+        for (Occurrence occ: availableOccurrences) {
+            OccurrencePanel occPanel = new OccurrencePanel();
+            occPanel.setOccurrence(occ);
+            container.add(occPanel);
+        }
+
+        container.revalidate();
+        container.repaint();
+    }
+
     void filter(String toFilter){
-        for (Occurrence occ: occurrences) {
+        for (Occurrence occ: allOccurrences) {
             String title = String.format("%s - %s", occ.getCode(), Main.modules.get(occ.getCode()).getTitle());
 
             if(title.toLowerCase().contains(toFilter.toLowerCase())){
-                if(!listModel.contains(occ)){
-                    listModel.addElement(occ);
+                if(!availableOccurrences.contains(occ)){
+                    availableOccurrences.add(occ);
                 }
             } else {
-                if(listModel.contains(occ)){
-                    listModel.removeElement(occ);
-                }
+                availableOccurrences.remove(occ);
             }
         }
 
-        List<Occurrence> newList = Collections.list(listModel.elements());
-        newList.sort(new OccurrenceComparator());
-        listModel.clear();
-        listModel.addAll(newList);
-    }
-}
-
-class OccurrenceRenderer extends OccurrencePanel implements ListCellRenderer<Occurrence>{
-    @Override
-    public Component getListCellRendererComponent(JList<? extends Occurrence> list, Occurrence value, int index, boolean isSelected, boolean cellHasFocus) {
-        setOccurrence(value);
-
-        if(isSelected){
-            setBorder(new BevelBorder(BevelBorder.LOWERED));
-        } else {
-            setBorder(new BevelBorder(BevelBorder.RAISED));
-        }
-
-        return this;
+        availableOccurrences.sort(new OccurrenceComparator());
+        redrawContainer();
     }
 }
 
@@ -117,6 +108,8 @@ class OccurrencePanel extends JPanel{
         creditsLabel.setText(Integer.toString(module.getCredit()));
         targetLabel.setText(Integer.toString(occurrence.getTargetStudents()));
         actualLabel.setText(Integer.toString(occurrence.getActualStudents()));
+
+        setBorder(new BevelBorder(BevelBorder.RAISED));
 
         setHeights(75);
     }
