@@ -2,6 +2,7 @@ package maya.object;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentAccount extends Account{
@@ -128,7 +129,7 @@ public class StudentAccount extends Account{
         return 0;
     }
 
-    public StudentAccount(String siswaMail, String matricNumber, String password, String fullName, List<String> occurrences, int programme, int  englishBand, int citizenship) {
+    public StudentAccount(String siswaMail, String matricNumber, String password, String fullName, ArrayList<String> occurrences, int programme, int  englishBand, int citizenship) {
         super(siswaMail, matricNumber, password, fullName, occurrences);
         this.programme = programme;
         this.englishBand = englishBand;

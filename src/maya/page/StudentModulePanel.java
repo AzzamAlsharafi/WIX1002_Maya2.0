@@ -3,6 +3,7 @@ package maya.page;
 import maya.Main;
 import maya.object.Module;
 import maya.object.Occurrence;
+import maya.util.DataManager;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -11,6 +12,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +60,7 @@ public class StudentModulePanel extends JPanel {
 
         for (Occurrence occ: availableOccurrences) {
             OccurrencePanel occPanel = new OccurrencePanel();
-            occPanel.setOccurrence(occ);
+            occPanel.setOccurrence(occ, this);
             container.add(occPanel);
         }
 
@@ -85,6 +88,7 @@ public class StudentModulePanel extends JPanel {
 
 class OccurrencePanel extends JPanel{
     Occurrence occurrence;
+    OccurrencePanel thisPanel = this;
 
     JLabel moduleTitleLabel = new JLabel();
     JLabel occurrenceNumberLabel = new JLabel();
@@ -95,8 +99,10 @@ class OccurrencePanel extends JPanel{
     JLabel targetLabel = new JLabel();
     JLabel actualLabel = new JLabel();
 
-    void setOccurrence(Occurrence occurrence){
+    void setOccurrence(Occurrence occurrence, StudentModulePanel parent){
         this.occurrence = occurrence;
+        String moduleOcc = String.format("%s_%s", occurrence.getCode(), occurrence.getOccurrenceNumber());
+        boolean isRegistered = Main.currentUser.getOccurrences().contains(moduleOcc);
 
         Module module = Main.modules.get(occurrence.getCode());
 
@@ -109,7 +115,54 @@ class OccurrencePanel extends JPanel{
         targetLabel.setText(Integer.toString(occurrence.getTargetStudents()));
         actualLabel.setText(Integer.toString(occurrence.getActualStudents()));
 
-        setBorder(new BevelBorder(BevelBorder.RAISED));
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(!isRegistered){
+                    setBorder(new BevelBorder(BevelBorder.LOWERED));
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if(!isRegistered){
+                    setBorder(new BevelBorder(BevelBorder.RAISED));
+
+                    String title = "Register Module";
+
+                    // Check if the same module is already registered but in a different occurrence.
+                    for (String module: Main.currentUser.getOccurrences()) {
+                        if(module.contains(occurrence.getCode())){
+                            String message = String.format("You already registered %s in another occurrence,\ndo you want to replace it?", occurrence.getCode());
+                            int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
+                            if(answer == JOptionPane.YES_OPTION){
+                                Main.currentUser.getOccurrences().remove(module);
+                                Main.currentUser.getOccurrences().add(moduleOcc);
+                                parent.redrawContainer();
+                                DataManager.storeAccounts();
+                            }
+                            return;
+                        }
+                    }
+
+                    String message = String.format("Do you want to register %s?", occurrence.getCode());
+                    int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
+                    if(answer == JOptionPane.YES_OPTION){
+                        Main.currentUser.getOccurrences().add(moduleOcc);
+                        parent.redrawContainer();
+                        DataManager.storeAccounts();
+                    }
+                }
+            }
+
+        });
+
+        if(isRegistered){
+            setBackground(new Color(217, 237, 247));
+            setBorder(new BevelBorder(BevelBorder.LOWERED));
+        } else {
+            setBorder(new BevelBorder(BevelBorder.RAISED));
+        }
 
         setHeights(75);
     }
