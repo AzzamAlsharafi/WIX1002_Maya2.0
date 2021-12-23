@@ -130,6 +130,15 @@ class OccurrencePanel extends JPanel{
         targetLabel.setText("Target");
         actualLabel.setText("Actual");
 
+        Color fontColor = Color.WHITE;
+        occurrenceNumberLabel.setForeground(fontColor);
+        activityLabel.setForeground(fontColor);
+        timeLabel.setForeground(fontColor);
+        tutorLabel.setForeground(fontColor);
+        creditsLabel.setForeground(fontColor);
+        targetLabel.setForeground(fontColor);
+        actualLabel.setForeground(fontColor);
+
         setHeights(40);
 
         JPanel holder = new JPanel();
@@ -167,6 +176,10 @@ class OccurrencePanel extends JPanel{
         Border border1 = BorderFactory.createCompoundBorder(new BevelBorder(BevelBorder.RAISED), new BevelBorder(BevelBorder.LOWERED));
         Border border = BorderFactory.createCompoundBorder(border1, new BevelBorder(BevelBorder.RAISED));
         setBorder(border);
+
+        Color background = new Color(5, 49, 121);
+        holder.setBackground(background);
+        setBackground(background);
     }
 
     void setHeights(int height){
