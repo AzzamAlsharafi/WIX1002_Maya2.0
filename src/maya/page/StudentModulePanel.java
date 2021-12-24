@@ -2,6 +2,7 @@ package maya.page;
 
 import maya.Main;
 import maya.object.Occurrence;
+import maya.object.StudentAccount;
 import maya.util.DataManager;
 
 import javax.swing.*;
@@ -114,7 +115,7 @@ public class StudentModulePanel extends JPanel {
 //        add(profileButton, c);
 
         c.gridy = 5;
-        insets.top = 0;
+//        insets.top = 0;
         add(logoutButton, c);
 
         setBackground(new Color(180, 230, 230));
