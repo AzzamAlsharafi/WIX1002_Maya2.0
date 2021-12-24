@@ -13,12 +13,15 @@ public class MainFrame extends JFrame{
     static final String LOGIN_AND_SIGNUP_KEY = "login&signup";
     static final String STUDENT_MODULE_KEY = "student module";
 
+    LoginAndSignupPanel loginAndSignupPanel;
+    StudentModulePanel studentModulePanel;
+
     private MainFrame(){
         cardLayout = new CardLayout();
         setLayout(cardLayout);
 
-        add(new LoginAndSignupPanel(), LOGIN_AND_SIGNUP_KEY);
-        add(new StudentModulePanel(), STUDENT_MODULE_KEY);
+        loginAndSignupPanel = new LoginAndSignupPanel();
+        add(loginAndSignupPanel, LOGIN_AND_SIGNUP_KEY);
 
         if(Main.currentUser != null){
             showCard(STUDENT_MODULE_KEY);
@@ -32,8 +35,31 @@ public class MainFrame extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    public void clearLoginPage(){
+        remove(loginAndSignupPanel);
+
+        loginAndSignupPanel = new LoginAndSignupPanel();
+        add(loginAndSignupPanel, LOGIN_AND_SIGNUP_KEY);
+
+        revalidate();
+        repaint();
+    }
+
     public void showCard(String key){
-        cardLayout.show(getContentPane(), key);
+        switch (key){
+            case LOGIN_AND_SIGNUP_KEY -> {
+                cardLayout.show(getContentPane(), key);
+            }
+
+            case STUDENT_MODULE_KEY -> {
+                if(Main.currentUser != null){
+                    studentModulePanel = new StudentModulePanel();
+                    studentModulePanel.redraw();
+                    add(studentModulePanel, STUDENT_MODULE_KEY);
+                    cardLayout.show(getContentPane(), key);
+                }
+            }
+        }
     }
 
     public static MainFrame getFrame(){

@@ -2,6 +2,7 @@ package maya.page;
 
 import maya.Main;
 import maya.object.Occurrence;
+import maya.util.DataManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,6 +57,21 @@ public class StudentModulePanel extends JPanel {
         });
         timetableButton.setFocusPainted(false);
 
+        JButton profileButton = new JButton("View Profile");
+        profileButton.setFocusPainted(false);
+
+        JButton logoutButton = new JButton("Log out");
+        logoutButton.setFocusPainted(false);
+        logoutButton.addActionListener(e -> {
+            Main.currentUser = null;
+
+            MainFrame.frame.clearLoginPage();
+
+            MainFrame.frame.showCard(MainFrame.LOGIN_AND_SIGNUP_KEY);
+
+            DataManager.updateRememberMe(false);
+        });
+
         redraw();
 
         setLayout(new GridBagLayout());
@@ -70,7 +86,8 @@ public class StudentModulePanel extends JPanel {
         add(header, c);
 
         c.gridy = 1;
-        c.gridheight = 3;
+        c.gridheight = 5;
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
         add(scrollPane, c);
 
         c.gridx = 1;
@@ -85,13 +102,20 @@ public class StudentModulePanel extends JPanel {
         add(registeredScrollPane, c);
 
         c.gridy = 2;
-        insets.top = 30;
+        insets.top = 15;
         add(creditsPanel, c);
 
         c.gridy = 3;
-        c.ipady = 30;
+        c.ipady = 25;
         add(timetableButton, c);
 
+//        c.gridy = 4;
+//        c.ipady = 15;
+//        add(profileButton, c);
+
+        c.gridy = 5;
+        insets.top = 0;
+        add(logoutButton, c);
 
         setBackground(new Color(180, 230, 230));
     }
