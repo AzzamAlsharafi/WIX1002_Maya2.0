@@ -24,6 +24,7 @@ public class MainFrame extends JFrame{
             showCard(STUDENT_MODULE_KEY);
         }
 
+        setTitle("Maya 2.0");
         setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         setSize(1400, 800);
 //        pack();
