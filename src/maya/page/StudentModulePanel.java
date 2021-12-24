@@ -330,10 +330,15 @@ class OccurrencePanel extends JPanel{
                             String message = String.format("You already registered %s in another occurrence,\ndo you want to replace it?", occurrence.getCode());
                             int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
                             if(answer == JOptionPane.YES_OPTION){
+                                int index = Main.currentUser.getOccurrences().indexOf(module);
                                 Main.currentUser.getOccurrences().remove(module);
-                                Main.currentUser.getOccurrences().add(moduleOcc);
-                                parent.redraw();
-                                DataManager.storeAccounts();
+                                if(isNotOverlapping(moduleOcc)) {
+                                    Main.currentUser.getOccurrences().add(moduleOcc);
+                                    parent.redraw();
+                                    DataManager.storeAccounts();
+                                } else {
+                                    Main.currentUser.getOccurrences().add(index, module);
+                                }
                             }
                             return;
                         }
@@ -342,9 +347,11 @@ class OccurrencePanel extends JPanel{
                     String message = String.format("Do you want to register %s?", occurrence.getCode());
                     int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
                     if(answer == JOptionPane.YES_OPTION){
-                        Main.currentUser.getOccurrences().add(moduleOcc);
-                        parent.redraw();
-                        DataManager.storeAccounts();
+                        if(isNotOverlapping(moduleOcc)) {
+                            Main.currentUser.getOccurrences().add(moduleOcc);
+                            parent.redraw();
+                            DataManager.storeAccounts();
+                        }
                     }
                 }
             }
@@ -364,6 +371,18 @@ class OccurrencePanel extends JPanel{
         }
 
         setHeights(75);
+    }
+
+    public boolean isNotOverlapping(String codeAndOcc){
+        for (String registered: Main.currentUser.getOccurrences()) {
+            if(Occurrence.checkOverlapOfCodeAndOcc(codeAndOcc, registered)){
+                String message = String.format("This occurrence conflicts with %s", registered.split("_")[0]);
+                String title = "Unable to register";
+                JOptionPane.showMessageDialog(thisPanel, message, title, JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+        }
+        return true;
     }
 
     void setHeaderMode(StudentModulePanel parent){

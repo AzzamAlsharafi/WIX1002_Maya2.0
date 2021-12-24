@@ -1,15 +1,20 @@
 package maya.object;
 
+import maya.Main;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class Occurrence {
     final String code;
     final String tutor;
-    final String time; // TODO: change type later
+    final String time;
     final int targetStudents;
     final int actualStudents;
     final int occurrenceNumber;
@@ -57,6 +62,49 @@ public class Occurrence {
 
     public List<String> getStudents() {
         return students;
+    }
+
+    public static boolean checkOverlapOfCodeAndOcc(String codeAndOcc1, String codeAndOcc2){
+        if(!codeAndOcc1.isBlank() && !codeAndOcc2.isBlank()){
+            List<Occurrence> occ1 = getOccurrencesFromCodeAndOcc(codeAndOcc1);
+            List<Occurrence> occ2 = getOccurrencesFromCodeAndOcc(codeAndOcc2);
+
+            for (Occurrence o1: occ1) {
+                for (Occurrence o2: occ2) {
+                    if(checkOverlapOfOccurrence(o1, o2)){
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean checkOverlapOfOccurrence(Occurrence occ1, Occurrence occ2){
+        SimpleDateFormat format = new SimpleDateFormat("E h:m a");
+
+        try {
+            String[] time1 = occ1.getTime().split(" ");
+            Date start1 = format.parse(String.format("%s %s %s", time1[0], time1[1], time1[2]));
+            Date end1 = format.parse(String.format("%s %s %s", time1[0], time1[4], time1[5]));
+
+            String[] time2 = occ2.getTime().split(" ");
+            Date start2 = format.parse(String.format("%s %s %s", time2[0], time2[1], time2[2]));
+            Date end2 = format.parse(String.format("%s %s %s", time2[0], time2[4], time2[5]));
+
+            return start1.before(end2) && start2.before(end1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public static List<Occurrence> getOccurrencesFromCodeAndOcc(String occ){
+        String[] codeAndOcc = occ.split("_");
+
+        return Main.modules.get(codeAndOcc[0]).getOccurrences().stream().filter(o -> o.getOccurrenceNumber() == Integer.parseInt(codeAndOcc[1])).toList();
     }
 
     public void storeOccurrence(ObjectOutputStream out) throws IOException {
