@@ -325,19 +325,19 @@ class OccurrencePanel extends JPanel{
                     String title = "Register Module";
 
                     // Check if the same module is already registered but in a different occurrence.
-                    for (String module: Main.currentUser.getOccurrences()) {
-                        if(module.contains(occurrence.getCode())){
+                    for (String registered: Main.currentUser.getOccurrences()) {
+                        if(registered.contains(occurrence.getCode())){
                             String message = String.format("You already registered %s in another occurrence,\ndo you want to replace it?", occurrence.getCode());
                             int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
                             if(answer == JOptionPane.YES_OPTION){
-                                int index = Main.currentUser.getOccurrences().indexOf(module);
-                                Main.currentUser.getOccurrences().remove(module);
+                                int index = Main.currentUser.getOccurrences().indexOf(registered);
+                                Main.currentUser.getOccurrences().remove(registered);
                                 if(isNotOverlapping(moduleOcc)) {
                                     Main.currentUser.getOccurrences().add(moduleOcc);
                                     parent.redraw();
                                     DataManager.storeAccounts();
                                 } else {
-                                    Main.currentUser.getOccurrences().add(index, module);
+                                    Main.currentUser.getOccurrences().add(index, registered);
                                 }
                             }
                             return;
@@ -348,9 +348,15 @@ class OccurrencePanel extends JPanel{
                     int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
                     if(answer == JOptionPane.YES_OPTION){
                         if(isNotOverlapping(moduleOcc)) {
-                            Main.currentUser.getOccurrences().add(moduleOcc);
-                            parent.redraw();
-                            DataManager.storeAccounts();
+                            if(parent.currentCredits + module.getCredit() <= Main.maxCreditsPerStudent) {
+                                Main.currentUser.getOccurrences().add(moduleOcc);
+                                parent.redraw();
+                                DataManager.storeAccounts();
+                            }else{
+                                message = String.format("Registering %s will put you over %d credits", moduleOcc.split("_")[0], Main.maxCreditsPerStudent);
+                                title = "Unable to register";
+                                JOptionPane.showMessageDialog(thisPanel, message, title, JOptionPane.WARNING_MESSAGE);
+                            }
                         }
                     }
                 }
