@@ -38,7 +38,7 @@ public class LoginPanel extends JPanel{
                 if (Main.accounts.get(username).getPassword().equals(password)) {
                     Main.currentUser = Main.accounts.get(username);
                     DataManager.updateRememberMe(rememberMeCheckBox.isSelected());
-                    MainFrame.frame.showCard(MainFrame.STUDENT_MODULE_KEY);
+                    MainFrame.getFrame().showCard(MainFrame.STUDENT_MODULE_KEY);
                 }
             }
         });

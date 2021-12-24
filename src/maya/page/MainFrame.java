@@ -8,7 +8,7 @@ import java.awt.*;
 public class MainFrame extends JFrame{
     CardLayout cardLayout;
 
-    static MainFrame frame = null;
+    private static MainFrame frame = null;
 
     static final String LOGIN_AND_SIGNUP_KEY = "login&signup";
     static final String STUDENT_MODULE_KEY = "student module";
