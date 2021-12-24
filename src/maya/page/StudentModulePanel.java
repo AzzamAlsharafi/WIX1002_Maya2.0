@@ -45,24 +45,38 @@ public class StudentModulePanel extends JPanel {
 
         creditsPanel = new TotalCreditsPanel(currentCredits);
 
+        JButton timetableButton = new JButton("View Timetable");
+        timetableButton.addActionListener(e -> {
+            JFrame timetableFrame = new JFrame("Timetable");
+            timetableFrame.add(new TimetablePanel());
+            timetableFrame.pack();
+            timetableFrame.setResizable(false);
+            timetableFrame.setLocationRelativeTo(null);
+            timetableFrame.setVisible(true);
+        });
+        timetableButton.setFocusPainted(false);
+
         redraw();
 
         setLayout(new GridBagLayout());
 
         GridBagConstraints c = new GridBagConstraints();
 
+        Insets insets = new Insets(0, 0, 0, 0);
+
+        c.insets = insets;
         c.anchor = GridBagConstraints.LINE_START;
         c.fill = GridBagConstraints.HORIZONTAL;
         add(header, c);
 
         c.gridy = 1;
-        c.gridheight = 2;
+        c.gridheight = 3;
         add(scrollPane, c);
 
         c.gridx = 1;
         c.gridy = 0;
         c.gridheight = 1;
-        c.insets = new Insets(0, 30, 0, 0);
+        insets.left = 30;
         c.anchor = GridBagConstraints.PAGE_END;
         add(registeredHeader, c);
 
@@ -71,8 +85,12 @@ public class StudentModulePanel extends JPanel {
         add(registeredScrollPane, c);
 
         c.gridy = 2;
-        c.insets = new Insets(30, 30, 0, 0);
+        insets.top = 30;
         add(creditsPanel, c);
+
+        c.gridy = 3;
+        c.ipady = 30;
+        add(timetableButton, c);
 
 
         setBackground(new Color(180, 230, 230));
