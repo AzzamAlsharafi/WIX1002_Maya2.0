@@ -66,8 +66,6 @@ public class StudentModulePanel extends JPanel {
         logoutButton.addActionListener(e -> {
             Main.currentUser = null;
 
-            MainFrame.getFrame().clearLoginPage();
-
             MainFrame.getFrame().showCard(MainFrame.LOGIN_AND_SIGNUP_KEY);
 
             DataManager.updateRememberMe(false);
