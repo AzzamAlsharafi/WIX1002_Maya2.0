@@ -123,11 +123,27 @@ class OccurrencePanel extends JPanel {
                         String[] options = new String[]{"Edit", "Delete", "Cancel"};
 
                         int ans = JOptionPane.showOptionDialog(thisPanel, message, title, JOptionPane.YES_NO_CANCEL_OPTION,
-                                JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
+                                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                         switch (ans){
                             case 0 -> {
+                                message = "Do you want to edit this occurrence or edit the module?";
+                                title = "Edit";
+                                options = new String[]{"Edit occurrence", "Edit module", "Cancel"};
+                                ans = JOptionPane.showOptionDialog(thisPanel, message, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                                switch (ans){
+                                    case 0 -> {
+                                        JFrame frame = new JFrame("Edit Occurrence");
+                                        frame.add(new EditOccurrencePanel(occurrence, (StaffModulePanel) parent, frame));
+                                        frame.pack();
+                                        frame.setResizable(false);
+                                        frame.setLocationRelativeTo(null);
+                                        frame.setVisible(true);
+                                    }
+                                    case 1 -> {
 
+                                    }
+                                }
                             }
                             case 1 -> {
                                 if(JOptionPane.showConfirmDialog(thisPanel, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){

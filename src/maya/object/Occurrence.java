@@ -60,6 +60,14 @@ public class Occurrence {
         }
     }
 
+    static public int getActivityFromString(String string){
+        switch (string){
+            case "Lecture" -> {return OCC_TYPE_LECTURE;}
+            case "Tutorial" -> {return OCC_TYPE_TUTORIAL;}
+        }
+        return -1;
+    }
+
     public List<String> getStudents() {
         return students;
     }
