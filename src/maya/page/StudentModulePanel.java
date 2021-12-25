@@ -10,7 +10,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentModulePanel extends JPanel {
+public class StudentModulePanel extends ModulePanel {
 
     List<Occurrence> allOccurrences = new ArrayList<>();
     List<Occurrence> availableOccurrences = new ArrayList<>();
@@ -119,6 +119,7 @@ public class StudentModulePanel extends JPanel {
         setBackground(new Color(180, 230, 230));
     }
 
+    @Override
     void redraw(){
         container.removeAll();
         registeredContainer.removeAll();
@@ -146,6 +147,7 @@ public class StudentModulePanel extends JPanel {
         registeredContainer.repaint();
     }
 
+    @Override
     void filter(String toFilter){
         for (Occurrence occ: allOccurrences) {
             String title = String.format("%s - %s", occ.getCode(), Main.modules.get(occ.getCode()).getTitle());

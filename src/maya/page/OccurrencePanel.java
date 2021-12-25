@@ -28,7 +28,7 @@ class OccurrencePanel extends JPanel {
     JLabel targetLabel = new JLabel();
     JLabel actualLabel = new JLabel();
 
-    void setOccurrence(Occurrence occurrence, StudentModulePanel parent){
+    void setOccurrence(Occurrence occurrence, ModulePanel parent){
         this.occurrence = occurrence;
         String moduleOcc = String.format("%s_%s", occurrence.getCode(), occurrence.getOccurrenceNumber());
         boolean isRegistered = Main.currentUser.getOccurrences().contains(moduleOcc);
@@ -83,7 +83,7 @@ class OccurrencePanel extends JPanel {
                     int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
                     if(answer == JOptionPane.YES_OPTION){
                         if(isNotOverlapping(moduleOcc)) {
-                            if(parent.currentCredits + module.getCredit() <= Main.maxCreditsPerStudent) {
+                            if(((StudentModulePanel) parent).currentCredits + module.getCredit() <= Main.maxCreditsPerStudent) {
                                 Main.currentUser.getOccurrences().add(moduleOcc);
                                 parent.redraw();
                                 DataManager.storeAccounts();
@@ -126,7 +126,7 @@ class OccurrencePanel extends JPanel {
         return true;
     }
 
-    void setHeaderMode(StudentModulePanel parent){
+    void setHeaderMode(ModulePanel parent){
         occurrenceNumberLabel.setText("Occurrence");
         activityLabel.setText("Activity");
         timeLabel.setText("Time");

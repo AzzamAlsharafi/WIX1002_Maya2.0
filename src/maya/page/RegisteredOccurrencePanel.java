@@ -19,7 +19,7 @@ class RegisteredOccurrencePanel extends JPanel {
 
     RegisteredOccurrencePanel thisPanel = this;
 
-    RegisteredOccurrencePanel(String occ, StudentModulePanel parent){
+    RegisteredOccurrencePanel(String occ, ModulePanel parent){
         String[] codeAndOcc = occ.split("_");
         Module module = Main.modules.get(codeAndOcc[0]);
 
