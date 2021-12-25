@@ -2,6 +2,7 @@ package maya.page;
 
 import maya.Main;
 import maya.object.Module;
+import maya.object.Occurrence;
 import maya.util.DataManager;
 
 import javax.swing.*;
@@ -15,43 +16,71 @@ import java.awt.event.MouseEvent;
 class RegisteredOccurrencePanel extends JPanel {
     JLabel moduleTitleLabel = new JLabel();
     JLabel occurrenceNumberLabel = new JLabel();
-    JLabel creditsLabel = new JLabel();
+    JLabel lastLabel = new JLabel();
 
     RegisteredOccurrencePanel thisPanel = this;
 
     RegisteredOccurrencePanel(String occ, ModulePanel parent){
-        String[] codeAndOcc = occ.split("_");
-        Module module = Main.modules.get(codeAndOcc[0]);
+        String[] occData = occ.split("_");
+        Module module = Main.modules.get(occData[0]);
 
-        moduleTitleLabel.setText(codeAndOcc[0]);
-        occurrenceNumberLabel.setText(codeAndOcc[1]);
-        creditsLabel.setText(Integer.toString(module.getCredit()));
+        if(parent instanceof StudentModulePanel){
+            lastLabel.setText(Integer.toString(module.getCredit()));
+            lastLabel.setBorder(new EmptyBorder(0, 0, 0, 35));
+
+            if(Occurrence.getOccurrencesFromCodeAndOcc(occ).isEmpty()){
+                setBackground(new Color(230, 150, 150));
+            }
+
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    setBorder(new BevelBorder(BevelBorder.LOWERED));
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    setBorder(new BevelBorder(BevelBorder.RAISED));
+                    String title = "Remove Module";
+                    String message = String.format("Do you want to remove %s?", occData[0]);
+                    int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
+                    if(answer == JOptionPane.YES_OPTION){
+                        Main.currentUser.getOccurrences().remove(occ);
+                        parent.redraw();
+                        DataManager.storeAccounts();
+                    }
+                }
+            });
+        } else {
+            lastLabel.setText(occData[2]);
+            lastLabel.setBorder(new EmptyBorder(0, 0, 0, 5));
+
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    setBorder(new BevelBorder(BevelBorder.LOWERED));
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    setBorder(new BevelBorder(BevelBorder.RAISED));
+                    JFrame frame = new JFrame("Registered Students");
+                    frame.add(new RegisteredStudentsPanel(occ));
+                    frame.pack();
+                    frame.setResizable(false);
+                    frame.setLocationRelativeTo(null);
+                    frame.setVisible(true);
+                }
+            });
+        }
+
+        moduleTitleLabel.setText(occData[0]);
+        occurrenceNumberLabel.setText(occData[1]);
 
         moduleTitleLabel.setToolTipText(module.getTitle());
 
         moduleTitleLabel.setBorder(new EmptyBorder(0, 0, 0, 27));
         occurrenceNumberLabel.setBorder(new EmptyBorder(0, 0, 0, 38));
-        creditsLabel.setBorder(new EmptyBorder(0, 0, 0, 35));
-
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                setBorder(new BevelBorder(BevelBorder.LOWERED));
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                setBorder(new BevelBorder(BevelBorder.RAISED));
-                String title = "Remove Module";
-                String message = String.format("Do you want to remove %s?", codeAndOcc[0]);
-                int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
-                if(answer == JOptionPane.YES_OPTION){
-                    Main.currentUser.getOccurrences().remove(occ);
-                    parent.redraw();
-                    DataManager.storeAccounts();
-                }
-            }
-        });
 
         Dimension size = new Dimension(200, 50);
         setMinimumSize(size);
@@ -72,28 +101,35 @@ class RegisteredOccurrencePanel extends JPanel {
         add(occurrenceNumberLabel, c);
 
         c.gridx = 2;
-        add(creditsLabel, c);
+        add(lastLabel, c);
     }
 }
 
 class RegisteredOccurrenceHeaderPanel extends JPanel{
     JLabel moduleTitleLabel = new JLabel();
     JLabel occurrenceNumberLabel = new JLabel();
-    JLabel creditsLabel = new JLabel();
+    JLabel lastLabel = new JLabel();
 
-    RegisteredOccurrenceHeaderPanel(){
+    RegisteredOccurrenceHeaderPanel(ModulePanel parent){
+        if (parent instanceof StudentModulePanel){
+            lastLabel.setText("Credits");
+            lastLabel.setBorder(new EmptyBorder(0, 0, 0, 15));
+            occurrenceNumberLabel.setBorder(new EmptyBorder(0, 0, 0, 20));
+        } else {
+            lastLabel.setText("Activity");
+            lastLabel.setBorder(new EmptyBorder(0, 0, 0, 10));
+            occurrenceNumberLabel.setBorder(new EmptyBorder(0, 0, 0, 25));
+        }
+
         moduleTitleLabel.setText("Module");
         occurrenceNumberLabel.setText("Occ");
-        creditsLabel.setText("Credits");
 
         moduleTitleLabel.setBorder(new EmptyBorder(0, 10, 0, 30));
-        occurrenceNumberLabel.setBorder(new EmptyBorder(0, 0, 0, 20));
-        creditsLabel.setBorder(new EmptyBorder(0, 0, 0, 15));
 
         Color fontColor = Color.WHITE;
         moduleTitleLabel.setForeground(fontColor);
         occurrenceNumberLabel.setForeground(fontColor);
-        creditsLabel.setForeground(fontColor);
+        lastLabel.setForeground(fontColor);
 
         Dimension size = new Dimension(200, 39);
         setMinimumSize(size);
@@ -119,6 +155,6 @@ class RegisteredOccurrenceHeaderPanel extends JPanel{
         add(occurrenceNumberLabel, c);
 
         c.gridx = 2;
-        add(creditsLabel, c);
+        add(lastLabel, c);
     }
 }

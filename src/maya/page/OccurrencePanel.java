@@ -30,10 +30,129 @@ class OccurrencePanel extends JPanel {
 
     void setOccurrence(Occurrence occurrence, ModulePanel parent){
         this.occurrence = occurrence;
-        String moduleOcc = String.format("%s_%s", occurrence.getCode(), occurrence.getOccurrenceNumber());
-        boolean isRegistered = Main.currentUser.getOccurrences().contains(moduleOcc);
-
         Module module = Main.modules.get(occurrence.getCode());
+
+        String moduleOcc;
+        boolean isRegistered;
+        boolean isCoordinator;
+
+        if(parent instanceof StudentModulePanel){
+            moduleOcc = String.format("%s_%s", occurrence.getCode(), occurrence.getOccurrenceNumber());
+            isRegistered = Main.currentUser.getOccurrences().contains(moduleOcc);
+
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (!isRegistered) {
+                        setBorder(new BevelBorder(BevelBorder.LOWERED));
+                    }
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    if (!isRegistered) {
+                        setBorder(new BevelBorder(BevelBorder.RAISED));
+
+                        String title = "Register Module";
+
+                        // Check if the same module is already registered but in a different occurrence.
+                        for (String registered : Main.currentUser.getOccurrences()) {
+                            if (registered.contains(occurrence.getCode())) {
+                                String message = String.format("You already registered %s in another occurrence,\ndo you want to replace it?", occurrence.getCode());
+                                int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
+                                if (answer == JOptionPane.YES_OPTION) {
+                                    int index = Main.currentUser.getOccurrences().indexOf(registered);
+                                    Main.currentUser.getOccurrences().remove(registered);
+                                    if (isNotOverlapping(moduleOcc)) {
+                                        Main.currentUser.getOccurrences().add(moduleOcc);
+                                        parent.redraw();
+                                        DataManager.storeAccounts();
+                                    } else {
+                                        Main.currentUser.getOccurrences().add(index, registered);
+                                    }
+                                }
+                                return;
+                            }
+                        }
+
+                        String message = String.format("Do you want to register %s?", occurrence.getCode());
+                        int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
+                        if (answer == JOptionPane.YES_OPTION) {
+                            if (isNotOverlapping(moduleOcc)) {
+                                if (((StudentModulePanel) parent).currentCredits + module.getCredit() <= Main.maxCreditsPerStudent) {
+                                    Main.currentUser.getOccurrences().add(moduleOcc);
+                                    parent.redraw();
+                                    DataManager.storeAccounts();
+                                } else {
+                                    message = String.format("Registering %s will put you over %d credits", moduleOcc.split("_")[0], Main.maxCreditsPerStudent);
+                                    title = "Unable to register";
+                                    JOptionPane.showMessageDialog(thisPanel, message, title, JOptionPane.WARNING_MESSAGE);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            if(isRegistered){
+                setBackground(new Color(217, 237, 247));
+                setBorder(new BevelBorder(BevelBorder.LOWERED));
+            } else {
+                setBorder(new BevelBorder(BevelBorder.RAISED));
+            }
+        } else {
+            moduleOcc = String.format("%s_%s_%s", occurrence.getCode(), occurrence.getOccurrenceNumber(), occurrence.getActivityString());
+            isRegistered = Main.currentUser.getOccurrences().contains(moduleOcc);
+            isCoordinator = module.getCoordinator().equalsIgnoreCase(Main.currentUser.getFullName());
+
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if(isCoordinator){
+                        setBorder(new BevelBorder(BevelBorder.LOWERED));
+                    }
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    if(isCoordinator){
+                        setBorder(new BevelBorder(BevelBorder.RAISED));
+
+                        String title = "Module";
+                        String message = "Do you want to edit or delete this occurrence?";
+                        String[] options = new String[]{"Edit", "Delete", "Cancel"};
+
+                        int ans = JOptionPane.showOptionDialog(thisPanel, message, title, JOptionPane.YES_NO_CANCEL_OPTION,
+                                JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
+
+                        switch (ans){
+                            case 0 -> {
+
+                            }
+                            case 1 -> {
+                                if(JOptionPane.showConfirmDialog(thisPanel, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                                    module.getOccurrences().remove(occurrence);
+                                    ((StaffModulePanel) parent).updateAllOccurrences();
+                                    parent.redraw();
+                                    DataManager.storeModules();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            if(isCoordinator){
+                setBorder(new BevelBorder(BevelBorder.RAISED));
+                setBackground(new Color(217, 237, 247));
+            } else {
+                setBorder(new BevelBorder(BevelBorder.LOWERED));
+            }
+
+            if(isRegistered){
+                setBackground(new Color(80, 200, 220));
+            }
+        }
 
         moduleTitleLabel.setText(String.format("<html>%s - %s</html>", module.getCode(), module.getTitle()));
         occurrenceNumberLabel.setText(Integer.toString(occurrence.getOccurrenceNumber()));
@@ -44,72 +163,10 @@ class OccurrencePanel extends JPanel {
         targetLabel.setText(Integer.toString(occurrence.getTargetStudents()));
         actualLabel.setText(Integer.toString(occurrence.getActualStudents()));
 
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if(!isRegistered){
-                    setBorder(new BevelBorder(BevelBorder.LOWERED));
-                }
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if(!isRegistered){
-                    setBorder(new BevelBorder(BevelBorder.RAISED));
-
-                    String title = "Register Module";
-
-                    // Check if the same module is already registered but in a different occurrence.
-                    for (String registered: Main.currentUser.getOccurrences()) {
-                        if(registered.contains(occurrence.getCode())){
-                            String message = String.format("You already registered %s in another occurrence,\ndo you want to replace it?", occurrence.getCode());
-                            int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
-                            if(answer == JOptionPane.YES_OPTION){
-                                int index = Main.currentUser.getOccurrences().indexOf(registered);
-                                Main.currentUser.getOccurrences().remove(registered);
-                                if(isNotOverlapping(moduleOcc)) {
-                                    Main.currentUser.getOccurrences().add(moduleOcc);
-                                    parent.redraw();
-                                    DataManager.storeAccounts();
-                                } else {
-                                    Main.currentUser.getOccurrences().add(index, registered);
-                                }
-                            }
-                            return;
-                        }
-                    }
-
-                    String message = String.format("Do you want to register %s?", occurrence.getCode());
-                    int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
-                    if(answer == JOptionPane.YES_OPTION){
-                        if(isNotOverlapping(moduleOcc)) {
-                            if(((StudentModulePanel) parent).currentCredits + module.getCredit() <= Main.maxCreditsPerStudent) {
-                                Main.currentUser.getOccurrences().add(moduleOcc);
-                                parent.redraw();
-                                DataManager.storeAccounts();
-                            }else{
-                                message = String.format("Registering %s will put you over %d credits", moduleOcc.split("_")[0], Main.maxCreditsPerStudent);
-                                title = "Unable to register";
-                                JOptionPane.showMessageDialog(thisPanel, message, title, JOptionPane.WARNING_MESSAGE);
-                            }
-                        }
-                    }
-                }
-            }
-
-        });
-
         Dimension size = new Dimension(982, 80);
         setMinimumSize(size);
         setPreferredSize(size);
         setMaximumSize(size);
-
-        if(isRegistered){
-            setBackground(new Color(217, 237, 247));
-            setBorder(new BevelBorder(BevelBorder.LOWERED));
-        } else {
-            setBorder(new BevelBorder(BevelBorder.RAISED));
-        }
 
         setHeights(75);
     }

@@ -43,7 +43,7 @@ public class StudentModulePanel extends ModulePanel {
         registeredScrollPane.setPreferredSize(new Dimension(200, 303));
         registeredScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-        RegisteredOccurrenceHeaderPanel registeredHeader = new RegisteredOccurrenceHeaderPanel();
+        RegisteredOccurrenceHeaderPanel registeredHeader = new RegisteredOccurrenceHeaderPanel(this);
 
         creditsPanel = new TotalCreditsPanel(currentCredits);
 
