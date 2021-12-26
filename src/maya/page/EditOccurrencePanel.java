@@ -19,9 +19,23 @@ public class EditOccurrencePanel extends JPanel {
     JTextField creditsField;
     JTextField targetField;
 
+    JComboBox<String> activityModTypeComboBox;
+
+    JLabel codeLabel;
+    JLabel titleLabel;
+    JLabel activityLabel;
+    JLabel timeLabel;
+    JLabel occurrenceLabel;
+    JLabel tutorLabel;
+    JLabel creditsLabel;
+    JLabel targetLabel;
+
     Module module;
 
-    EditOccurrencePanel(Occurrence occ, StaffModulePanel parent, JFrame frame) {
+    final static int EDIT_OCCURRENCE_MODE = 0;
+    final static int EDIT_MODULE_MODE = 1;
+
+    EditOccurrencePanel(Occurrence occ, StaffModulePanel parent, JFrame frame, int mode) {
         module = Main.modules.get(occ.getCode());
 
         int fieldHeight = 30;
@@ -62,38 +76,62 @@ public class EditOccurrencePanel extends JPanel {
         targetField.setPreferredSize(smallestFieldSize);
         targetField.setMargin(fieldInsets);
 
+        String[] options = new String[]{"SELECT", "Lecture only", "Lecture & Tutorial", "Tutorial only"};
+        activityModTypeComboBox = new JComboBox<>(options);
+        activityModTypeComboBox.setPreferredSize(bigFieldSize);
+        activityModTypeComboBox.setBackground(Color.WHITE);
 
-        JLabel codeLabel = new JLabel("Code");
-        JLabel titleLabel = new JLabel("Title");
-        JLabel activityLabel = new JLabel("Activity");
-        JLabel timeLabel = new JLabel("Time");
-        JLabel occurrenceLabel = new JLabel("Occurrence");
-        JLabel tutorLabel = new JLabel("Tutor");
-        JLabel creditsLabel = new JLabel("Credits");
-        JLabel targetLabel = new JLabel("Target");
+        codeLabel = new JLabel("Code");
+        titleLabel = new JLabel("Title");
+        activityLabel = new JLabel("Activity");
+        timeLabel = new JLabel("Time");
+        occurrenceLabel = new JLabel("Occurrence");
+        tutorLabel = new JLabel("Tutor");
+        creditsLabel = new JLabel("Credits");
+        targetLabel = new JLabel("Target");
 
         JButton saveButton = new JButton("Save");
         saveButton.setFocusPainted(false);
         saveButton.addActionListener(e -> {
-            if (!codeField.getText().isBlank() && !titleField.getText().isBlank() &&
-                    !activityField.getText().isBlank() && !timeField.getText().isBlank() &&
-                    !occurrenceField.getText().isBlank() && !tutorField.getText().isBlank() &&
-                    !creditsField.getText().isBlank() && !targetField.getText().isBlank()){
-                module.getOccurrences().remove(occ);
+            if(mode == EDIT_OCCURRENCE_MODE){
+                if (!codeField.getText().isBlank() && !titleField.getText().isBlank() &&
+                        !activityField.getText().isBlank() && !timeField.getText().isBlank() &&
+                        !occurrenceField.getText().isBlank() && !tutorField.getText().isBlank() &&
+                        !creditsField.getText().isBlank() && !targetField.getText().isBlank()){
+                    module.getOccurrences().remove(occ);
 
-                Occurrence newOcc = new Occurrence(codeField.getText(), tutorField.getText(), timeField.getText(),
-                        Integer.parseInt(targetField.getText()), occ.getActualStudents(),
-                        Integer.parseInt(occurrenceField.getText()),
-                        Occurrence.getActivityFromString(activityField.getText()), occ.getStudents());
+                    Occurrence newOcc = new Occurrence(codeField.getText(), tutorField.getText(), timeField.getText(),
+                            Integer.parseInt(targetField.getText()), occ.getActualStudents(),
+                            Integer.parseInt(occurrenceField.getText()),
+                            Occurrence.getActivityFromString(activityField.getText()), occ.getStudents());
 
-                module.getOccurrences().add(newOcc);
+                    module.getOccurrences().add(newOcc);
 
-                parent.updateAllOccurrences();
-                parent.redraw();
+                    parent.updateAllOccurrences();
+                    parent.redraw();
 
-                DataManager.storeModules();
+                    DataManager.storeModules();
 
-                frame.dispose();
+                    frame.dispose();
+                }
+            } else if(mode == EDIT_MODULE_MODE){
+                if(!codeField.getText().isBlank() && !titleField.getText().isBlank()
+                && !creditsField.getText().isBlank() && activityModTypeComboBox.getSelectedIndex() != 0) {
+                    Main.modules.remove(module.getCode());
+
+                    Module newModule = new Module(module.getCode(), titleField.getText(), module.getCoordinator(),
+                            module.getOccurrencesCount(), Integer.parseInt(creditsField.getText()),
+                            activityModTypeComboBox.getSelectedIndex() - 1, module.getOccurrences());
+
+                    Main.modules.put(module.getCode(), newModule);
+
+                    parent.updateAllOccurrences();
+                    parent.redraw();
+
+                    DataManager.storeModules();
+
+                    frame.dispose();
+                }
             }
         });
 
@@ -172,6 +210,12 @@ public class EditOccurrencePanel extends JPanel {
         setBackground(new Color(150, 230, 150));
 
         setData(occ);
+
+        if(mode == EDIT_OCCURRENCE_MODE){
+            editOccurrenceMode();
+        }else if(mode == EDIT_MODULE_MODE){
+            editModuleMode();
+        }
     }
 
     void setData(Occurrence occ){
@@ -183,11 +227,36 @@ public class EditOccurrencePanel extends JPanel {
         tutorField.setText(occ.getTutor());
         creditsField.setText(String.valueOf(module.getCredit()));
         targetField.setText(String.valueOf(occ.getTargetStudents()));
+        activityModTypeComboBox.setSelectedIndex(module.getActivityType() + 1);
+    }
 
+    void editOccurrenceMode(){
         codeField.setEditable(false);
         titleField.setEditable(false);
-        activityField.setEditable(false);
         occurrenceField.setEditable(false);
         creditsField.setEditable(false);
+        activityField.setEditable(false);
+    }
+
+    void editModuleMode(){
+        remove(activityLabel);
+        remove(activityField);
+        remove(timeLabel);
+        remove(timeField);
+        remove(occurrenceLabel);
+        remove(occurrenceField);
+        remove(tutorLabel);
+        remove(tutorField);
+        remove(targetLabel);
+        remove(targetField);
+
+        codeField.setEditable(false);
+        creditsField.setEditable(false);
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridwidth = 3;
+        c.gridx = 1;
+        c.gridy = 7;
+        add(activityModTypeComboBox, c);
     }
 }
