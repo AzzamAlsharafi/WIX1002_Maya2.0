@@ -12,7 +12,8 @@ public class StaffAccount extends Account{
         super(umMail, username, password, fullName, occurrences);
     }
 
-    public static ArrayList<String> getOccurrencesByName(String fullName){
+    @Override
+    public List<String> getOccurrences() {
         List<Occurrence> allOccurrences = new ArrayList<>();
         Main.modules.values().forEach(m -> allOccurrences.addAll(m.getOccurrences()));
 
@@ -22,6 +23,8 @@ public class StaffAccount extends Account{
                 registeredOccurrences.add(String.format("%s_%s_%s", occ.getCode(), occ.getOccurrenceNumber(), occ.getActivityString()));
             }
         }
+
+        registeredOccurrences.sort(String::compareTo);
 
         return registeredOccurrences;
     }
