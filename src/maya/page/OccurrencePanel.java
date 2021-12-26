@@ -133,7 +133,7 @@ class OccurrencePanel extends JPanel {
                                 ans = JOptionPane.showOptionDialog(thisPanel, message, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                                 if(ans == JOptionPane.YES_OPTION || ans == JOptionPane.NO_OPTION){
                                     JFrame frame = new JFrame("Edit Occurrence");
-                                    frame.add(new EditOccurrencePanel(occurrence, (StaffModulePanel) parent, frame, ans));
+                                    frame.add(new StaffEditorPanel(occurrence, (StaffModulePanel) parent, frame, ans));
                                     frame.pack();
                                     frame.setResizable(false);
                                     frame.setLocationRelativeTo(null);

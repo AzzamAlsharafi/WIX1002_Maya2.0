@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class EditOccurrencePanel extends JPanel {
+public class StaffEditorPanel extends JPanel {
     JTextField codeField;
     JTextField titleField;
     JTextField activityField;
@@ -35,7 +35,7 @@ public class EditOccurrencePanel extends JPanel {
     final static int EDIT_OCCURRENCE_MODE = 0;
     final static int EDIT_MODULE_MODE = 1;
 
-    EditOccurrencePanel(Occurrence occ, StaffModulePanel parent, JFrame frame, int mode) {
+    StaffEditorPanel(Occurrence occ, StaffModulePanel parent, JFrame frame, int mode) {
         module = Main.modules.get(occ.getCode());
 
         int fieldHeight = 30;
