@@ -112,7 +112,11 @@ public class Occurrence {
     public static List<Occurrence> getOccurrencesFromCodeAndOcc(String occ){
         String[] codeAndOcc = occ.split("_");
 
-        return Main.modules.get(codeAndOcc[0]).getOccurrences().stream().filter(o -> o.getOccurrenceNumber() == Integer.parseInt(codeAndOcc[1])).toList();
+        if(codeAndOcc.length == 2) {
+            return Main.modules.get(codeAndOcc[0]).getOccurrences().stream().filter(o -> o.getOccurrenceNumber() == Integer.parseInt(codeAndOcc[1])).toList();
+        } else {
+            return Main.modules.get(codeAndOcc[0]).getOccurrences().stream().filter(o -> o.getOccurrenceNumber() == Integer.parseInt(codeAndOcc[1]) && o.getActivityString().equals(codeAndOcc[2])).toList();
+        }
     }
 
     public void storeOccurrence(ObjectOutputStream out) throws IOException {

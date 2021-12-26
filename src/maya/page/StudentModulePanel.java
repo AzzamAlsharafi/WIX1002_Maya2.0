@@ -50,7 +50,7 @@ public class StudentModulePanel extends ModulePanel {
         JButton timetableButton = new JButton("View Timetable");
         timetableButton.addActionListener(e -> {
             JFrame timetableFrame = new JFrame("Timetable");
-            timetableFrame.add(new TimetablePanel());
+            timetableFrame.add(new TimetablePanel(TimetablePanel.STUDENT_MODE));
             timetableFrame.pack();
             timetableFrame.setResizable(false);
             timetableFrame.setLocationRelativeTo(null);

@@ -39,7 +39,16 @@ public class StaffModulePanel extends ModulePanel {
 
         RegisteredOccurrenceHeaderPanel registeredHeader = new RegisteredOccurrenceHeaderPanel(this);
 
-
+        JButton timetableButton = new JButton("View Timetable");
+        timetableButton.addActionListener(e -> {
+            JFrame timetableFrame = new JFrame("Timetable");
+            timetableFrame.add(new TimetablePanel(TimetablePanel.STAFF_MODE));
+            timetableFrame.pack();
+            timetableFrame.setResizable(false);
+            timetableFrame.setLocationRelativeTo(null);
+            timetableFrame.setVisible(true);
+        });
+        timetableButton.setFocusPainted(false);
 
         JButton logoutButton = new JButton("Log out");
         logoutButton.setFocusPainted(false);
@@ -79,6 +88,11 @@ public class StaffModulePanel extends ModulePanel {
         c.gridy = 1;
         c.anchor = GridBagConstraints.PAGE_START;
         add(registeredScrollPane, c);
+
+        c.gridy = 3;
+        c.ipady = 25;
+        insets.top = 20;
+        add(timetableButton, c);
 
         c.gridy = 5;
 //        insets.top = 0;

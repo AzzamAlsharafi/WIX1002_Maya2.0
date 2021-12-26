@@ -11,9 +11,7 @@ import java.awt.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
 
 public class TimetablePanel extends JPanel {
@@ -21,7 +19,10 @@ public class TimetablePanel extends JPanel {
     final int START_HOUR = 9;
     final int END_HOUR = 21;
 
-    TimetablePanel(){
+    final static int STUDENT_MODE = 0;
+    final static int STAFF_MODE = 1;
+
+    TimetablePanel(int mode){
         String[] days = new String[]{"MON", "TUE", "WED", "THU", "FRI"};
         List<Occurrence> registered = new ArrayList<>();
         for (String codeAndOcc: Main.currentUser.getOccurrences()) {
@@ -29,6 +30,8 @@ public class TimetablePanel extends JPanel {
                 registered.addAll(Occurrence.getOccurrencesFromCodeAndOcc(codeAndOcc));
             }
         }
+
+        Map<String, String> data = new HashMap<>();
 
         setLayout(new GridBagLayout());
 
@@ -66,27 +69,56 @@ public class TimetablePanel extends JPanel {
                 int startHour = startCal.get(Calendar.HOUR_OF_DAY);
                 int dayOfWeek = startCal.get(Calendar.DAY_OF_WEEK) - 1;
 
-                JLabel label = new JLabel(String.format("%s %s",occ.getCode(), occ.getActivityString().charAt(0)));
-                label.setToolTipText(String.format("%s", Main.modules.get(occ.getCode()).getTitle()));
+                String dataKey = String.format("%d %d %d", hours, startHour, dayOfWeek);
 
-                JPanel panel = new JPanel();
-                panel.setLayout(new GridBagLayout());
-                panel.add(label);
-                panel.setBorder(new BevelBorder(BevelBorder.RAISED));
-
-                int y = startHour - (START_HOUR - 1);
-
-                c.gridx = dayOfWeek;
-                c.gridy = y;
-                c.gridheight = hours;
-                add(panel, c);
-
-                for (int i = 0; i < hours; i++){
-                    isFullCell[dayOfWeek][y+i] = true;
+                if(data.containsKey(dataKey)){
+                    data.put(dataKey, String.format("%s, %d", data.get(dataKey), occ.getOccurrenceNumber()));
+                } else {
+                    data.put(dataKey, String.format("%s %s\n%d",occ.getCode(), occ.getActivityString().charAt(0), occ.getOccurrenceNumber()));
                 }
 
             }catch (ParseException e){
                 e.printStackTrace();
+            }
+        }
+
+        for(String keyString: data.keySet()){
+            String[] key = keyString.split(" ");
+            int hours = Integer.parseInt(key[0]);
+            int startHour = Integer.parseInt(key[1]);
+            int dayOfWeek = Integer.parseInt(key[2]);
+
+            String text = data.get(keyString);
+
+            System.out.println(text);
+
+            JLabel label = new JLabel(text.split("\n")[0]);
+            label.setToolTipText(String.format("%s", Main.modules.get(text.split(" ")[0]).getTitle()));
+
+            JLabel label2 = new JLabel(String.format("OCC: %s", text.split("\n")[1]));
+
+            JPanel panel = new JPanel();
+            panel.setLayout(new GridBagLayout());
+
+            GridBagConstraints c2 = new GridBagConstraints();
+            c2.insets = new Insets(5, 0, 5, 0);
+            panel.add(label, c2);
+            panel.setBorder(new BevelBorder(BevelBorder.RAISED));
+
+            if(mode == STAFF_MODE){
+                c2.gridy = 1;
+                panel.add(label2, c2);
+            }
+
+            int y = startHour - (START_HOUR - 1);
+
+            c.gridx = dayOfWeek;
+            c.gridy = y;
+            c.gridheight = hours;
+            add(panel, c);
+
+            for (int i = 0; i < hours; i++){
+                isFullCell[dayOfWeek][y+i] = true;
             }
         }
 
