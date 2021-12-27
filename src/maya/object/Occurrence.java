@@ -41,7 +41,18 @@ public class Occurrence {
     }
 
     public int getActualStudents() {
-        return actualStudents;
+        int actual = 0;
+
+        for (Account acc: Main.accounts.values()) {
+            if(acc instanceof StudentAccount){
+                String codeAndOcc = String.format("%s_%s", code, occurrenceNumber);
+                if(acc.getOccurrences().contains(codeAndOcc)){
+                    actual++;
+                }
+            }
+        }
+
+        return actual;
     }
 
     public int getOccurrenceNumber() {

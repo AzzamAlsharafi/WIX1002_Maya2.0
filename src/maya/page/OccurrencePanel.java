@@ -63,7 +63,7 @@ class OccurrencePanel extends JPanel {
                                 if (answer == JOptionPane.YES_OPTION) {
                                     int index = Main.currentUser.getOccurrences().indexOf(registered);
                                     Main.currentUser.getOccurrences().remove(registered);
-                                    if (isNotOverlapping(moduleOcc)) {
+                                    if (isNotOverlapping(moduleOcc) && checkActualStudents(occurrence)) {
                                         Main.currentUser.getOccurrences().add(moduleOcc);
                                         parent.redraw();
                                         DataManager.storeAccounts();
@@ -78,7 +78,7 @@ class OccurrencePanel extends JPanel {
                         String message = String.format("Do you want to register %s?", occurrence.getCode());
                         int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
                         if (answer == JOptionPane.YES_OPTION) {
-                            if (isNotOverlapping(moduleOcc)) {
+                            if (isNotOverlapping(moduleOcc) && checkActualStudents(occurrence)) {
                                 if (((StudentModulePanel) parent).currentCredits + module.getCredit() <= Main.maxCreditsPerStudent) {
                                     Main.currentUser.getOccurrences().add(moduleOcc);
                                     parent.redraw();
@@ -176,6 +176,17 @@ class OccurrencePanel extends JPanel {
         setMaximumSize(size);
 
         setHeights(75);
+    }
+
+    public boolean checkActualStudents(Occurrence occ){
+        if(occ.getActualStudents() < occ.getTargetStudents()){
+            return true;
+        }
+
+        String message = "This occurrence has reached max students limit";
+        String title = "Unable to register";
+        JOptionPane.showMessageDialog(thisPanel, message, title, JOptionPane.WARNING_MESSAGE);
+        return false;
     }
 
     public boolean isNotOverlapping(String codeAndOcc){
