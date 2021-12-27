@@ -1,6 +1,7 @@
 package maya.page;
 
 import maya.Main;
+import maya.object.Module;
 import maya.object.Occurrence;
 import maya.util.DataManager;
 
@@ -16,7 +17,7 @@ public class StaffModulePanel extends ModulePanel {
     JPanel container;
     JPanel registeredContainer;
 
-    public StaffModulePanel(){
+    public StaffModulePanel() {
         updateAllOccurrences();
 
         container = new JPanel();
@@ -49,6 +50,50 @@ public class StaffModulePanel extends ModulePanel {
             timetableFrame.setVisible(true);
         });
         timetableButton.setFocusPainted(false);
+
+        JButton editorButton = new JButton("Module Editor");
+        editorButton.setFocusPainted(false);
+        editorButton.addActionListener(e -> {
+            String message = "Choose an option";
+            String title = "Module Editor";
+            String[] options = new String[]{"Add", "Edit", "Delete"};
+            int ans = JOptionPane.showOptionDialog(this, message, title, JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            JFrame frame = new JFrame();
+            StaffEditorPanel editor = new StaffEditorPanel(this, frame);
+            frame.add(editor);
+            frame.pack();
+            frame.setResizable(false);
+            frame.setLocationRelativeTo(null);
+            switch (ans) {
+                case 0 -> {
+                    message = "Do you want to add an occurrence or add a new module?";
+                    title = "Add";
+                    options = new String[]{"Add occurrence", "Add module", "Cancel"};
+                    ans = JOptionPane.showOptionDialog(this, message, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    switch (ans) {
+                        case 0 -> {
+                            editor.setAddOccurrenceMode();
+                            frame.setVisible(true);
+                        }
+                        case 1 -> {
+                            editor.setAddModuleMode();
+                            frame.setVisible(true);
+                        }
+                        default -> frame.dispose();
+                    }
+                }
+                case 1 -> {
+                    editor.setEditModuleMode();
+                    frame.setVisible(true);
+                }
+                case 2 -> {
+                    editor.setDeleteModuleMode();
+                    frame.setVisible(true);
+                }
+                default -> frame.dispose();
+            }
+        });
 
         JButton logoutButton = new JButton("Log out");
         logoutButton.setFocusPainted(false);
@@ -93,6 +138,16 @@ public class StaffModulePanel extends ModulePanel {
         c.ipady = 25;
         insets.top = 20;
         add(timetableButton, c);
+
+        c.gridy = 4;
+        c.ipady = 25;
+        // Check that current user is the coordinator of at least one module
+        for (Module m : Main.modules.values()) {
+            if (m.getCoordinator().equalsIgnoreCase(Main.currentUser.getFullName())) {
+                add(editorButton, c);
+                break;
+            }
+        }
 
         c.gridy = 5;
 //        insets.top = 0;
