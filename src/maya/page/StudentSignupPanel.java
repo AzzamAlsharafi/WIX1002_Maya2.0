@@ -86,17 +86,34 @@ public class StudentSignupPanel extends JPanel{
             String englishScore = englishScoreField.getText();
             int citizenship = citizenshipComboBox.getSelectedIndex();
 
+            String title = "Unable to log in";
             if(!siswaMail.isBlank() &&  !matricNumber.isBlank() && !password.isBlank()
                     && !confirmPassword.isBlank() && !fullName.isBlank() && programme != 0
                     && englishTest != 0 && !englishScore.isBlank() && citizenship != 0){
-                if(password.equals(confirmPassword)){
-                    Account newStudent = new StudentAccount(siswaMail, matricNumber, password, fullName,
-                            new ArrayList<>(), programme, StudentAccount.calculateMUETBand(englishTest, englishScore), citizenship);
-                    Main.accounts.put(matricNumber, newStudent);
-                    Main.currentUser = newStudent;
-                    MainFrame.getFrame().showCard(MainFrame.STUDENT_MODULE_KEY);
-                    DataManager.storeAccounts();
+                if(!Main.accounts.containsKey(matricNumber)) {
+                    if (password.equals(confirmPassword)) {
+                        if(StudentAccount.calculateMUETBand(englishTest, englishScore) != -1) {
+                            Account newStudent = new StudentAccount(siswaMail, matricNumber, password, fullName,
+                                    new ArrayList<>(), programme, StudentAccount.calculateMUETBand(englishTest, englishScore), citizenship);
+                            Main.accounts.put(matricNumber, newStudent);
+                            Main.currentUser = newStudent;
+                            MainFrame.getFrame().showCard(MainFrame.STUDENT_MODULE_KEY);
+                            DataManager.storeAccounts();
+                        } else {
+                            String message = "Please enter a valid English score.";
+                            JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
+                        }
+                    } else {
+                        String message = "The passwords don't match.";
+                        JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
+                    }
+                } else {
+                    String message = "This matric number is already used.";
+                    JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
                 }
+            } else {
+                String message = "Please fill all the fields.";
+                JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
             }
         });
 

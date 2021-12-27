@@ -83,6 +83,24 @@ public class Occurrence {
         return students;
     }
 
+    public static boolean isValidTime(String timeString){
+        SimpleDateFormat format = new SimpleDateFormat("E h:m a");
+
+        try {
+            String[] timeArray = timeString.split(" ");
+            if(timeArray.length > 5){
+                System.out.println(format.parse(String.format("%s %s %s", timeArray[0], timeArray[1], timeArray[2])));
+                System.out.println(format.parse(String.format("%s %s %s", timeArray[0], timeArray[4], timeArray[5])));
+            } else {
+                return false;
+            }
+
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
     public static boolean checkOverlapOfCodeAndOcc(String codeAndOcc1, String codeAndOcc2){
         if(!codeAndOcc1.isBlank() && !codeAndOcc2.isBlank()){
             List<Occurrence> occ1 = getOccurrencesFromCodeAndOcc(codeAndOcc1);

@@ -33,12 +33,20 @@ public class LoginPanel extends JPanel{
         loginButton.addActionListener(e -> {
             String username = usernameField.getText();
             String password = passwordField.getText();
-            if (Main.accounts.containsKey(username)) {
-                if (Main.accounts.get(username).getPassword().equals(password)) {
+            if(!usernameField.getText().isBlank() && !passwordField.getText().isBlank()){
+                if (Main.accounts.containsKey(username) && Main.accounts.get(username).getPassword().equals(password)) {
                     Main.currentUser = Main.accounts.get(username);
                     DataManager.updateRememberMe(rememberMeCheckBox.isSelected());
                     MainFrame.getFrame().showCard(MainFrame.MODULE_KEY);
+                } else {
+                    String message = "This username / matric number doesn't exist, \nor the password is incorrect.";
+                    String title = "Unable to log in";
+                    JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
                 }
+            } else {
+                String message = "Please fill all the fields.";
+                String title = "Unable to log in";
+                JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
             }
         });
 

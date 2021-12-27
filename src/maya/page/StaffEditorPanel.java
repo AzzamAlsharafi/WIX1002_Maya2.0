@@ -215,25 +215,39 @@ public class StaffEditorPanel extends JPanel {
         activityField.setEditable(false);
 
         saveButton.addActionListener(e -> {
+            String title = "Unable to edit";
             if (!codeField.getText().isBlank() && !titleField.getText().isBlank() &&
                     !activityField.getText().isBlank() && !timeField.getText().isBlank() &&
                     !occurrenceField.getText().isBlank() && !tutorField.getText().isBlank() &&
                     !creditsField.getText().isBlank() && !targetField.getText().isBlank()){
-                module.getOccurrences().remove(occ);
+                if(Occurrence.isValidTime(timeField.getText())){
+                    if(targetField.getText().matches("\\d+")){
+                        module.getOccurrences().remove(occ);
 
-                Occurrence newOcc = new Occurrence(codeField.getText(), tutorField.getText(), timeField.getText(),
-                        Integer.parseInt(targetField.getText()), occ.getActualStudents(),
-                        Integer.parseInt(occurrenceField.getText()),
-                        Occurrence.getActivityFromString(activityField.getText()), occ.getStudents());
+                        Occurrence newOcc = new Occurrence(codeField.getText(), tutorField.getText(), timeField.getText(),
+                                Integer.parseInt(targetField.getText()), occ.getActualStudents(),
+                                Integer.parseInt(occurrenceField.getText()),
+                                Occurrence.getActivityFromString(activityField.getText()), occ.getStudents());
 
-                module.getOccurrences().add(newOcc);
+                        module.getOccurrences().add(newOcc);
 
-                parent.updateAllOccurrences();
-                parent.redraw();
+                        parent.updateAllOccurrences();
+                        parent.redraw();
 
-                DataManager.storeModules();
+                        DataManager.storeModules();
 
-                frame.dispose();
+                        frame.dispose();
+                    } else {
+                        String message = "Please enter a valid number for the target.";
+                        JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
+                    }
+                } else {
+                    String message = "Please enter a valid time format.";
+                    JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                String message = "Please fill all the fields.";
+                JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
             }
         });
     }
@@ -272,26 +286,44 @@ public class StaffEditorPanel extends JPanel {
         });
 
         saveButton.addActionListener(e -> {
+            String title = "Unable to create";
             if (codeComboBox.getSelectedIndex() != 0 && !titleField.getText().isBlank() &&
                     activityOccTypeComboBox.getSelectedIndex() != 0 && !timeField.getText().isBlank() &&
                     !occurrenceField.getText().isBlank() && !tutorField.getText().isBlank() &&
                     !creditsField.getText().isBlank() && !targetField.getText().isBlank()){
+                if(Occurrence.isValidTime(timeField.getText())){
+                    if(occurrenceField.getText().matches("\\d+")){
+                        if(targetField.getText().matches("\\d+")){
+                            String code = (String) codeComboBox.getSelectedItem();
 
-                String code = (String) codeComboBox.getSelectedItem();
+                            Occurrence newOcc = new Occurrence(code, tutorField.getText(), timeField.getText(),
+                                    Integer.parseInt(targetField.getText()), 0,
+                                    Integer.parseInt(occurrenceField.getText()),
+                                    activityOccTypeComboBox.getSelectedIndex() - 1, new ArrayList<>());
 
-                Occurrence newOcc = new Occurrence(code, tutorField.getText(), timeField.getText(),
-                        Integer.parseInt(targetField.getText()), 0,
-                        Integer.parseInt(occurrenceField.getText()),
-                        activityOccTypeComboBox.getSelectedIndex() - 1, new ArrayList<>());
+                            Main.modules.get(code).getOccurrences().add(newOcc);
 
-                Main.modules.get(code).getOccurrences().add(newOcc);
+                            parent.updateAllOccurrences();
+                            parent.redraw();
 
-                parent.updateAllOccurrences();
-                parent.redraw();
+                            DataManager.storeModules();
 
-                DataManager.storeModules();
-
-                frame.dispose();
+                            frame.dispose();
+                        } else {
+                            String message = "Please enter a valid number for the target.";
+                            JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
+                        }
+                    } else {
+                        String message = "Please enter a valid number for the occurrence.";
+                        JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
+                    }
+                } else {
+                    String message = "Please enter a valid time.";
+                    JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                String message = "Please fill all the fields.";
+                JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
             }
         });
     }
@@ -331,6 +363,10 @@ public class StaffEditorPanel extends JPanel {
                 DataManager.storeModules();
 
                 frame.dispose();
+            } else {
+                String message = "Please fill all the fields.";
+                String title = "Unable to edit";
+                JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
             }
         });
     }
@@ -341,21 +377,36 @@ public class StaffEditorPanel extends JPanel {
         frame.setTitle("Create Module");
 
         saveButton.addActionListener(e -> {
+            String title = "Unable to create";
             if(!codeField.getText().isBlank() && !titleField.getText().isBlank()
                     && !creditsField.getText().isBlank() && activityModTypeComboBox.getSelectedIndex() != 0) {
                 if(!Main.modules.containsKey(codeField.getText().toUpperCase())){
-                    Module newModule = new Module(codeField.getText().toUpperCase(), titleField.getText(), Main.currentUser.getFullName(),
-                            0, Integer.parseInt(creditsField.getText()),
-                            activityModTypeComboBox.getSelectedIndex() - 1, new ArrayList<>());
+                    if(codeField.getText().toUpperCase().matches("^[A-Z]{3}[0-9]{4}$")){
+                        if(creditsField.getText().matches("\\d+")){
+                            Module newModule = new Module(codeField.getText().toUpperCase(), titleField.getText(), Main.currentUser.getFullName(),
+                                    0, Integer.parseInt(creditsField.getText()),
+                                    activityModTypeComboBox.getSelectedIndex() - 1, new ArrayList<>());
 
-                    Main.modules.put(newModule.getCode(), newModule);
+                            Main.modules.put(newModule.getCode(), newModule);
 
-                    DataManager.storeModules();
+                            DataManager.storeModules();
 
-                    frame.dispose();
+                            frame.dispose();
+                        } else {
+                            String message = "Please enter a valid number for the credits.";
+                            JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
+                        }
+                    } else {
+                        String message = "Please enter a valid code.";
+                        JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(this, "A module with this code already exists.", "Error", JOptionPane.WARNING_MESSAGE);
+                    String message = "A module with this code already exists.";
+                    JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
                 }
+            } else {
+                String message = "Please fill all the fields.";
+                JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
             }
         });
     }

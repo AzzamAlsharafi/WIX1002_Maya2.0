@@ -126,7 +126,7 @@ public class StudentAccount extends Account{
             return -1; // Invalid score
         }
 
-        return 0;
+        return -1;
     }
 
     public StudentAccount(String siswaMail, String matricNumber, String password, String fullName, ArrayList<String> occurrences, int programme, int  englishBand, int citizenship) {

@@ -8,6 +8,8 @@ import maya.util.ColorsManager;
 import maya.util.DataManager;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -56,15 +58,27 @@ public class StaffSignupPanel extends JPanel{
             String confirmPassword = confirmPasswordField.getText();
             String fullName = fullNameField.getText();
 
+            String title = "Unable to log in";
             if(!umMail.isBlank() &&  !username.isBlank() && !password.isBlank()
                     && !confirmPassword.isBlank() && !fullName.isBlank()){
-                if(password.equals(confirmPassword)){
-                    Account newStaff = new StaffAccount(umMail, username, password, fullName, new ArrayList<>());
-                    Main.accounts.put(username, newStaff);
-                    Main.currentUser = newStaff;
-                    MainFrame.getFrame().showCard(MainFrame.STAFF_MODULE_KEY);
-                    DataManager.storeAccounts();
+                if(!Main.accounts.containsKey(username)){
+                    if(password.equals(confirmPassword)){
+                        Account newStaff = new StaffAccount(umMail, username, password, fullName, new ArrayList<>());
+                        Main.accounts.put(username, newStaff);
+                        Main.currentUser = newStaff;
+                        MainFrame.getFrame().showCard(MainFrame.STAFF_MODULE_KEY);
+                        DataManager.storeAccounts();
+                    } else {
+                        String message = "The passwords don't match.";
+                        JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
+                    }
+                } else {
+                    String message = "This username is already used.";
+                    JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
                 }
+            } else {
+                String message = "Please fill all the fields.";
+                JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
             }
         });
 
