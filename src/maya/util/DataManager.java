@@ -10,7 +10,7 @@ public class DataManager {
 
     static final String ACCOUNTS_FILE = "data\\accounts";
     static final String MODULES_FILE = "data\\modules";
-    static final String REMEMBER_ME_FILE = "data\\remember me";
+    static final String REMEMBER_ME_FILE = "data\\rememberMe";
 
     static final String DATA_DIRECTORY = "data";
 
