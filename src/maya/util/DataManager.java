@@ -8,12 +8,17 @@ import java.io.*;
 
 public class DataManager {
 
-    static final String ACCOUNTS_FILE = "accounts";
-    static final String MODULES_FILE = "modules";
-    static final String REMEMBER_ME_FILE = "remember me";
+    static final String ACCOUNTS_FILE = "data\\accounts";
+    static final String MODULES_FILE = "data\\modules";
+    static final String REMEMBER_ME_FILE = "data\\remember me";
+
+    static final String DATA_DIRECTORY = "data";
 
     public static void storeAccounts(){
         try {
+            System.out.print(new File(DATA_DIRECTORY).mkdir());
+
+            System.out.println(new File(DATA_DIRECTORY).getAbsolutePath());
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(ACCOUNTS_FILE));
 
             out.writeInt(Main.accounts.size());
@@ -50,6 +55,8 @@ public class DataManager {
 
     public static void storeModules(){
         try {
+            System.out.print(new File(DATA_DIRECTORY).mkdir());
+
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(MODULES_FILE));
 
             out.writeInt(Main.modules.size());
@@ -86,6 +93,8 @@ public class DataManager {
 
     public static void updateRememberMe(boolean rememberMe){
         try {
+            System.out.print(new File(DATA_DIRECTORY).mkdir());
+
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(REMEMBER_ME_FILE));
 
             out.writeBoolean(rememberMe);
