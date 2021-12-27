@@ -278,9 +278,28 @@ public class StaffEditorPanel extends JPanel {
 
                     titleField.setText(selection.getTitle());
                     creditsField.setText(String.valueOf(selection.getCredit()));
+                    activityOccTypeComboBox.setEnabled(true);
                 } else {
                     titleField.setText("");
                     creditsField.setText("");
+                    activityOccTypeComboBox.setEnabled(false);
+                }
+            }
+        });
+
+        activityOccTypeComboBox.addItemListener(e -> {
+            if(e.getStateChange() == ItemEvent.SELECTED){
+                String title = "Invalid activity type";
+                Module selected = Main.modules.get((String) codeComboBox.getSelectedItem());
+
+                if(selected.getActivityType() == Module.MOD_TYPE_LECTURE && activityOccTypeComboBox.getSelectedIndex() == 2){
+                    String message = String.format("%s only accepts Lecture type occurrences.", selected.getCode());
+                    JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
+                    activityOccTypeComboBox.setSelectedIndex(1);
+                } else if (selected.getActivityType() == Module.MOD_TYPE_TUTORIAL && activityOccTypeComboBox.getSelectedIndex() == 1){
+                    String message = String.format("%s only accepts Tutorial type occurrences.", selected.getCode());
+                    JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
+                    activityOccTypeComboBox.setSelectedIndex(2);
                 }
             }
         });
