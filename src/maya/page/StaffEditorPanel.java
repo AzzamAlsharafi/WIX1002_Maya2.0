@@ -3,6 +3,7 @@ package maya.page;
 import maya.Main;
 import maya.object.Module;
 import maya.object.Occurrence;
+import maya.util.ColorsManager;
 import maya.util.DataManager;
 
 import javax.swing.*;
@@ -98,12 +99,12 @@ public class StaffEditorPanel extends JPanel {
         String[] optionsMod = new String[]{"SELECT", "Lecture only", "Lecture & Tutorial", "Tutorial only"};
         activityModTypeComboBox = new JComboBox<>(optionsMod);
         activityModTypeComboBox.setPreferredSize(bigFieldSize);
-        activityModTypeComboBox.setBackground(Color.WHITE);
+        activityModTypeComboBox.setBackground(ColorsManager.whiteComboBox);
 
         String[] optionsOcc = new String[]{"SELECT", "Lecture", "Tutorial"};
         activityOccTypeComboBox = new JComboBox<>(optionsOcc);
         activityOccTypeComboBox.setPreferredSize(smallestFieldSize);
-        activityOccTypeComboBox.setBackground(Color.WHITE);
+        activityOccTypeComboBox.setBackground(ColorsManager.whiteComboBox);
 
         codeLabel = new JLabel("Code");
         titleLabel = new JLabel("Title");
@@ -190,7 +191,7 @@ public class StaffEditorPanel extends JPanel {
         add(saveButton, c);
 
         setBorder(new EmptyBorder(10, 10, 10, 10));
-        setBackground(new Color(150, 230, 150));
+        setBackground(ColorsManager.editorBackground);
     }
 
     void setEditOccurrenceMode(Occurrence occ){

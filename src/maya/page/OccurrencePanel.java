@@ -3,6 +3,7 @@ package maya.page;
 import maya.Main;
 import maya.object.Module;
 import maya.object.Occurrence;
+import maya.util.ColorsManager;
 import maya.util.DataManager;
 
 import javax.swing.*;
@@ -95,7 +96,7 @@ class OccurrencePanel extends JPanel {
             });
 
             if(isRegistered){
-                setBackground(new Color(217, 237, 247));
+                setBackground(ColorsManager.studentRegisteredOccurrence);
                 setBorder(new BevelBorder(BevelBorder.LOWERED));
             } else {
                 setBorder(new BevelBorder(BevelBorder.RAISED));
@@ -151,13 +152,13 @@ class OccurrencePanel extends JPanel {
 
             if(isCoordinator){
                 setBorder(new BevelBorder(BevelBorder.RAISED));
-                setBackground(new Color(217, 237, 247));
+                setBackground(ColorsManager.staffCoordinatorOccurrence);
             } else {
                 setBorder(new BevelBorder(BevelBorder.LOWERED));
             }
 
             if(isRegistered){
-                setBackground(new Color(80, 200, 220));
+                setBackground(ColorsManager.staffRegisteredOccurrence);
             }
         }
 
@@ -210,7 +211,7 @@ class OccurrencePanel extends JPanel {
         targetLabel.setText("Target");
         actualLabel.setText("Actual");
 
-        Color fontColor = Color.WHITE;
+        Color fontColor = ColorsManager.whiteFont;
         occurrenceNumberLabel.setForeground(fontColor);
         activityLabel.setForeground(fontColor);
         timeLabel.setForeground(fontColor);
@@ -257,7 +258,7 @@ class OccurrencePanel extends JPanel {
         Border border = BorderFactory.createCompoundBorder(border1, new BevelBorder(BevelBorder.RAISED));
         setBorder(border);
 
-        Color background = new Color(5, 49, 121);
+        Color background = ColorsManager.signatureDarkBlue;
         holder.setBackground(background);
         setBackground(background);
     }

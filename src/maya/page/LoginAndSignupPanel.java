@@ -1,5 +1,7 @@
 package maya.page;
 
+import maya.util.ColorsManager;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -28,6 +30,6 @@ public class LoginAndSignupPanel extends JPanel {
 
         add(tabbedPane);
 
-        setBackground(new Color(180, 230, 180));
+        setBackground(ColorsManager.loginAndSignupBackground);
     }
 }

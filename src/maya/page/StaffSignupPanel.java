@@ -4,6 +4,7 @@ import maya.Main;
 import maya.object.Account;
 import maya.object.StaffAccount;
 import maya.object.StudentAccount;
+import maya.util.ColorsManager;
 import maya.util.DataManager;
 
 import javax.swing.*;
@@ -119,6 +120,6 @@ public class StaffSignupPanel extends JPanel{
         insets.top = 10;
         add(signupButton, c);
 
-        setBackground(new Color(180, 180, 230));
+        setBackground(ColorsManager.staffSignupBackground);
     }
 }

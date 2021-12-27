@@ -1,6 +1,7 @@
 package maya.page;
 
 import maya.Main;
+import maya.util.ColorsManager;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -25,11 +26,10 @@ class TotalCreditsPanel extends JPanel {
         Border border1 = BorderFactory.createCompoundBorder(new BevelBorder(BevelBorder.RAISED), new BevelBorder(BevelBorder.LOWERED));
         Border border = BorderFactory.createCompoundBorder(border1, new BevelBorder(BevelBorder.RAISED));
         header.setBorder(border);
-        Color background = new Color(5, 49, 121);
-        header.setBackground(background);
-        maxHeaderLabel.setForeground(Color.WHITE);
+        header.setBackground(ColorsManager.signatureDarkBlue);
+        maxHeaderLabel.setForeground(ColorsManager.whiteFont);
         maxHeaderLabel.setBorder(new EmptyBorder(0, 0, 0, 50));
-        currentHeaderLabel.setForeground(Color.WHITE);
+        currentHeaderLabel.setForeground(ColorsManager.whiteFont);
 
         body.add(maxBodyLabel);
         body.add(currentBodyLabel);

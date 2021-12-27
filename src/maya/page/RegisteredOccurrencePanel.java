@@ -3,6 +3,7 @@ package maya.page;
 import maya.Main;
 import maya.object.Module;
 import maya.object.Occurrence;
+import maya.util.ColorsManager;
 import maya.util.DataManager;
 
 import javax.swing.*;
@@ -29,7 +30,7 @@ class RegisteredOccurrencePanel extends JPanel {
             lastLabel.setBorder(new EmptyBorder(0, 0, 0, 35));
 
             if(Occurrence.getOccurrencesFromCodeAndOcc(occ).isEmpty()){
-                setBackground(new Color(230, 150, 150));
+                setBackground(ColorsManager.missingOccurrence);
             }
 
             addMouseListener(new MouseAdapter() {
@@ -126,7 +127,7 @@ class RegisteredOccurrenceHeaderPanel extends JPanel{
 
         moduleTitleLabel.setBorder(new EmptyBorder(0, 10, 0, 30));
 
-        Color fontColor = Color.WHITE;
+        Color fontColor = ColorsManager.whiteFont;
         moduleTitleLabel.setForeground(fontColor);
         occurrenceNumberLabel.setForeground(fontColor);
         lastLabel.setForeground(fontColor);
@@ -140,8 +141,7 @@ class RegisteredOccurrenceHeaderPanel extends JPanel{
         Border border = BorderFactory.createCompoundBorder(border1, new BevelBorder(BevelBorder.RAISED));
         setBorder(border);
 
-        Color background = new Color(5, 49, 121);
-        setBackground(background);
+        setBackground(ColorsManager.signatureDarkBlue);
 
         setLayout(new GridBagLayout());
 

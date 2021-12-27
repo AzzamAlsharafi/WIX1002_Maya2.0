@@ -3,6 +3,7 @@ package maya.page;
 import maya.Main;
 import maya.object.Occurrence;
 import maya.object.StudentAccount;
+import maya.util.ColorsManager;
 import maya.util.DataManager;
 
 import javax.swing.*;
@@ -116,7 +117,7 @@ public class StudentModulePanel extends ModulePanel {
 //        insets.top = 0;
         add(logoutButton, c);
 
-        setBackground(new Color(180, 230, 230));
+        setBackground(ColorsManager.studentModuleBackground);
     }
 
     @Override

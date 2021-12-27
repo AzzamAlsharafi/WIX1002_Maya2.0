@@ -1,6 +1,7 @@
 package maya.page;
 
 import maya.Main;
+import maya.util.ColorsManager;
 import maya.util.DataManager;
 
 import javax.swing.*;
@@ -8,8 +9,6 @@ import java.awt.*;
 
 public class LoginPanel extends JPanel{
     public LoginPanel(){
-        Color background = new Color(180, 180, 180);
-
         Dimension fieldSize = new Dimension(300, 30);
         Insets fieldInsets = new Insets(2, 5, 3, 5);
 
@@ -23,7 +22,7 @@ public class LoginPanel extends JPanel{
 
         JCheckBox rememberMeCheckBox = new JCheckBox("Remember me");
         rememberMeCheckBox.setFocusPainted(false);
-        rememberMeCheckBox.setBackground(background);
+        rememberMeCheckBox.setBackground(ColorsManager.loginBackground);
 
         JLabel usernameLabel = new JLabel("Username / Matric Number");
 
@@ -77,6 +76,6 @@ public class LoginPanel extends JPanel{
         insets.top = 10;
         add(loginButton, c);
 
-        setBackground(background);
+        setBackground(ColorsManager.loginBackground);
     }
 }

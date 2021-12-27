@@ -2,15 +2,14 @@ package maya.page;
 
 import maya.Main;
 import maya.object.Occurrence;
+import maya.util.ColorsManager;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.util.*;
 import java.util.List;
 
@@ -138,7 +137,7 @@ public class TimetablePanel extends JPanel {
 
     JPanel getBorderPanel(int width, String text){
         JLabel label = new JLabel(text);
-        label.setForeground(Color.WHITE);
+        label.setForeground(ColorsManager.whiteFont);
 
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(width, 30));
@@ -149,8 +148,7 @@ public class TimetablePanel extends JPanel {
         Border border = BorderFactory.createCompoundBorder(border1, new BevelBorder(BevelBorder.RAISED));
         panel.setBorder(border);
 
-        Color background = new Color(5, 49, 121);
-        panel.setBackground(background);
+        panel.setBackground(ColorsManager.signatureDarkBlue);
 
         return panel;
     }

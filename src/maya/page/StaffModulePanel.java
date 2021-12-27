@@ -3,6 +3,7 @@ package maya.page;
 import maya.Main;
 import maya.object.Module;
 import maya.object.Occurrence;
+import maya.util.ColorsManager;
 import maya.util.DataManager;
 
 import javax.swing.*;
@@ -153,7 +154,7 @@ public class StaffModulePanel extends ModulePanel {
 //        insets.top = 0;
         add(logoutButton, c);
 
-        setBackground(new Color(230, 230, 180));
+        setBackground(ColorsManager.staffModuleBackground);
     }
 
     public void updateAllOccurrences(){
