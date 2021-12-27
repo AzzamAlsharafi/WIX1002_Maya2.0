@@ -48,6 +48,15 @@ public class Module {
         return occurrences;
     }
 
+    public boolean containsOccurrence(int occurrenceNumber, int activity){
+        for (Occurrence occ: occurrences) {
+            if(occ.getOccurrenceNumber() == occurrenceNumber && occ.getActivityType() == activity){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void storeModule(ObjectOutputStream out) throws IOException {
         out.writeUTF(code);
         out.writeUTF(title);

@@ -310,34 +310,39 @@ public class StaffEditorPanel extends JPanel {
                     activityOccTypeComboBox.getSelectedIndex() != 0 && !timeField.getText().isBlank() &&
                     !occurrenceField.getText().isBlank() && !tutorField.getText().isBlank() &&
                     !creditsField.getText().isBlank() && !targetField.getText().isBlank()){
-                if(Occurrence.isValidTime(timeField.getText())){
-                    if(occurrenceField.getText().matches("\\d+")){
-                        if(targetField.getText().matches("\\d+")){
-                            String code = (String) codeComboBox.getSelectedItem();
+                if(!Main.modules.get((String) codeComboBox.getSelectedItem()).containsOccurrence(Integer.parseInt(occurrenceField.getText()), activityOccTypeComboBox.getSelectedIndex() - 1)){
+                    if(Occurrence.isValidTime(timeField.getText())){
+                        if(occurrenceField.getText().matches("\\d+")){
+                            if(targetField.getText().matches("\\d+")){
+                                String code = (String) codeComboBox.getSelectedItem();
 
-                            Occurrence newOcc = new Occurrence(code, tutorField.getText(), timeField.getText(),
-                                    Integer.parseInt(targetField.getText()), 0,
-                                    Integer.parseInt(occurrenceField.getText()),
-                                    activityOccTypeComboBox.getSelectedIndex() - 1, new ArrayList<>());
+                                Occurrence newOcc = new Occurrence(code, tutorField.getText(), timeField.getText(),
+                                        Integer.parseInt(targetField.getText()), 0,
+                                        Integer.parseInt(occurrenceField.getText()),
+                                        activityOccTypeComboBox.getSelectedIndex() - 1, new ArrayList<>());
 
-                            Main.modules.get(code).getOccurrences().add(newOcc);
+                                Main.modules.get(code).getOccurrences().add(newOcc);
 
-                            parent.updateAllOccurrences();
-                            parent.redraw();
+                                parent.updateAllOccurrences();
+                                parent.redraw();
 
-                            DataManager.storeModules();
+                                DataManager.storeModules();
 
-                            frame.dispose();
+                                frame.dispose();
+                            } else {
+                                String message = "Please enter a valid number for the target.";
+                                JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
+                            }
                         } else {
-                            String message = "Please enter a valid number for the target.";
+                            String message = "Please enter a valid number for the occurrence.";
                             JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
                         }
                     } else {
-                        String message = "Please enter a valid number for the occurrence.";
+                        String message = "Please enter a valid time.";
                         JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
                     }
                 } else {
-                    String message = "Please enter a valid time.";
+                    String message = String.format("Occurrence %s already has a created %s class.", occurrenceField.getText(), activityOccTypeComboBox.getSelectedItem());
                     JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
                 }
             } else {
