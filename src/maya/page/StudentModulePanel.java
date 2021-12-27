@@ -2,7 +2,7 @@ package maya.page;
 
 import maya.Main;
 import maya.object.Occurrence;
-import maya.object.StudentAccount;
+import maya.util.OccurrenceComparator;
 import maya.util.ColorsManager;
 import maya.util.DataManager;
 

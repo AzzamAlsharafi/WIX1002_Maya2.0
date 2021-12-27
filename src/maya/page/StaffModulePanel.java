@@ -3,6 +3,7 @@ package maya.page;
 import maya.Main;
 import maya.object.Module;
 import maya.object.Occurrence;
+import maya.util.OccurrenceComparator;
 import maya.util.ColorsManager;
 import maya.util.DataManager;
 
