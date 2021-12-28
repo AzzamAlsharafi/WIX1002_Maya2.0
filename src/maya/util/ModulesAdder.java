@@ -1,5 +1,6 @@
-package maya;
+package maya.util;
 
+import maya.Main;
 import maya.object.Occurrence;
 import maya.object.Module;
 import maya.util.DataManager;
