@@ -12,9 +12,6 @@ public class DataManager {
     static final String MODULES_FILE = "data/modules";
     static final String REMEMBER_ME_FILE = "data/rememberMe";
 
-    // This file is used when the program is run for the first time.
-    static final String RESOURCES_MODULES_FILE = "/resources/modules";
-
     static final String DATA_DIRECTORY = "data";
 
     public static void storeAccounts(){
@@ -80,17 +77,17 @@ public class DataManager {
 
             if(modulesFile.exists()){
                 in = new ObjectInputStream(new FileInputStream(MODULES_FILE));
+
+                int modulesNumber = in.readInt();
+                for(int i = 0; i < modulesNumber; i++){
+                    Module module = Module.loadModule(in);
+                    Main.modules.put(module.getCode(), module);
+                }
+
+                in.close();
             } else {
-                in = new ObjectInputStream(DataManager.class.getResourceAsStream(RESOURCES_MODULES_FILE));
+                ModulesAdder.addAll();
             }
-
-            int modulesNumber = in.readInt();
-            for(int i = 0; i < modulesNumber; i++){
-                Module module = Module.loadModule(in);
-                Main.modules.put(module.getCode(), module);
-            }
-
-            in.close();
 
         } catch (IOException e) {
             e.printStackTrace();

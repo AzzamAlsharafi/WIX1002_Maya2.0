@@ -8,7 +8,7 @@ import maya.util.DataManager;
 import java.util.ArrayList;
 
 public class ModulesAdder {
-    public void addAll(){
+    public static void addAll(){
         Main.modules.clear();
 
         WIX1001();
@@ -31,7 +31,7 @@ public class ModulesAdder {
         DataManager.storeModules();
     }
 
-    private void WIX1001(){
+    private static void WIX1001(){
         String code = "WIX1001";
         int credits = 3;
 
@@ -58,7 +58,7 @@ public class ModulesAdder {
         Main.modules.put(code, m);
     }
 
-    private void WIX1002(){
+    private static void WIX1002(){
         String code = "WIX1002";
         int credits = 5;
 
@@ -87,7 +87,7 @@ public class ModulesAdder {
         Main.modules.put(code, m);
     }
 
-    private void WIX1003(){
+    private static void WIX1003(){
         String code = "WIX1003";
         String title = "COMPUTER SYSTEMS AND ORGANIZATION";
         int credits = 3;
@@ -115,7 +115,7 @@ public class ModulesAdder {
         Main.modules.put(code, m);
     }
 
-    private void WIX2001(){
+    private static void WIX2001(){
         String code = "WIX2001";
         String title = "THINKING AND COMMUNICATION SKILLS";
         int credits = 3;
@@ -137,7 +137,7 @@ public class ModulesAdder {
         Main.modules.put(code, m);
     }
 
-    private void WIX2002(){
+    private static void WIX2002(){
         String code = "WIX2002";
         String title = "PROJECT MANAGEMENT";
         int credits = 3;
@@ -165,7 +165,7 @@ public class ModulesAdder {
         Main.modules.put(code, m);
     }
 
-    private void WIA2001(){
+    private static void WIA2001(){
         String code = "WIA2001";
         String title = "DATABASE";
         int credits = 3;
@@ -193,7 +193,7 @@ public class ModulesAdder {
         Main.modules.put(code, m);
     }
 
-    private void WIC3002(){
+    private static void WIC3002(){
         String code = "WIC3002";
         String title = "CRYPTOGRAPHY";
         int credits = 3;
@@ -211,7 +211,7 @@ public class ModulesAdder {
         Main.modules.put(code, m);
     }
 
-    private void WID3007(){
+    private static void WID3007(){
         String code = "WID3007";
         String title = "FUZZY LOGIC";
         int credits = 3;
@@ -229,7 +229,7 @@ public class ModulesAdder {
         Main.modules.put(code, m);
     }
 
-    private void WIE3007(){
+    private static void WIE3007(){
         String code = "WIE3007";
         String title = "DATA MINING AND WAREHOUSING";
         int credits = 3;
@@ -247,7 +247,7 @@ public class ModulesAdder {
         Main.modules.put(code, m);
     }
 
-    private void WIF3005(){
+    private static void WIF3005(){
         String code = "WIF3005";
         String title = "SOFTWARE MAINTENANCE AND EVOLUTION";
         int credits = 3;
@@ -265,7 +265,7 @@ public class ModulesAdder {
         Main.modules.put(code, m);
     }
 
-    private void WIG3007(){
+    private static void WIG3007(){
         String code = "WIG3007";
         String title = "SPECIAL TOPICS IN MULTIMEDIA";
         int credits = 3;
@@ -281,7 +281,7 @@ public class ModulesAdder {
         Main.modules.put(code, m);
     }
 
-    private void WIH3003(){
+    private static void WIH3003(){
         String code = "WIH3003";
         String title = "BIG DATA APPLICATIONS AND ANALYTICS";
         int credits = 3;
@@ -297,7 +297,7 @@ public class ModulesAdder {
         Main.modules.put(code, m);
     }
 
-    private void GLT1018(){
+    private static void GLT1018(){
         String code = "GLT1018";
         String title = "PROFICIENCY IN ENGLISH I";
         int credits = 2;
@@ -319,7 +319,7 @@ public class ModulesAdder {
         Main.modules.put(code, m);
     }
 
-    private void GLT1021(){
+    private static void GLT1021(){
         String code = "GLT1021";
         String title = "PROFICIENCY IN ENGLISH II";
         int credits = 2;
@@ -341,7 +341,7 @@ public class ModulesAdder {
         Main.modules.put(code, m);
     }
 
-    private void GLT1024(){
+    private static void GLT1024(){
         String code = "GLT1024";
         String title = "PROFICIENCY IN ENGLISH III";
         int credits = 2;
@@ -363,7 +363,7 @@ public class ModulesAdder {
         Main.modules.put(code, m);
     }
 
-    private void GLT1027(){
+    private static void GLT1027(){
         String code = "GLT1027";
         String title = "ADVANCED ORAL COMMUNICATION";
         int credits = 2;
