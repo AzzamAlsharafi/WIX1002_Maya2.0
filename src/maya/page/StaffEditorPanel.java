@@ -375,11 +375,11 @@ public class StaffEditorPanel extends JPanel {
 
                 Main.modules.remove(module.getCode());
 
-                Module newModule = new Module(module.getCode(), titleField.getText(), module.getCoordinator(),
-                        module.getOccurrencesCount(), Integer.parseInt(creditsField.getText()),
-                        activityModTypeComboBox.getSelectedIndex() - 1, module.getOccurrences());
-
-                Main.modules.put(module.getCode(), newModule);
+//                Module newModule = new Module(module.getCode(), titleField.getText(), module.getCoordinator(),
+//                        module.getOccurrencesCount(), Integer.parseInt(creditsField.getText()),
+//                        activityModTypeComboBox.getSelectedIndex() - 1, module.getOccurrences());
+//
+//                Main.modules.put(module.getCode(), newModule);
 
                 parent.updateAllOccurrences();
                 parent.redraw();
@@ -407,11 +407,11 @@ public class StaffEditorPanel extends JPanel {
                 if(!Main.modules.containsKey(codeField.getText().toUpperCase())){
                     if(codeField.getText().toUpperCase().matches("^[A-Z]{3}[0-9]{4}$")){
                         if(creditsField.getText().matches("\\d+")){
-                            Module newModule = new Module(codeField.getText().toUpperCase(), titleField.getText(), Main.currentUser.getFullName(),
-                                    0, Integer.parseInt(creditsField.getText()),
-                                    activityModTypeComboBox.getSelectedIndex() - 1, new ArrayList<>());
-
-                            Main.modules.put(newModule.getCode(), newModule);
+//                            Module newModule = new Module(codeField.getText().toUpperCase(), titleField.getText(), Main.currentUser.getFullName(),
+//                                    0, Integer.parseInt(creditsField.getText()),
+//                                    activityModTypeComboBox.getSelectedIndex() - 1, new ArrayList<>());
+//
+//                            Main.modules.put(newModule.getCode(), newModule);
 
                             DataManager.storeModules();
 
