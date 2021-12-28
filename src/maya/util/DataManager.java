@@ -21,7 +21,6 @@ public class DataManager {
         try {
             System.out.print(new File(DATA_DIRECTORY).mkdir());
 
-            System.out.println(new File(DATA_DIRECTORY).getAbsolutePath());
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(ACCOUNTS_FILE));
 
             out.writeInt(Main.accounts.size());
