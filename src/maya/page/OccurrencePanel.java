@@ -3,6 +3,7 @@ package maya.page;
 import maya.Main;
 import maya.object.Module;
 import maya.object.Occurrence;
+import maya.object.StudentAccount;
 import maya.util.ColorsManager;
 import maya.util.DataManager;
 
@@ -79,16 +80,21 @@ class OccurrencePanel extends JPanel {
                         String message = String.format("Do you want to register %s?", occurrence.getCode());
                         int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
                         if (answer == JOptionPane.YES_OPTION) {
-                            if (isNotOverlapping(moduleOcc) && checkActualStudents(occurrence)) {
-                                if (((StudentModulePanel) parent).currentCredits + module.getCredit() <= Main.maxCreditsPerStudent) {
-                                    Main.currentUser.getOccurrences().add(moduleOcc);
-                                    parent.redraw();
-                                    DataManager.storeAccounts();
-                                } else {
-                                    message = String.format("Registering %s will put you over %d credits", moduleOcc.split("_")[0], Main.maxCreditsPerStudent);
-                                    title = "Unable to register";
-                                    JOptionPane.showMessageDialog(thisPanel, message, title, JOptionPane.WARNING_MESSAGE);
+                            String restrictionsResult = module.checkRestrictions((StudentAccount) Main.currentUser);
+                            if(restrictionsResult.isEmpty()){
+                                if (isNotOverlapping(moduleOcc) && checkActualStudents(occurrence)) {
+                                    if (((StudentModulePanel) parent).currentCredits + module.getCredit() <= Main.maxCreditsPerStudent) {
+                                        Main.currentUser.getOccurrences().add(moduleOcc);
+                                        parent.redraw();
+                                        DataManager.storeAccounts();
+                                    } else {
+                                        message = String.format("Registering %s will put you over %d credits", moduleOcc.split("_")[0], Main.maxCreditsPerStudent);
+                                        title = "Unable to register";
+                                        JOptionPane.showMessageDialog(thisPanel, message, title, JOptionPane.WARNING_MESSAGE);
+                                    }
                                 }
+                            } else {
+                                JOptionPane.showMessageDialog(thisPanel, restrictionsResult, title, JOptionPane.WARNING_MESSAGE);
                             }
                         }
                     }

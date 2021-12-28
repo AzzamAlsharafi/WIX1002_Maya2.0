@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -51,6 +52,22 @@ public class Module {
 
     public List<Occurrence> getOccurrences() {
         return occurrences;
+    }
+
+    public String checkRestrictions(StudentAccount account){
+        if(restrictions.isBlank()){
+            return "";
+        }
+
+        String[] restrictionsArr = restrictions.split(" : ");
+
+        if(Arrays.asList(restrictionsArr[0].split(", ")).contains(String.valueOf(account.programme)) || restrictionsArr[0].equals("-1")){
+            if(Arrays.asList(restrictionsArr[1].split(", ")).contains(String.valueOf(account.englishBand)) || restrictionsArr[1].equals("-1")) {
+                return "";
+            }
+        }
+
+        return String.format("You are not eligible to register for %s.", code);
     }
 
     public boolean containsOccurrence(int occurrenceNumber, int activity){
