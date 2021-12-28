@@ -13,7 +13,6 @@ public class Module {
     final String title;
     final String coordinator;
     final String restrictions;
-    final int occurrencesCount;
     final int credit;
     final int activityType;
     final List<Occurrence> occurrences;
@@ -36,10 +35,6 @@ public class Module {
 
     public String getRestrictions() {
         return restrictions;
-    }
-
-    public int getOccurrencesCount() {
-        return occurrencesCount;
     }
 
     public int getCredit() {
@@ -84,7 +79,6 @@ public class Module {
         out.writeUTF(title);
         out.writeUTF(coordinator);
         out.writeUTF(restrictions);
-        out.writeInt(occurrencesCount);
         out.writeInt(credit);
         out.writeInt(activityType);
 
@@ -99,7 +93,6 @@ public class Module {
         String title = in.readUTF();
         String coordinator = in.readUTF();
         String restriction = in.readUTF();
-        int occurrencesCount = in.readInt();
         int credit = in.readInt();
         int activityType = in.readInt();
 
@@ -109,15 +102,14 @@ public class Module {
             occurrences.add(Occurrence.loadOccurrence(in));
         }
 
-        return new Module(code, title, coordinator, restriction, occurrencesCount, credit, activityType, occurrences);
+        return new Module(code, title, coordinator, restriction, credit, activityType, occurrences);
     }
 
-    public Module(String code, String title, String coordinator, String restrictions, int occurrencesCount, int credit, int activityType, List<Occurrence> occurrences) {
+    public Module(String code, String title, String coordinator, String restrictions, int credit, int activityType, List<Occurrence> occurrences) {
         this.code = code;
         this.title = title;
         this.coordinator = coordinator;
         this.restrictions = restrictions;
-        this.occurrencesCount = occurrencesCount;
         this.credit = credit;
         this.activityType = activityType;
         this.occurrences = occurrences;

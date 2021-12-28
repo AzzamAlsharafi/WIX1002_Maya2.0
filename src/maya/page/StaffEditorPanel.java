@@ -225,9 +225,8 @@ public class StaffEditorPanel extends JPanel {
                         module.getOccurrences().remove(occ);
 
                         Occurrence newOcc = new Occurrence(codeField.getText(), tutorField.getText(), timeField.getText(),
-                                Integer.parseInt(targetField.getText()), occ.getActualStudents(),
-                                Integer.parseInt(occurrenceField.getText()),
-                                Occurrence.getActivityFromString(activityField.getText()), occ.getStudents());
+                                Integer.parseInt(targetField.getText()), Integer.parseInt(occurrenceField.getText()),
+                                Occurrence.getActivityFromString(activityField.getText()));
 
                         module.getOccurrences().add(newOcc);
 
@@ -317,9 +316,8 @@ public class StaffEditorPanel extends JPanel {
                                 String code = (String) codeComboBox.getSelectedItem();
 
                                 Occurrence newOcc = new Occurrence(code, tutorField.getText(), timeField.getText(),
-                                        Integer.parseInt(targetField.getText()), 0,
-                                        Integer.parseInt(occurrenceField.getText()),
-                                        activityOccTypeComboBox.getSelectedIndex() - 1, new ArrayList<>());
+                                        Integer.parseInt(targetField.getText()), Integer.parseInt(occurrenceField.getText()),
+                                        activityOccTypeComboBox.getSelectedIndex() - 1);
 
                                 Main.modules.get(code).getOccurrences().add(newOcc);
 
@@ -375,11 +373,11 @@ public class StaffEditorPanel extends JPanel {
 
                 Main.modules.remove(module.getCode());
 
-//                Module newModule = new Module(module.getCode(), titleField.getText(), module.getCoordinator(),
-//                        module.getOccurrencesCount(), Integer.parseInt(creditsField.getText()),
-//                        activityModTypeComboBox.getSelectedIndex() - 1, module.getOccurrences());
-//
-//                Main.modules.put(module.getCode(), newModule);
+                // TODO: implement setting module restrictions
+                Module newModule = new Module(module.getCode(), titleField.getText(), module.getCoordinator(), "", Integer.parseInt(creditsField.getText()),
+                        activityModTypeComboBox.getSelectedIndex() - 1, module.getOccurrences());
+
+                Main.modules.put(module.getCode(), newModule);
 
                 parent.updateAllOccurrences();
                 parent.redraw();
@@ -407,11 +405,13 @@ public class StaffEditorPanel extends JPanel {
                 if(!Main.modules.containsKey(codeField.getText().toUpperCase())){
                     if(codeField.getText().toUpperCase().matches("^[A-Z]{3}[0-9]{4}$")){
                         if(creditsField.getText().matches("\\d+")){
-//                            Module newModule = new Module(codeField.getText().toUpperCase(), titleField.getText(), Main.currentUser.getFullName(),
-//                                    0, Integer.parseInt(creditsField.getText()),
-//                                    activityModTypeComboBox.getSelectedIndex() - 1, new ArrayList<>());
-//
-//                            Main.modules.put(newModule.getCode(), newModule);
+
+                            // TODO: implement setting module restrictions
+                            Module newModule = new Module(codeField.getText().toUpperCase(), titleField.getText(), Main.currentUser.getFullName(),
+                                    "", Integer.parseInt(creditsField.getText()),
+                                    activityModTypeComboBox.getSelectedIndex() - 1, new ArrayList<>());
+
+                            Main.modules.put(newModule.getCode(), newModule);
 
                             DataManager.storeModules();
 
