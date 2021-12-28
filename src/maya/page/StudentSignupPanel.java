@@ -81,15 +81,15 @@ public class StudentSignupPanel extends JPanel{
             String password = passwordField.getText();
             String confirmPassword = confirmPasswordField.getText();
             String fullName = fullNameField.getText();
-            int programme = programmeComboBox.getSelectedIndex();
-            int englishTest = englishTestComboBox.getSelectedIndex();
+            int programme = programmeComboBox.getSelectedIndex() - 1;
+            int englishTest = englishTestComboBox.getSelectedIndex() - 1;
             String englishScore = englishScoreField.getText();
-            int citizenship = citizenshipComboBox.getSelectedIndex();
+            int citizenship = citizenshipComboBox.getSelectedIndex() - 1;
 
             String title = "Unable to log in";
             if(!siswaMail.isBlank() &&  !matricNumber.isBlank() && !password.isBlank()
-                    && !confirmPassword.isBlank() && !fullName.isBlank() && programme != 0
-                    && englishTest != 0 && !englishScore.isBlank() && citizenship != 0){
+                    && !confirmPassword.isBlank() && !fullName.isBlank() && programme != -1
+                    && englishTest != -1 && !englishScore.isBlank() && citizenship != -1){
                 if(!Main.accounts.containsKey(matricNumber)) {
                     if (password.equals(confirmPassword)) {
                         if(StudentAccount.calculateMUETBand(englishTest, englishScore) != -1) {

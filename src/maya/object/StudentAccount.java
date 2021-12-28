@@ -38,10 +38,10 @@ public class StudentAccount extends Account{
     public static int calculateMUETBand(int test, String scoreString){
         try {
             switch (test){
-                case 1 -> { //MUET
+                case 0 -> { //MUET
                     return Integer.parseInt(scoreString);
                 }
-                case 2 -> { // IELTS
+                case 1 -> { // IELTS
                     double score = Double.parseDouble(scoreString);
                     if(score >= 6.5){
                         return 5;
@@ -53,7 +53,7 @@ public class StudentAccount extends Account{
                         return 2;
                     }
                 }
-                case 3 -> { // TOEFL Paper–Based Test
+                case 2 -> { // TOEFL Paper–Based Test
                     int score = Integer.parseInt(scoreString);
                     if(score >= 550){
                         return 5;
@@ -65,7 +65,7 @@ public class StudentAccount extends Account{
                         return 2;
                     }
                 }
-                case 4 -> { // TOEFL Computer–Based Test
+                case 3 -> { // TOEFL Computer–Based Test
                     int score = Integer.parseInt(scoreString);
                     if(score >= 213){
                         return 5;
@@ -77,7 +77,7 @@ public class StudentAccount extends Account{
                         return 2;
                     }
                 }
-                case 5 -> { // TOEFL Internet–Based Test
+                case 4 -> { // TOEFL Internet–Based Test
                     int score = Integer.parseInt(scoreString);
                     if(score >= 79){
                         return 5;
@@ -89,7 +89,7 @@ public class StudentAccount extends Account{
                         return 2;
                     }
                 }
-                case 6 -> { // PTE (Academic)
+                case 5 -> { // PTE (Academic)
                     int score = Integer.parseInt(scoreString);
                     if(score >= 58){
                         return 5;
@@ -101,21 +101,21 @@ public class StudentAccount extends Account{
                         return 2;
                     }
                 }
-                case 7 -> { // FCE
+                case 6 -> { // FCE
                     if(scoreString.equalsIgnoreCase("A")){
                         return 5;
                     } else if(scoreString.equalsIgnoreCase("B") || scoreString.equalsIgnoreCase("C")){
                         return 4;
                     }
                 }
-                case 8 -> { // GCE A Level (English)
+                case 7 -> { // GCE A Level (English)
                     if(scoreString.equalsIgnoreCase("A") || scoreString.equalsIgnoreCase("B")){
                         return 5;
                     } else if(scoreString.equalsIgnoreCase("C")){
                         return 4;
                     }
                 }
-                case 9 -> { // IGCSE/GCSE (English)
+                case 8 -> { // IGCSE/GCSE (English)
                     if(scoreString.equalsIgnoreCase("A") || scoreString.equalsIgnoreCase("B")
                             || scoreString.equalsIgnoreCase("C")) {
                         return 4;
