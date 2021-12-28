@@ -8,9 +8,12 @@ import java.io.*;
 
 public class DataManager {
 
-    static final String ACCOUNTS_FILE = "data\\accounts";
-    static final String MODULES_FILE = "data\\modules";
-    static final String REMEMBER_ME_FILE = "data\\rememberMe";
+    static final String ACCOUNTS_FILE = "data/accounts";
+    static final String MODULES_FILE = "data/modules";
+    static final String REMEMBER_ME_FILE = "data/rememberMe";
+
+    // This file is used when the program is run for the first time.
+    static final String RESOURCES_MODULES_FILE = "/resources/modules";
 
     static final String DATA_DIRECTORY = "data";
 
@@ -74,17 +77,21 @@ public class DataManager {
         try {
             File modulesFile = new File(MODULES_FILE);
 
+            ObjectInputStream in;
+
             if(modulesFile.exists()){
-                ObjectInputStream in = new ObjectInputStream(new FileInputStream(MODULES_FILE));
-
-                int modulesNumber = in.readInt();
-                for(int i = 0; i < modulesNumber; i++){
-                    Module module = Module.loadModule(in);
-                    Main.modules.put(module.getCode(), module);
-                }
-
-                in.close();
+                in = new ObjectInputStream(new FileInputStream(MODULES_FILE));
+            } else {
+                in = new ObjectInputStream(DataManager.class.getResourceAsStream(RESOURCES_MODULES_FILE));
             }
+
+            int modulesNumber = in.readInt();
+            for(int i = 0; i < modulesNumber; i++){
+                Module module = Module.loadModule(in);
+                Main.modules.put(module.getCode(), module);
+            }
+
+            in.close();
 
         } catch (IOException e) {
             e.printStackTrace();
