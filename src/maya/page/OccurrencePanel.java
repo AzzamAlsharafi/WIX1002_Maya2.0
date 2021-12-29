@@ -271,6 +271,8 @@ class OccurrencePanel extends JPanel {
 
     void setHeights(int height){
         Dimension bigLabelSize = new Dimension(200, height);
+        Dimension tutorLabelSize = new Dimension(190, height);
+        Dimension timeLabelSize = new Dimension(210, height);
         Dimension smallLabelSize = new Dimension(70, height);
         Dimension occurrenceLabelSize = new Dimension(90, height);
         Dimension activityLabelSize = new Dimension(75, height);
@@ -278,8 +280,8 @@ class OccurrencePanel extends JPanel {
         moduleTitleLabel.setPreferredSize(bigLabelSize);
         occurrenceNumberLabel.setPreferredSize(occurrenceLabelSize);
         activityLabel.setPreferredSize(activityLabelSize);
-        timeLabel.setPreferredSize(bigLabelSize);
-        tutorLabel.setPreferredSize(bigLabelSize);
+        timeLabel.setPreferredSize(timeLabelSize);
+        tutorLabel.setPreferredSize(tutorLabelSize);
         creditsLabel.setPreferredSize(smallLabelSize);
         targetLabel.setPreferredSize(smallLabelSize);
         actualLabel.setPreferredSize(smallLabelSize);
