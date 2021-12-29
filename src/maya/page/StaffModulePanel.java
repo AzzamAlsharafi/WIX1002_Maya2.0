@@ -56,7 +56,7 @@ public class StaffModulePanel extends ModulePanel {
         JButton editorButton = new JButton("Module Editor");
         editorButton.setFocusPainted(false);
         editorButton.addActionListener(e -> {
-            String message = "Choose an option";
+            String message = "Choose an option:";
             String title = "Module Editor";
             String[] options = new String[]{"Add", "Edit", "Delete"};
             int ans = JOptionPane.showOptionDialog(this, message, title, JOptionPane.YES_NO_CANCEL_OPTION,

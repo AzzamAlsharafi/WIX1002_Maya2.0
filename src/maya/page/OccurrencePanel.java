@@ -88,7 +88,7 @@ class OccurrencePanel extends JPanel {
                                         parent.redraw();
                                         DataManager.storeAccounts();
                                     } else {
-                                        message = String.format("Registering %s will put you over %d credits", moduleOcc.split("_")[0], Main.maxCreditsPerStudent);
+                                        message = String.format("Registering %s will put you over %d credits.", moduleOcc.split("_")[0], Main.maxCreditsPerStudent);
                                         title = "Unable to register";
                                         JOptionPane.showMessageDialog(thisPanel, message, title, JOptionPane.WARNING_MESSAGE);
                                     }
@@ -190,7 +190,7 @@ class OccurrencePanel extends JPanel {
             return true;
         }
 
-        String message = "This occurrence has reached max students limit";
+        String message = "This occurrence has reached max students limit.";
         String title = "Unable to register";
         JOptionPane.showMessageDialog(thisPanel, message, title, JOptionPane.WARNING_MESSAGE);
         return false;
@@ -199,7 +199,7 @@ class OccurrencePanel extends JPanel {
     public boolean isNotOverlapping(String codeAndOcc){
         for (String registered: Main.currentUser.getOccurrences()) {
             if(Occurrence.checkOverlapOfCodeAndOcc(codeAndOcc, registered)){
-                String message = String.format("This occurrence conflicts with %s", registered.split("_")[0]);
+                String message = String.format("This occurrence conflicts with %s.", registered.split("_")[0]);
                 String title = "Unable to register";
                 JOptionPane.showMessageDialog(thisPanel, message, title, JOptionPane.WARNING_MESSAGE);
                 return false;
