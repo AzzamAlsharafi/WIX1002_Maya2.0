@@ -9,6 +9,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+// This is the small panel for showing the current number of registered credits in the student home page (StudentModulePanel).
 class TotalCreditsPanel extends JPanel {
     JPanel header = new JPanel();
     JLabel maxHeaderLabel = new JLabel("Max Credits");

@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+// This page contains three sub-pages, login page, new student page, new staff page.
 public class LoginAndSignupPanel extends JPanel {
     public LoginAndSignupPanel(){
         JTabbedPane tabbedPane = new JTabbedPane();

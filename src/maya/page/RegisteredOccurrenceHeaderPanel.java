@@ -8,17 +8,18 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+// This class is used once for the header bar at the top of the small list for registered occurrences in StudentModulePanel and StaffModulePanel.
 class RegisteredOccurrenceHeaderPanel extends JPanel {
     JLabel moduleTitleLabel = new JLabel();
     JLabel occurrenceNumberLabel = new JLabel();
     JLabel lastLabel = new JLabel();
 
     RegisteredOccurrenceHeaderPanel(ModulePanel parent) {
-        if (parent instanceof StudentModulePanel) {
+        if (parent instanceof StudentModulePanel) { // Check if current user is student.
             lastLabel.setText("Credits");
             lastLabel.setBorder(new EmptyBorder(0, 0, 0, 15));
             occurrenceNumberLabel.setBorder(new EmptyBorder(0, 0, 0, 20));
-        } else {
+        } else { // If current user is staff.
             lastLabel.setText("Activity");
             lastLabel.setBorder(new EmptyBorder(0, 0, 0, 10));
             occurrenceNumberLabel.setBorder(new EmptyBorder(0, 0, 0, 25));

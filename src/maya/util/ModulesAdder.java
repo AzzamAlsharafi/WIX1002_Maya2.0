@@ -1,12 +1,12 @@
 package maya.util;
 
 import maya.Main;
-import maya.object.Occurrence;
 import maya.object.Module;
-import maya.util.DataManager;
+import maya.object.Occurrence;
 
 import java.util.ArrayList;
 
+// This class is used to add a list of modules when the program is run for the first time.
 public class ModulesAdder {
     public static void addAll(){
         Main.modules.clear();

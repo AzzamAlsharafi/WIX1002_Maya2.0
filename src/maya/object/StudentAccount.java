@@ -3,7 +3,6 @@ package maya.object;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 public class StudentAccount extends Account{
     final int programme;
@@ -27,6 +26,9 @@ public class StudentAccount extends Account{
 //    MUET, IELTS,
 //    TOEFL Paper–Based Test, TOEFL Computer–Based Test, TOEFL Internet–Based Test,
 //    PTE (Academic), FCE, GCE A Level (English), IGCSE/GCSE (English)
+
+    // This method converts the score from any type of English test to MUET band.
+    // E.g. IELTS Band 6 = MUET Band 4
     public static int calculateMUETBand(int test, String scoreString){
         try {
             switch (test){

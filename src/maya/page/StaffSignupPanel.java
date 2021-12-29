@@ -3,16 +3,14 @@ package maya.page;
 import maya.Main;
 import maya.object.Account;
 import maya.object.StaffAccount;
-import maya.object.StudentAccount;
 import maya.util.ColorsManager;
 import maya.util.DataManager;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.util.ArrayList;
 
+// One of the subpages of LoginAndSignupPanel. This is the subpage for creating a new staff account.
 public class StaffSignupPanel extends JPanel{
     public StaffSignupPanel(){
         Dimension fieldSize = new Dimension(400, 30);
@@ -66,6 +64,8 @@ public class StaffSignupPanel extends JPanel{
                         Account newStaff = new StaffAccount(umMail, username, password, fullName, new ArrayList<>());
                         Main.accounts.put(username, newStaff);
                         Main.currentUser = newStaff;
+
+                        // Switch to the staff home page after successfully creating a new staff account.
                         MainFrame.getFrame().showCard(MainFrame.STAFF_MODULE_KEY);
                         DataManager.storeAccounts();
                     } else {

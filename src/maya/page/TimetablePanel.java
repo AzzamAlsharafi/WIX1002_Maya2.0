@@ -10,9 +10,10 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
+// This is used to show a timetable of the registered occurrences for students and staff.
 public class TimetablePanel extends JPanel {
 
     final int START_HOUR = 9;
@@ -22,15 +23,14 @@ public class TimetablePanel extends JPanel {
     final static int STAFF_MODE = 1;
 
     TimetablePanel(int mode){
-        String[] days = new String[]{"MON", "TUE", "WED", "THU", "FRI"};
+
+        // Make a list of all the registered occurrence for the current user.
         List<Occurrence> registered = new ArrayList<>();
         for (String codeAndOcc: Main.currentUser.getOccurrences()) {
             if (!codeAndOcc.isBlank()){
                 registered.addAll(Occurrence.getOccurrencesFromCodeAndOcc(codeAndOcc));
             }
         }
-
-        Map<String, String> data = new HashMap<>();
 
         setLayout(new GridBagLayout());
 
@@ -39,6 +39,8 @@ public class TimetablePanel extends JPanel {
         c.gridy = 0;
         c.gridx = 0;
 
+        // Create the header of the table.
+        String[] days = new String[]{"MON", "TUE", "WED", "THU", "FRI"};
         for (String day: days) {
             c.gridx += 1;
             add(getBorderPanel(100, day), c);
@@ -46,13 +48,17 @@ public class TimetablePanel extends JPanel {
 
         c.gridx = 0;
 
+        // Create the hours column of the table. (The blue column on the left side)
         for (int i = START_HOUR; i <= END_HOUR; i++){
             c.gridy += 1;
             add(getBorderPanel(50, String.format("%d:00", i)), c);
         }
 
+        // This empty array will be used to fill the empty cells later.
         boolean[][] isFullCell = new boolean[6][END_HOUR - (START_HOUR - 2)];
 
+        // Calculate the size and position of each occurrence on the table and store them in this map.
+        Map<String, String> data = new HashMap<>();
         for (Occurrence occ: registered) {
             SimpleDateFormat format = new SimpleDateFormat("E h:m a");
 
@@ -81,6 +87,7 @@ public class TimetablePanel extends JPanel {
             }
         }
 
+        // Add the occurrences from the map calculated earlier into the table.
         for(String keyString: data.keySet()){
             String[] key = keyString.split(" ");
             int hours = Integer.parseInt(key[0]);
@@ -104,6 +111,8 @@ public class TimetablePanel extends JPanel {
             panel.add(label, c2);
             panel.setBorder(new BevelBorder(BevelBorder.RAISED));
 
+            // If the current user is a staff, add the occurrences numbers of the current entry in the table,
+            // because sometimes a lecture will happen for multiple different occurrences at the same time.
             if(mode == STAFF_MODE){
                 c2.gridy = 1;
                 panel.add(label2, c2);
@@ -116,11 +125,13 @@ public class TimetablePanel extends JPanel {
             c.gridheight = hours;
             add(panel, c);
 
+            // Mark which cells the current occurrence has filled in the table.
             for (int i = 0; i < hours; i++){
                 isFullCell[dayOfWeek][y+i] = true;
             }
         }
 
+        // Put empty rectangles in the empty cells.
         for(int x = 1; x < isFullCell.length; x++){
             for(int y = 1; y < isFullCell[0].length; y++){
                 c.gridx = x;
@@ -135,6 +146,7 @@ public class TimetablePanel extends JPanel {
         }
     }
 
+    // This is used to generate the blue cells at the borders of the table.
     JPanel getBorderPanel(int width, String text){
         JLabel label = new JLabel(text);
         label.setForeground(ColorsManager.whiteFont);

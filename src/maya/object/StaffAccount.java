@@ -12,6 +12,8 @@ public class StaffAccount extends Account{
         super(umMail, username, password, fullName, occurrences);
     }
 
+    // This method returns a list of registered occurrences under this StaffAccount,
+    // because unlike StudentAccount, the occurrences of each staff aren't stored in the StaffAccount object.
     @Override
     public List<String> getOccurrences() {
         List<Occurrence> allOccurrences = new ArrayList<>();

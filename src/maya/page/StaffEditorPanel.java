@@ -16,6 +16,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
+// This class is used for creating and editing occurrences and modules. For staff use only.
 public class StaffEditorPanel extends JPanel implements ItemListener {
     JTextField codeField;
     JTextField titleField;
@@ -312,6 +313,7 @@ public class StaffEditorPanel extends JPanel implements ItemListener {
         remove(checkBoxesPanel);
     }
 
+    // Called when this class is used for editing an occurrence.
     void setEditOccurrenceMode(Occurrence occ){
         frame.setTitle("Edit Occurrence");
 
@@ -371,6 +373,7 @@ public class StaffEditorPanel extends JPanel implements ItemListener {
         });
     }
 
+    // Called when this class is used for creating an occurrence.
     void setAddOccurrenceMode(){
         frame.setTitle("Add Occurrence");
 
@@ -471,6 +474,7 @@ public class StaffEditorPanel extends JPanel implements ItemListener {
         });
     }
 
+    // Called when this class is used for editing a module.
     void setEditModuleMode(){
         setModuleMode();
 
@@ -512,6 +516,7 @@ public class StaffEditorPanel extends JPanel implements ItemListener {
         });
     }
 
+    // Called when this class is used for creating a module.
     void setAddModuleMode(){
         setModuleMode();
 
@@ -553,6 +558,7 @@ public class StaffEditorPanel extends JPanel implements ItemListener {
         });
     }
 
+    // Called when this class is used for deleting a module.
     // This doesn't delete the module itself, it only deletes all of its occurrences.
     void setDeleteModuleMode(){
         setModuleMode();
@@ -606,6 +612,9 @@ public class StaffEditorPanel extends JPanel implements ItemListener {
         add(activityModTypeField, c);
     }
 
+    // This is called inside setEditModuleMode, setAddModuleMode, setDeleteModuleMode.
+    // It contains a bunch of instructions that are used in all three methods,
+    // so putting them in a separate method makes the code shorter, rather than repeating the same code in three places.
     void setModuleMode(){
         remove(activityLabel);
         remove(activityField);

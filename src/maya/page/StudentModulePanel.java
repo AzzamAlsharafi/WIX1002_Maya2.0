@@ -2,15 +2,16 @@ package maya.page;
 
 import maya.Main;
 import maya.object.Occurrence;
-import maya.util.OccurrenceComparator;
 import maya.util.ColorsManager;
 import maya.util.DataManager;
+import maya.util.OccurrenceComparator;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// This class is the home page for staff users.
 public class StudentModulePanel extends ModulePanel {
 
     List<Occurrence> allOccurrences = new ArrayList<>();
@@ -59,9 +60,6 @@ public class StudentModulePanel extends ModulePanel {
         });
         timetableButton.setFocusPainted(false);
 
-        JButton profileButton = new JButton("View Profile");
-        profileButton.setFocusPainted(false);
-
         JButton logoutButton = new JButton("Log out");
         logoutButton.setFocusPainted(false);
         logoutButton.addActionListener(e -> {
@@ -109,17 +107,13 @@ public class StudentModulePanel extends ModulePanel {
         c.ipady = 25;
         add(timetableButton, c);
 
-//        c.gridy = 4;
-//        c.ipady = 15;
-//        add(profileButton, c);
-
         c.gridy = 5;
-//        insets.top = 0;
         add(logoutButton, c);
 
         setBackground(ColorsManager.studentModuleBackground);
     }
 
+    // Reload the page. Used when the lists of occurrences have been updated.
     @Override
     void redraw(){
         container.removeAll();
@@ -148,6 +142,7 @@ public class StudentModulePanel extends ModulePanel {
         registeredContainer.repaint();
     }
 
+    // This is used to filter the list of occurrence based on the text in the search field.
     @Override
     void filter(String toFilter){
         for (Occurrence occ: allOccurrences) {

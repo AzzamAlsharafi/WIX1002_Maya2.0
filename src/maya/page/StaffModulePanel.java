@@ -3,15 +3,16 @@ package maya.page;
 import maya.Main;
 import maya.object.Module;
 import maya.object.Occurrence;
-import maya.util.OccurrenceComparator;
 import maya.util.ColorsManager;
 import maya.util.DataManager;
+import maya.util.OccurrenceComparator;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// This class is the home page for staff users.
 public class StaffModulePanel extends ModulePanel {
 
     List<Occurrence> allOccurrences = new ArrayList<>();
@@ -143,6 +144,7 @@ public class StaffModulePanel extends ModulePanel {
 
         c.gridy = 4;
         c.ipady = 25;
+
         // Check that current user is the coordinator of at least one module
         for (Module m : Main.modules.values()) {
             if (m.getCoordinator().equalsIgnoreCase(Main.currentUser.getFullName())) {
@@ -158,6 +160,8 @@ public class StaffModulePanel extends ModulePanel {
         setBackground(ColorsManager.staffModuleBackground);
     }
 
+    // Update allOccurrences list, which contains all the occurrences in the program.
+    // This is used when creating a new occurrence.
     public void updateAllOccurrences(){
         allOccurrences.clear();
         Main.modules.values().forEach(m -> allOccurrences.addAll(m.getOccurrences()));
@@ -167,6 +171,7 @@ public class StaffModulePanel extends ModulePanel {
         availableOccurrences.addAll(allOccurrences);
     }
 
+    // Reload the page. Used when the lists of occurrences have been updated.
     @Override
     public void redraw(){
         container.removeAll();
@@ -191,6 +196,7 @@ public class StaffModulePanel extends ModulePanel {
         registeredContainer.repaint();
     }
 
+    // This is used to filter the list of occurrence based on the text in the search field.
     @Override
     public void filter(String toFilter){
         for (Occurrence occ: allOccurrences) {

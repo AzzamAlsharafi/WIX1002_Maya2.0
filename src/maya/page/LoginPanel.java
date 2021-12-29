@@ -7,6 +7,7 @@ import maya.util.DataManager;
 import javax.swing.*;
 import java.awt.*;
 
+// Login page.
 public class LoginPanel extends JPanel{
     public LoginPanel(){
         Dimension fieldSize = new Dimension(300, 30);

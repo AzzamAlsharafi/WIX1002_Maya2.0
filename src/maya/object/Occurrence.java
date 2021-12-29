@@ -37,6 +37,7 @@ public class Occurrence {
         return targetStudents;
     }
 
+    // Returns the number of students who have registered this occurrence
     public int getActualStudents() {
         int actual = 0;
 
@@ -76,6 +77,7 @@ public class Occurrence {
         return -1;
     }
 
+    // Checks if a string is a valid time format e.g. "Monday 9:00 AM - 10:00 AM"
     public static boolean isValidTime(String timeString){
         SimpleDateFormat format = new SimpleDateFormat("E h:m a");
 
@@ -94,6 +96,8 @@ public class Occurrence {
         }
     }
 
+    // Check if two occurrences overlap in time. This method doesn't work on Occurrence objects,
+    // rather it works on Strings e.g. "WIX1002_1", this means occurrence 1 of module WIX1002.
     public static boolean checkOverlapOfCodeAndOcc(String codeAndOcc1, String codeAndOcc2){
         if(!codeAndOcc1.isBlank() && !codeAndOcc2.isBlank()){
             List<Occurrence> occ1 = getOccurrencesFromCodeAndOcc(codeAndOcc1);
@@ -111,6 +115,7 @@ public class Occurrence {
         return false;
     }
 
+    // Check if two occurrences overlap in time. This method works on Occurrence objects.
     public static boolean checkOverlapOfOccurrence(Occurrence occ1, Occurrence occ2){
         SimpleDateFormat format = new SimpleDateFormat("E h:m a");
 
@@ -131,6 +136,10 @@ public class Occurrence {
         return false;
     }
 
+    // Returns a list of Occurrence objects from String e.g. "WIX1002_1",
+    // this will return all Occurrence objects that are from module WIX1002 and are part of occurrence 1.
+    // This method exists because the Lecture class and the Tutorial class of the same occurrence are stored
+    // in two separate Occurrence objects.
     public static List<Occurrence> getOccurrencesFromCodeAndOcc(String occ){
         String[] codeAndOcc = occ.split("_");
 

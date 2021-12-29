@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+// One of the subpages of LoginAndSignupPanel. This is the subpage for creating a new student account.
 public class StudentSignupPanel extends JPanel{
     public StudentSignupPanel(){
         Dimension bigFieldSize = new Dimension(400, 30);
@@ -90,6 +91,8 @@ public class StudentSignupPanel extends JPanel{
                                     new ArrayList<>(), programme, StudentAccount.calculateMUETBand(englishTest, englishScore));
                             Main.accounts.put(matricNumber, newStudent);
                             Main.currentUser = newStudent;
+
+                            // Switch to the student home page after successfully creating a new student account.
                             MainFrame.getFrame().showCard(MainFrame.STUDENT_MODULE_KEY);
                             DataManager.storeAccounts();
                         } else {

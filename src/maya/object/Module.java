@@ -6,7 +6,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class Module {
     final String code;
@@ -49,6 +48,7 @@ public class Module {
         return occurrences;
     }
 
+    // Checks if the student is eligible to register for this module
     public String checkRestrictions(StudentAccount account){
         if(restrictions.isBlank()){
             return "";
@@ -65,6 +65,7 @@ public class Module {
         return String.format("You are not eligible to register for %s.", code);
     }
 
+    // Check if a specific occurrence exists in this module
     public boolean containsOccurrence(int occurrenceNumber, int activity){
         for (Occurrence occ: occurrences) {
             if(occ.getOccurrenceNumber() == occurrenceNumber && occ.getActivityType() == activity){

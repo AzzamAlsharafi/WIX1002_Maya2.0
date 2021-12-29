@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+// This class is used to show a table of registered students in a specific occurrence. For staff use only.
 public class RegisteredStudentsPanel extends JPanel {
     RegisteredStudentsPanel(String occString){
         occString = occString.substring(0, occString.lastIndexOf("_"));

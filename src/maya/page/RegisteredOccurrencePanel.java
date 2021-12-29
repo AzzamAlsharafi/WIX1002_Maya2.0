@@ -8,12 +8,12 @@ import maya.util.DataManager;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+// This class is used to display occurrences in the small list for registered modules in StudentModulePanel and StaffModulePanel.
 class RegisteredOccurrencePanel extends JPanel {
     JLabel moduleTitleLabel = new JLabel();
     JLabel occurrenceNumberLabel = new JLabel();
@@ -25,7 +25,7 @@ class RegisteredOccurrencePanel extends JPanel {
         String[] occData = occ.split("_");
         Module module = Main.modules.get(occData[0]);
 
-        if(parent instanceof StudentModulePanel){
+        if(parent instanceof StudentModulePanel){ // This section only works if the current logged-in user is a student.
             lastLabel.setText(Integer.toString(module.getCredit()));
             lastLabel.setBorder(new EmptyBorder(0, 0, 0, 35));
 
@@ -52,7 +52,7 @@ class RegisteredOccurrencePanel extends JPanel {
                     }
                 }
             });
-        } else {
+        } else { // This section only works if the current logged-in user is a staff.
             lastLabel.setText(occData[2]);
             lastLabel.setBorder(new EmptyBorder(0, 0, 0, 5));
 

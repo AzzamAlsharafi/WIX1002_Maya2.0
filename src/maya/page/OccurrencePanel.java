@@ -17,6 +17,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+// This is the class used to display each Occurrence object in StudentModulePanel and StaffModulePanel.
+// Each occurrence you see in the big list of occurrences is an instance of this class.
 class OccurrencePanel extends JPanel {
     Occurrence occurrence;
     OccurrencePanel thisPanel = this;
@@ -30,6 +32,7 @@ class OccurrencePanel extends JPanel {
     JLabel targetLabel = new JLabel();
     JLabel actualLabel = new JLabel();
 
+    // Call this method when you want to display an Occurrence object in the big list.
     void setOccurrence(Occurrence occurrence, ModulePanel parent){
         this.occurrence = occurrence;
         Module module = Main.modules.get(occurrence.getCode());
@@ -38,7 +41,7 @@ class OccurrencePanel extends JPanel {
         boolean isRegistered;
         boolean isCoordinator;
 
-        if(parent instanceof StudentModulePanel){
+        if(parent instanceof StudentModulePanel){ // This section only works if the current logged-in user is a student.
             moduleOcc = String.format("%s_%s", occurrence.getCode(), occurrence.getOccurrenceNumber());
             isRegistered = Main.currentUser.getOccurrences().contains(moduleOcc);
 
@@ -65,6 +68,9 @@ class OccurrencePanel extends JPanel {
                                 if (answer == JOptionPane.YES_OPTION) {
                                     int index = Main.currentUser.getOccurrences().indexOf(registered);
                                     Main.currentUser.getOccurrences().remove(registered);
+
+                                    // Make sure that this occurrence isn't overlapping with an already registered occurrence,
+                                    // and that it still hasn't reached the target number of students.
                                     if (isNotOverlapping(moduleOcc) && checkActualStudents(occurrence)) {
                                         Main.currentUser.getOccurrences().add(moduleOcc);
                                         parent.redraw();
@@ -80,8 +86,13 @@ class OccurrencePanel extends JPanel {
                         String message = String.format("Do you want to register %s?", occurrence.getCode());
                         int answer = JOptionPane.showConfirmDialog(thisPanel, message, title, JOptionPane.YES_NO_OPTION);
                         if (answer == JOptionPane.YES_OPTION) {
+
+                            // Check if this student is eligible to register for this module.
                             String restrictionsResult = module.checkRestrictions((StudentAccount) Main.currentUser);
                             if(restrictionsResult.isEmpty()){
+
+                                // Make sure that this occurrence isn't overlapping with an already registered occurrence,
+                                // and that it still hasn't reached the target number of students.
                                 if (isNotOverlapping(moduleOcc) && checkActualStudents(occurrence)) {
                                     if (((StudentModulePanel) parent).currentCredits + module.getCredit() <= Main.maxCreditsPerStudent) {
                                         Main.currentUser.getOccurrences().add(moduleOcc);
@@ -107,7 +118,7 @@ class OccurrencePanel extends JPanel {
             } else {
                 setBorder(new BevelBorder(BevelBorder.RAISED));
             }
-        } else {
+        } else { // This section only works if the current logged-in user is a staff.
             moduleOcc = String.format("%s_%s_%s", occurrence.getCode(), occurrence.getOccurrenceNumber(), occurrence.getActivityString());
             isRegistered = Main.currentUser.getOccurrences().contains(moduleOcc);
             isCoordinator = module.getCoordinator().equalsIgnoreCase(Main.currentUser.getFullName());
@@ -185,6 +196,7 @@ class OccurrencePanel extends JPanel {
         setHeights(75);
     }
 
+    // Method to check if the occurrence hasn't reached target students.
     public boolean checkActualStudents(Occurrence occ){
         if(occ.getActualStudents() < occ.getTargetStudents()){
             return true;
@@ -196,6 +208,7 @@ class OccurrencePanel extends JPanel {
         return false;
     }
 
+    // Method to check if the occurrence isn't overlapping with an already registered occurrence.
     public boolean isNotOverlapping(String codeAndOcc){
         for (String registered: Main.currentUser.getOccurrences()) {
             if(Occurrence.checkOverlapOfCodeAndOcc(codeAndOcc, registered)){
@@ -208,6 +221,7 @@ class OccurrencePanel extends JPanel {
         return true;
     }
 
+    // This method is called once for the header bar at the top of the big list in StudentModulePanel and StaffModulePanel.
     void setHeaderMode(ModulePanel parent){
         occurrenceNumberLabel.setText("Occurrence");
         activityLabel.setText("Activity");

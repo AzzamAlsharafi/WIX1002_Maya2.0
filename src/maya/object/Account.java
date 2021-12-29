@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+// Super class for StaffAccount and StudentAccount
 public class Account {
     final String email;
     final String username;

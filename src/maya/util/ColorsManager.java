@@ -2,6 +2,8 @@ package maya.util;
 
 import java.awt.*;
 
+// This class contains all the colors used in this program.
+// Storing all the colors in the same place makes trying different combination of color easier.
 public class ColorsManager {
     public static Color signatureDarkBlue = new Color(5, 49, 121);
     public static Color whiteFont = Color.WHITE;

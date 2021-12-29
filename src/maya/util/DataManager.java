@@ -6,6 +6,8 @@ import maya.object.Module;
 
 import java.io.*;
 
+// This class is responsible for storing and loading the data of modules and accounts in files,
+// so they are not lost when the program is rebooted.
 public class DataManager {
 
     static final String ACCOUNTS_FILE = "data/accounts";
