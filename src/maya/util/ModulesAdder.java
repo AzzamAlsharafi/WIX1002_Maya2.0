@@ -17,6 +17,7 @@ public class ModulesAdder {
         WIX2001();
         WIX2002();
         WIA2001();
+        WIB2001();
         WIC3002();
         WID3007();
         WIE3007();
@@ -165,19 +166,18 @@ public class ModulesAdder {
         Main.modules.put(code, m);
     }
 
-    private static void WIA2001(){
-        String code = "WIA2001";
+    private static void Database(String code, int target, String restrictions){
         String title = "DATABASE";
         int credits = 3;
 
-        Occurrence o1t = new Occurrence(code, "FARIZA HANUM BINTI MD NASARUDDIN", "Wednesday 12:00 PM - 1:00 PM", 52, 1, Occurrence.OCC_TYPE_TUTORIAL);
-        Occurrence o1l = new Occurrence(code, "FARIZA HANUM BINTI MD NASARUDDIN", "Monday 2:00 PM - 4:00 PM", 52, 1, Occurrence.OCC_TYPE_LECTURE);
+        Occurrence o1t = new Occurrence(code, "FARIZA HANUM BINTI MD NASARUDDIN", "Wednesday 12:00 PM - 1:00 PM", target, 1, Occurrence.OCC_TYPE_TUTORIAL);
+        Occurrence o1l = new Occurrence(code, "FARIZA HANUM BINTI MD NASARUDDIN", "Monday 2:00 PM - 4:00 PM", target, 1, Occurrence.OCC_TYPE_LECTURE);
 
-        Occurrence o2t = new Occurrence(code, "MAIZATUL AKMAR BINTI ISMAIL", "Wednesday 12:00 PM - 1:00 PM", 52,2, Occurrence.OCC_TYPE_TUTORIAL);
-        Occurrence o2l = new Occurrence(code, "MAIZATUL AKMAR BINTI ISMAIL", "Monday 2:00 PM - 4:00 PM", 52,2, Occurrence.OCC_TYPE_LECTURE);
+        Occurrence o2t = new Occurrence(code, "MAIZATUL AKMAR BINTI ISMAIL", "Wednesday 12:00 PM - 1:00 PM", target,2, Occurrence.OCC_TYPE_TUTORIAL);
+        Occurrence o2l = new Occurrence(code, "MAIZATUL AKMAR BINTI ISMAIL", "Monday 2:00 PM - 4:00 PM", target,2, Occurrence.OCC_TYPE_LECTURE);
 
-        Occurrence o3t = new Occurrence(code, "NORJIHAN BINTI ABDUL GHANI", "Wednesday 12:00 PM - 1:00 PM", 52,3, Occurrence.OCC_TYPE_TUTORIAL);
-        Occurrence o3l = new Occurrence(code, "NORJIHAN BINTI ABDUL GHANI", "Monday 2:00 PM - 4:00 PM", 52,3, Occurrence.OCC_TYPE_LECTURE);
+        Occurrence o3t = new Occurrence(code, "NORJIHAN BINTI ABDUL GHANI", "Wednesday 12:00 PM - 1:00 PM", target,3, Occurrence.OCC_TYPE_TUTORIAL);
+        Occurrence o3l = new Occurrence(code, "NORJIHAN BINTI ABDUL GHANI", "Monday 2:00 PM - 4:00 PM", target,3, Occurrence.OCC_TYPE_LECTURE);
 
         ArrayList<Occurrence> occurrences = new ArrayList<>();
 
@@ -188,9 +188,17 @@ public class ModulesAdder {
         occurrences.add(o3t);
         occurrences.add(o3l);
 
-        Module m = new Module(code, title, "FARIZA HANUM BINTI MD NASARUDDIN", "", credits, Module.MOD_TYPE_LECTURE_TUTORIAL, occurrences);
+        Module m = new Module(code, title, "FARIZA HANUM BINTI MD NASARUDDIN", restrictions, credits, Module.MOD_TYPE_LECTURE_TUTORIAL, occurrences);
 
         Main.modules.put(code, m);
+    }
+
+    private static void WIA2001(){
+        Database("WIA2001", 52, "0, 1, 2, 3, 5, 6 : -1");
+    }
+
+    private static void WIB2001(){
+        Database("WIB2001", 8, "4 : -1");
     }
 
     private static void WIC3002(){
