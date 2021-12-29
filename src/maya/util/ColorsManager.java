@@ -15,6 +15,7 @@ public class ColorsManager {
     public static Color staffModuleBackground = new Color(230, 230, 180);
 
     public static Color editorBackground = new Color(150, 230, 150);
+    public static Color editorCheckBoxes = Color.WHITE;
 
     public static Color whiteComboBox = Color.WHITE;
 

@@ -10,12 +10,12 @@ public class StudentAccount extends Account{
     final int englishBand;
     final int citizenship;
 
-    static final int PROGRAMME_CSN = 0;
-    static final int PROGRAMME_AI = 1;
-    static final int PROGRAMME_IS = 2;
-    static final int PROGRAMME_SE = 3;
-    static final int PROGRAMME_MM = 4;
-    static final int PROGRAMME_DS = 5;
+    public static final String PROGRAMME_CSN = "0";
+    public static final String PROGRAMME_AI = "1";
+    public static final String PROGRAMME_IS = "2";
+    public static final String PROGRAMME_SE = "3";
+    public static final String PROGRAMME_MM = "4";
+    public static final String PROGRAMME_DS = "5";
 
     static final int CITIZENSHIP_MALAYSIAN = 0;
     static final int CITIZENSHIP_NON_MALAYSIAN = 1;

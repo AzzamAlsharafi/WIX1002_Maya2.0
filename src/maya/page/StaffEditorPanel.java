@@ -3,16 +3,20 @@ package maya.page;
 import maya.Main;
 import maya.object.Module;
 import maya.object.Occurrence;
+import maya.object.StudentAccount;
 import maya.util.ColorsManager;
 import maya.util.DataManager;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
-public class StaffEditorPanel extends JPanel {
+public class StaffEditorPanel extends JPanel implements ItemListener {
     JTextField codeField;
     JTextField titleField;
     JTextField activityField;
@@ -27,6 +31,14 @@ public class StaffEditorPanel extends JPanel {
     JComboBox<String> activityModTypeComboBox;
     JComboBox<String> activityOccTypeComboBox;
 
+    JPanel checkBoxesPanel;
+    JCheckBox csnCheckBox;
+    JCheckBox aiCheckBox;
+    JCheckBox isCheckBox;
+    JCheckBox seCheckBox;
+    JCheckBox mmCheckBox;
+    JCheckBox dsCheckBox;
+
     JLabel codeLabel;
     JLabel titleLabel;
     JLabel activityLabel;
@@ -36,11 +48,14 @@ public class StaffEditorPanel extends JPanel {
     JLabel creditsLabel;
     JLabel targetLabel;
     JLabel activityModTypeLabel;
+    JLabel programmesLabel;
 
     JButton saveButton;
 
     StaffModulePanel parent;
     JFrame frame;
+
+    String restrictions = "";
 
     StaffEditorPanel(StaffModulePanel parent, JFrame frame){
         this.parent = parent;
@@ -106,6 +121,36 @@ public class StaffEditorPanel extends JPanel {
         activityOccTypeComboBox.setPreferredSize(smallestFieldSize);
         activityOccTypeComboBox.setBackground(ColorsManager.whiteComboBox);
 
+        csnCheckBox = new JCheckBox("CSN");
+        csnCheckBox.setBackground(ColorsManager.editorCheckBoxes);
+        csnCheckBox.setFocusPainted(false);
+        csnCheckBox.addItemListener(this);
+
+        aiCheckBox = new JCheckBox("Artificial Intelligence");
+        aiCheckBox.setBackground(ColorsManager.editorCheckBoxes);
+        aiCheckBox.setFocusPainted(false);
+        aiCheckBox.addItemListener(this);
+
+        isCheckBox = new JCheckBox("Information Systems");
+        isCheckBox.setBackground(ColorsManager.editorCheckBoxes);
+        isCheckBox.setFocusPainted(false);
+        isCheckBox.addItemListener(this);
+
+        seCheckBox = new JCheckBox("Software Engineering");
+        seCheckBox.setBackground(ColorsManager.editorCheckBoxes);
+        seCheckBox.setFocusPainted(false);
+        seCheckBox.addItemListener(this);
+
+        mmCheckBox = new JCheckBox("Multimedia");
+        mmCheckBox.setBackground(ColorsManager.editorCheckBoxes);
+        mmCheckBox.setFocusPainted(false);
+        mmCheckBox.addItemListener(this);
+
+        dsCheckBox = new JCheckBox("Data Science");
+        dsCheckBox.setBackground(ColorsManager.editorCheckBoxes);
+        dsCheckBox.setFocusPainted(false);
+        dsCheckBox.addItemListener(this);
+
         codeLabel = new JLabel("Code");
         titleLabel = new JLabel("Title");
         activityLabel = new JLabel("Activity");
@@ -115,6 +160,7 @@ public class StaffEditorPanel extends JPanel {
         creditsLabel = new JLabel("Credits");
         targetLabel = new JLabel("Target");
         activityModTypeLabel = new JLabel("Activity Type");
+        programmesLabel = new JLabel("Eligible Programmes");
 
         saveButton = new JButton("Save");
         saveButton.setFocusPainted(false);
@@ -181,7 +227,40 @@ public class StaffEditorPanel extends JPanel {
         c.gridy = 5;
         add(tutorField, c);
 
+        c.gridx = 0;
         c.gridy = 8;
+        c.gridwidth = 2;
+        add(programmesLabel, c);
+
+        checkBoxesPanel = new JPanel();
+        Border border = BorderFactory.createCompoundBorder(new BevelBorder(BevelBorder.RAISED), new BevelBorder(BevelBorder.LOWERED));
+        checkBoxesPanel.setBorder(border);
+        checkBoxesPanel.setBackground(ColorsManager.editorCheckBoxes);
+        checkBoxesPanel.setLayout(new GridBagLayout());
+
+        c.gridy = 9;
+        checkBoxesPanel.add(aiCheckBox, c);
+        c.gridx = 2;
+        c.gridy = 9;
+        checkBoxesPanel.add(csnCheckBox, c);
+        c.gridx = 0;
+        c.gridy = 10;
+        checkBoxesPanel.add(seCheckBox, c);
+        c.gridx = 2;
+        c.gridy = 10;
+        checkBoxesPanel.add(mmCheckBox, c);
+        c.gridx = 0;
+        c.gridy = 11;
+        checkBoxesPanel.add(isCheckBox, c);
+        c.gridx = 2;
+        c.gridy = 11;
+        checkBoxesPanel.add(dsCheckBox, c);
+
+        c.gridy = 9;
+        c.gridx = 0;
+        add(checkBoxesPanel, c);
+
+        c.gridy = 15;
         c.gridwidth = 4;
         c.gridx = 0;
         c.anchor = GridBagConstraints.CENTER;
@@ -194,8 +273,49 @@ public class StaffEditorPanel extends JPanel {
         setBackground(ColorsManager.editorBackground);
     }
 
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        restrictions = String.format("%s%s%s%s%s%s: -1",
+                csnCheckBox.isSelected() ? StudentAccount.PROGRAMME_CSN + ", " : "",
+                aiCheckBox.isSelected() ? StudentAccount.PROGRAMME_AI + ", " : "",
+                isCheckBox.isSelected() ? StudentAccount.PROGRAMME_IS + ", " : "",
+                seCheckBox.isSelected() ? StudentAccount.PROGRAMME_SE + ", " : "",
+                mmCheckBox.isSelected() ? StudentAccount.PROGRAMME_MM + ", " : "",
+                dsCheckBox.isSelected() ? StudentAccount.PROGRAMME_DS + ", " : "").replace(", : ", " : ");
+
+        if(restrictions.equals(": -1")){
+            restrictions = "-1 : -1";
+        }
+    }
+
+    void updateCheckBoxes(){
+        if(restrictions.isBlank() || restrictions.equals("-1 : -1")){
+            csnCheckBox.setSelected(true);
+            aiCheckBox.setSelected(true);
+            isCheckBox.setSelected(true);
+            seCheckBox.setSelected(true);
+            mmCheckBox.setSelected(true);
+            dsCheckBox.setSelected(true);
+        } else {
+            String programmeRestriction = restrictions.substring(0, restrictions.indexOf(" : "));
+            csnCheckBox.setSelected(programmeRestriction.contains(StudentAccount.PROGRAMME_CSN));
+            aiCheckBox.setSelected(programmeRestriction.contains(StudentAccount.PROGRAMME_AI));
+            isCheckBox.setSelected(programmeRestriction.contains(StudentAccount.PROGRAMME_IS));
+            seCheckBox.setSelected(programmeRestriction.contains(StudentAccount.PROGRAMME_SE));
+            mmCheckBox.setSelected(programmeRestriction.contains(StudentAccount.PROGRAMME_MM));
+            dsCheckBox.setSelected(programmeRestriction.contains(StudentAccount.PROGRAMME_DS));
+        }
+    }
+
+    void removeCheckBoxes(){
+        remove(programmesLabel);
+        remove(checkBoxesPanel);
+    }
+
     void setEditOccurrenceMode(Occurrence occ){
         frame.setTitle("Edit Occurrence");
+
+        removeCheckBoxes();
 
         Module module = Main.modules.get(occ.getCode());
 
@@ -256,6 +376,7 @@ public class StaffEditorPanel extends JPanel {
 
         remove(codeField);
         remove(activityField);
+        removeCheckBoxes();
 
         titleField.setEditable(false);
         creditsField.setEditable(false);
@@ -372,9 +493,7 @@ public class StaffEditorPanel extends JPanel {
                 Module module = Main.modules.get((String) codeComboBox.getSelectedItem());
 
                 Main.modules.remove(module.getCode());
-
-                // TODO: implement setting module restrictions
-                Module newModule = new Module(module.getCode(), titleField.getText(), module.getCoordinator(), "", Integer.parseInt(creditsField.getText()),
+                Module newModule = new Module(module.getCode(), titleField.getText(), module.getCoordinator(), restrictions, Integer.parseInt(creditsField.getText()),
                         activityModTypeComboBox.getSelectedIndex() - 1, module.getOccurrences());
 
                 Main.modules.put(module.getCode(), newModule);
@@ -406,9 +525,8 @@ public class StaffEditorPanel extends JPanel {
                     if(codeField.getText().toUpperCase().matches("^[A-Z]{3}[0-9]{4}$")){
                         if(creditsField.getText().matches("\\d+")){
 
-                            // TODO: implement setting module restrictions
                             Module newModule = new Module(codeField.getText().toUpperCase(), titleField.getText(), Main.currentUser.getFullName(),
-                                    "", Integer.parseInt(creditsField.getText()),
+                                    restrictions, Integer.parseInt(creditsField.getText()),
                                     activityModTypeComboBox.getSelectedIndex() - 1, new ArrayList<>());
 
                             Main.modules.put(newModule.getCode(), newModule);
@@ -443,6 +561,7 @@ public class StaffEditorPanel extends JPanel {
 
         remove(activityModTypeComboBox);
         remove(codeField);
+        removeCheckBoxes();
 
         titleField.setEditable(false);
         creditsField.setEditable(false);
@@ -499,6 +618,8 @@ public class StaffEditorPanel extends JPanel {
         remove(targetLabel);
         remove(targetField);
 
+        updateCheckBoxes();
+
         codeComboBox.addItemListener(e -> {
             if(e.getStateChange() == ItemEvent.SELECTED){
                 if(codeComboBox.getSelectedIndex() != 0){
@@ -507,10 +628,14 @@ public class StaffEditorPanel extends JPanel {
                     titleField.setText(selection.getTitle());
                     creditsField.setText(String.valueOf(selection.getCredit()));
                     activityModTypeComboBox.setSelectedIndex(selection.getActivityType() + 1);
+                    restrictions = selection.getRestrictions();
+                    updateCheckBoxes();
                 } else {
                     titleField.setText("");
                     creditsField.setText("");
                     activityModTypeComboBox.setSelectedIndex(0);
+                    restrictions = "";
+                    updateCheckBoxes();
                 }
             }
         });
