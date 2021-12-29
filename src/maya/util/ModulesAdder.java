@@ -65,13 +65,13 @@ public class ModulesAdder {
         String atf = "ANG TAN FONG";
 
         Occurrence o1t = new Occurrence(code, atf, "Thursday 9:00 AM - 12:00 PM", 50,1, Occurrence.OCC_TYPE_TUTORIAL);
-        Occurrence o1l = new Occurrence(code, atf, "Monday 9:00 AM - 11:00 PM", 50,1, Occurrence.OCC_TYPE_LECTURE);
+        Occurrence o1l = new Occurrence(code, atf, "Monday 9:00 AM - 11:00 AM", 50,1, Occurrence.OCC_TYPE_LECTURE);
 
         Occurrence o2t = new Occurrence(code, "SITI SORAYA BINTI ABDUL RAHMA", "Thursday 9:00 AM - 12:00 PM", 50,2, Occurrence.OCC_TYPE_TUTORIAL);
-        Occurrence o2l = new Occurrence(code, atf, "Monday 9:00 AM - 11:00 PM", 50,2, Occurrence.OCC_TYPE_LECTURE);
+        Occurrence o2l = new Occurrence(code, atf, "Monday 9:00 AM - 11:00 AM", 50,2, Occurrence.OCC_TYPE_LECTURE);
 
         Occurrence o3t = new Occurrence(code, "HEMA A/P SUBRAMANIAM", "Friday 9:00 AM - 12:00 PM", 50,3, Occurrence.OCC_TYPE_TUTORIAL);
-        Occurrence o3l = new Occurrence(code, atf, "Monday 9:00 AM - 11:00 PM", 50,3, Occurrence.OCC_TYPE_LECTURE);
+        Occurrence o3l = new Occurrence(code, atf, "Monday 9:00 AM - 11:00 AM", 50,3, Occurrence.OCC_TYPE_LECTURE);
 
         ArrayList<Occurrence> occurrences = new ArrayList<>();
 
