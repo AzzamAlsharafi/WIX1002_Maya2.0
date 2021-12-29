@@ -51,10 +51,6 @@ public class StudentSignupPanel extends JPanel{
                 "PTE (Academic)", "FCE", "GCE A Level (English)", "IGCSE/GCSE (English)"};
         JComboBox<String> englishTestComboBox = new JComboBox<>(englishTestOptions);
 
-        String[] citizenshipOptions = new String[]{comboBoxEmptyOption, "Malaysian", "Non-Malaysian"};
-        JComboBox<String> citizenshipComboBox = new JComboBox<>(citizenshipOptions);
-
-
         JLabel emailLabel = new JLabel("SiswaMail");
 
         JLabel usernameLabel = new JLabel("Matric Number");
@@ -66,8 +62,6 @@ public class StudentSignupPanel extends JPanel{
         JLabel fullNameLabel = new JLabel("Full Name");
 
         JLabel programmeLabel = new JLabel("Programme");
-
-        JLabel citizenshipLabel = new JLabel("Citizenship");
 
         JLabel englishTestLabel = new JLabel("English Test");
 
@@ -84,17 +78,16 @@ public class StudentSignupPanel extends JPanel{
             int programme = programmeComboBox.getSelectedIndex() - 1;
             int englishTest = englishTestComboBox.getSelectedIndex() - 1;
             String englishScore = englishScoreField.getText();
-            int citizenship = citizenshipComboBox.getSelectedIndex() - 1;
 
             String title = "Unable to log in";
             if(!siswaMail.isBlank() &&  !matricNumber.isBlank() && !password.isBlank()
                     && !confirmPassword.isBlank() && !fullName.isBlank() && programme != -1
-                    && englishTest != -1 && !englishScore.isBlank() && citizenship != -1){
+                    && englishTest != -1 && !englishScore.isBlank()){
                 if(!Main.accounts.containsKey(matricNumber)) {
                     if (password.equals(confirmPassword)) {
                         if(StudentAccount.calculateMUETBand(englishTest, englishScore) != -1) {
                             Account newStudent = new StudentAccount(siswaMail, matricNumber, password, fullName,
-                                    new ArrayList<>(), programme, StudentAccount.calculateMUETBand(englishTest, englishScore), citizenship);
+                                    new ArrayList<>(), programme, StudentAccount.calculateMUETBand(englishTest, englishScore));
                             Main.accounts.put(matricNumber, newStudent);
                             Main.currentUser = newStudent;
                             MainFrame.getFrame().showCard(MainFrame.STUDENT_MODULE_KEY);
@@ -183,14 +176,8 @@ public class StudentSignupPanel extends JPanel{
         add(englishScoreField, c);
 
         c.gridx = 0;
-        c.gridy = 12;
         c.gridwidth = 2;
-        add(citizenshipLabel, c);
-
-        c.gridy = 13;
-        add(citizenshipComboBox, c);
-
-        c.gridy = 14;
+        c.gridy = 12;
         c.anchor = GridBagConstraints.CENTER;
         c.ipadx = 75;
         c.ipady = 10;

@@ -8,7 +8,6 @@ import java.util.List;
 public class StudentAccount extends Account{
     final int programme;
     final int englishBand;
-    final int citizenship;
 
     public static final String PROGRAMME_CSN = "0";
     public static final String PROGRAMME_AI = "1";
@@ -17,19 +16,12 @@ public class StudentAccount extends Account{
     public static final String PROGRAMME_MM = "4";
     public static final String PROGRAMME_DS = "5";
 
-    static final int CITIZENSHIP_MALAYSIAN = 0;
-    static final int CITIZENSHIP_NON_MALAYSIAN = 1;
-
     public int getProgramme() {
         return programme;
     }
 
     public int getEnglishBand() {
         return englishBand;
-    }
-
-    public int getCitizenship() {
-        return citizenship;
     }
 
 //    MUET, IELTS,
@@ -129,11 +121,10 @@ public class StudentAccount extends Account{
         return -1;
     }
 
-    public StudentAccount(String siswaMail, String matricNumber, String password, String fullName, ArrayList<String> occurrences, int programme, int  englishBand, int citizenship) {
+    public StudentAccount(String siswaMail, String matricNumber, String password, String fullName, ArrayList<String> occurrences, int programme, int  englishBand) {
         super(siswaMail, matricNumber, password, fullName, occurrences);
         this.programme = programme;
         this.englishBand = englishBand;
-        this.citizenship = citizenship;
     }
 
     @Override
@@ -142,6 +133,5 @@ public class StudentAccount extends Account{
         super.storeAccount(out);
         out.writeInt(programme);
         out.writeInt(englishBand);
-        out.writeInt(citizenship);
     }
 }

@@ -46,7 +46,7 @@ public class Account {
         if(in.readUTF().equals("Student")){
             return new StudentAccount(in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(),
                     new ArrayList<>(Arrays.stream(in.readUTF().replace("[", "").replace("]", "").split(", ")).toList()),
-                    in.readInt(), in.readInt(), in.readInt());
+                    in.readInt(), in.readInt());
         } else {
             return new StaffAccount(in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(),
                     new ArrayList<>(Arrays.stream(in.readUTF().replace("[", "").replace("]", "").split(", ")).toList()));
