@@ -146,12 +146,7 @@ public class StaffModulePanel extends ModulePanel {
         c.ipady = 25;
 
         // Check that current user is the coordinator of at least one module
-        for (Module m : Main.modules.values()) {
-            if (m.getCoordinator().equalsIgnoreCase(Main.currentUser.getFullName())) {
-                add(editorButton, c);
-                break;
-            }
-        }
+        add(editorButton, c);
 
         c.gridy = 5;
 //        insets.top = 0;
