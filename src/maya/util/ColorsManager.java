@@ -22,6 +22,7 @@ public class ColorsManager {
     public static Color whiteComboBox = Color.WHITE;
 
     public static Color missingOccurrence = new Color(230, 150, 150);
+    public static Color studentNotAllowedOccurrence = Color.lightGray;
     public static Color studentRegisteredOccurrence = new Color(189, 228, 248);
     public static Color staffCoordinatorOccurrence = new Color(80, 200, 220);
     public static Color staffRegisteredOccurrence = new Color(189, 228, 248);

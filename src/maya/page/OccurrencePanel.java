@@ -45,6 +45,8 @@ class OccurrencePanel extends JPanel {
             moduleOcc = String.format("%s_%s", occurrence.getCode(), occurrence.getOccurrenceNumber());
             isRegistered = Main.currentUser.getOccurrences().contains(moduleOcc);
 
+            boolean isAllowed = module.checkRestrictions((StudentAccount) Main.currentUser).isBlank();
+
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
@@ -117,6 +119,10 @@ class OccurrencePanel extends JPanel {
                 setBorder(new BevelBorder(BevelBorder.LOWERED));
             } else {
                 setBorder(new BevelBorder(BevelBorder.RAISED));
+            }
+
+            if(!isAllowed){
+                setBackground(ColorsManager.studentNotAllowedOccurrence);
             }
         } else { // This section only works if the current logged-in user is a staff.
             moduleOcc = String.format("%s_%s_%s", occurrence.getCode(), occurrence.getOccurrenceNumber(), occurrence.getActivityString());
