@@ -1,4 +1,4 @@
-package maya.util;
+package main.util;
 
 import java.awt.*;
 

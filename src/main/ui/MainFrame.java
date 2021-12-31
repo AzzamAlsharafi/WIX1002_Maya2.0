@@ -1,7 +1,7 @@
-package maya.page;
+package main.ui;
 
-import maya.Main;
-import maya.object.StudentAccount;
+import main.Main;
+import main.object.StudentAccount;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,8 +1,8 @@
-package maya.util;
+package main.util;
 
-import maya.Main;
-import maya.object.Account;
-import maya.object.Module;
+import main.Main;
+import main.object.Account;
+import main.object.Module;
 
 import java.io.*;
 

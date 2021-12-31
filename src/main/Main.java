@@ -1,9 +1,9 @@
-package maya;
+package main;
 
-import maya.object.Account;
-import maya.object.Module;
-import maya.page.MainFrame;
-import maya.util.DataManager;
+import main.object.Account;
+import main.object.Module;
+import main.ui.MainFrame;
+import main.util.DataManager;
 
 import java.util.HashMap;
 import java.util.Map;

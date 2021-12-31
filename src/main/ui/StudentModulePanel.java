@@ -1,10 +1,10 @@
-package maya.page;
+package main.ui;
 
-import maya.Main;
-import maya.object.Occurrence;
-import maya.util.ColorsManager;
-import maya.util.DataManager;
-import maya.util.OccurrenceComparator;
+import main.Main;
+import main.object.Occurrence;
+import main.util.ColorsManager;
+import main.util.DataManager;
+import main.util.OccurrenceComparator;
 
 import javax.swing.*;
 import java.awt.*;

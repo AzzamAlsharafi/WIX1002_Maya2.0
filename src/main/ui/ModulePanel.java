@@ -1,4 +1,4 @@
-package maya.page;
+package main.ui;
 
 import javax.swing.*;
 

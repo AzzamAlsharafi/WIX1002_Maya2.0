@@ -1,8 +1,8 @@
-package maya.page;
+package main.ui;
 
-import maya.Main;
-import maya.object.Occurrence;
-import maya.util.ColorsManager;
+import main.Main;
+import main.object.Occurrence;
+import main.util.ColorsManager;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;

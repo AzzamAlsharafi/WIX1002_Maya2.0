@@ -1,6 +1,6 @@
-package maya.page;
+package main.ui;
 
-import maya.util.ColorsManager;
+import main.util.ColorsManager;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;

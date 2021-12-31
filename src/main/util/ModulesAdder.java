@@ -1,8 +1,8 @@
-package maya.util;
+package main.util;
 
-import maya.Main;
-import maya.object.Module;
-import maya.object.Occurrence;
+import main.Main;
+import main.object.Module;
+import main.object.Occurrence;
 
 import java.util.ArrayList;
 

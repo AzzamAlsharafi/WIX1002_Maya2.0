@@ -1,10 +1,10 @@
-package maya.page;
+package main.ui;
 
-import maya.Main;
-import maya.object.Account;
-import maya.object.StudentAccount;
-import maya.util.ColorsManager;
-import maya.util.DataManager;
+import main.Main;
+import main.object.Account;
+import main.object.StudentAccount;
+import main.util.ColorsManager;
+import main.util.DataManager;
 
 import javax.swing.*;
 import java.awt.*;

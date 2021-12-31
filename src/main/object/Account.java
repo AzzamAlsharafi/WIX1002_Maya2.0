@@ -1,4 +1,4 @@
-package maya.object;
+package main.object;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

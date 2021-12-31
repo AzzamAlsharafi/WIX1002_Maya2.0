@@ -1,9 +1,9 @@
-package maya.util;
+package main.util;
 
-import maya.Main;
-import maya.object.Occurrence;
-import maya.object.StaffAccount;
-import maya.object.StudentAccount;
+import main.Main;
+import main.object.Occurrence;
+import main.object.StaffAccount;
+import main.object.StudentAccount;
 
 import java.util.Comparator;
 
