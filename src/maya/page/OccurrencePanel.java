@@ -96,6 +96,8 @@ class OccurrencePanel extends JPanel {
                                 // Make sure that this occurrence isn't overlapping with an already registered occurrence,
                                 // and that it still hasn't reached the target number of students.
                                 if (isNotOverlapping(moduleOcc) && checkActualStudents(occurrence)) {
+
+                                    // Make sure that the students won't exceed max credits by registering this module.
                                     if (((StudentModulePanel) parent).currentCredits + module.getCredit() <= Main.maxCreditsPerStudent) {
                                         Main.currentUser.getOccurrences().add(moduleOcc);
                                         parent.redraw();
