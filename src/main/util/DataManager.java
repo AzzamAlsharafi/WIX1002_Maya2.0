@@ -5,20 +5,23 @@ import com.google.gson.reflect.TypeToken;
 import main.Main;
 import main.object.Account;
 import main.object.Module;
+import main.object.StaffAccount;
+import main.object.StudentAccount;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 // This class is responsible for storing and loading the data of modules and accounts in files,
 // so they are not lost when the program is rebooted.
 public class DataManager {
 
-    static final String ACCOUNTS_FILE = "data/accounts";
-    static final String MODULES_FILE = "data/modules";
-    static final String REMEMBER_ME_FILE = "data/rememberMe";
+    static final String JSON_STUDENT_ACCOUNTS_FILE = "data/students_accounts.json";
+    static final String JSON_STAFF_ACCOUNTS_FILE = "data/staff_accounts.json";
 
-    static final String JSON_ACCOUNTS_FILE = "data/accounts.json";
     static final String JSON_MODULES_FILE = "data/modules.json";
     static final String JSON_REMEMBER_ME_FILE = "data/rememberMe.json";
 
@@ -28,13 +31,28 @@ public class DataManager {
         try {
             System.out.print(new File(DATA_DIRECTORY).mkdir());
 
-            FileOutputStream out = new FileOutputStream(JSON_ACCOUNTS_FILE);
+            FileOutputStream studentOut = new FileOutputStream(JSON_STUDENT_ACCOUNTS_FILE);
+            FileOutputStream staffOut = new FileOutputStream(JSON_STAFF_ACCOUNTS_FILE);
+
+            ArrayList<StudentAccount> students = new ArrayList<>();
+            ArrayList<StaffAccount> staff = new ArrayList<>();
+
+            for (Account acc: Main.accounts.values()) {
+                if(acc instanceof StudentAccount){
+                    students.add((StudentAccount) acc);
+                } else {
+                    staff.add((StaffAccount) acc);
+                }
+            }
+
 
             Gson gson = new Gson();
 
-            out.write(gson.toJson(Main.accounts).getBytes());
+            studentOut.write(gson.toJson(students).getBytes());
+            staffOut.write(gson.toJson(staff).getBytes());
 
-            out.close();
+            studentOut.close();
+            staffOut.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,18 +60,45 @@ public class DataManager {
 
     public static void loadAccountsJSON(){
         try {
-            File accountsFile = new File(JSON_ACCOUNTS_FILE);
+            File studentsFile = new File(JSON_STUDENT_ACCOUNTS_FILE);
+            File staffFile = new File(JSON_STAFF_ACCOUNTS_FILE);
 
-            if(accountsFile.exists()){
-                FileInputStream in = new FileInputStream(JSON_ACCOUNTS_FILE);
+            ArrayList<StudentAccount> students;
+            ArrayList<StaffAccount> staff;
+
+            Map<String, Account> accounts = new HashMap<>();
+
+            if(studentsFile.exists()){
+                FileInputStream in = new FileInputStream(JSON_STUDENT_ACCOUNTS_FILE);
 
                 Gson gson = new Gson();
 
-                Type type = new TypeToken<HashMap<String, Account>>(){}.getType();
-                Main.accounts = gson.fromJson(new String(in.readAllBytes()), type);
+                Type type = new TypeToken<ArrayList<StudentAccount>>(){}.getType();
+                students = gson.fromJson(new String(in.readAllBytes()), type);
+
+                for (StudentAccount acc: students) {
+                    accounts.put(acc.getUsername(), acc);
+                }
 
                 in.close();
             }
+
+            if(staffFile.exists()){
+                FileInputStream in = new FileInputStream(JSON_STAFF_ACCOUNTS_FILE);
+
+                Gson gson = new Gson();
+
+                Type type = new TypeToken<ArrayList<StaffAccount>>(){}.getType();
+                staff = gson.fromJson(new String(in.readAllBytes()), type);
+
+                for (StaffAccount acc: staff) {
+                    accounts.put(acc.getUsername(), acc);
+                }
+
+                in.close();
+            }
+
+            Main.accounts = accounts;
 
         } catch (IOException e) {
             e.printStackTrace();
