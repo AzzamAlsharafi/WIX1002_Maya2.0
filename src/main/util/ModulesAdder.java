@@ -29,7 +29,7 @@ public class ModulesAdder {
         GLT1024();
         GLT1027();
 
-        DataManager.storeModules();
+        DataManager.storeModulesJSON();
     }
 
     private static void WIX1001(){

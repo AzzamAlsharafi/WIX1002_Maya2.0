@@ -355,7 +355,7 @@ public class StaffEditorPanel extends JPanel implements ItemListener {
                         parent.updateAllOccurrences();
                         parent.redraw();
 
-                        DataManager.storeModules();
+                        DataManager.storeModulesJSON();
 
                         frame.dispose();
                     } else {
@@ -448,7 +448,7 @@ public class StaffEditorPanel extends JPanel implements ItemListener {
                                 parent.updateAllOccurrences();
                                 parent.redraw();
 
-                                DataManager.storeModules();
+                                DataManager.storeModulesJSON();
 
                                 frame.dispose();
                             } else {
@@ -505,7 +505,7 @@ public class StaffEditorPanel extends JPanel implements ItemListener {
                 parent.updateAllOccurrences();
                 parent.redraw();
 
-                DataManager.storeModules();
+                DataManager.storeModulesJSON();
 
                 frame.dispose();
             } else {
@@ -536,7 +536,7 @@ public class StaffEditorPanel extends JPanel implements ItemListener {
 
                             Main.modules.put(newModule.getCode(), newModule);
 
-                            DataManager.storeModules();
+                            DataManager.storeModulesJSON();
 
                             frame.dispose();
                         } else {
@@ -592,7 +592,7 @@ public class StaffEditorPanel extends JPanel implements ItemListener {
                     parent.updateAllOccurrences();
                     parent.redraw();
 
-                    DataManager.storeModules();
+                    DataManager.storeModulesJSON();
 
                     frame.dispose();
                 }

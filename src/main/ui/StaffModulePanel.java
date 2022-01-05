@@ -104,7 +104,7 @@ public class StaffModulePanel extends ModulePanel {
 
             MainFrame.getFrame().showCard(MainFrame.LOGIN_AND_SIGNUP_KEY);
 
-            DataManager.updateRememberMe(false);
+            DataManager.updateRememberMeJSON(false);
         });
 
         redraw();

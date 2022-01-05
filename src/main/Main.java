@@ -21,9 +21,9 @@ public class Main {
 
     public static void main(String[] args) {
         scanner = new Scanner(System.in);
-        DataManager.loadAccounts();
-        DataManager.loadModules();
-        DataManager.loadRememberMe();
+        DataManager.loadAccountsJSON();
+        DataManager.loadModulesJSON();
+        DataManager.loadRememberMeJSON();
 
         // The first point of the program. MainFrame is the main window of the program.
         MainFrame.getFrame().setVisible(true);

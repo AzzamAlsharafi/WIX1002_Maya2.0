@@ -1,10 +1,14 @@
 package main.util;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import main.Main;
 import main.object.Account;
 import main.object.Module;
 
 import java.io.*;
+import java.lang.reflect.Type;
+import java.util.HashMap;
 
 // This class is responsible for storing and loading the data of modules and accounts in files,
 // so they are not lost when the program is rebooted.
@@ -14,18 +18,21 @@ public class DataManager {
     static final String MODULES_FILE = "data/modules";
     static final String REMEMBER_ME_FILE = "data/rememberMe";
 
+    static final String JSON_ACCOUNTS_FILE = "data/accounts.json";
+    static final String JSON_MODULES_FILE = "data/modules.json";
+    static final String JSON_REMEMBER_ME_FILE = "data/rememberMe.json";
+
     static final String DATA_DIRECTORY = "data";
 
-    public static void storeAccounts(){
+    public static void storeAccountsJSON(){
         try {
             System.out.print(new File(DATA_DIRECTORY).mkdir());
 
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(ACCOUNTS_FILE));
+            FileOutputStream out = new FileOutputStream(JSON_ACCOUNTS_FILE);
 
-            out.writeInt(Main.accounts.size());
-            for (Account acc: Main.accounts.values()) {
-                acc.storeAccount(out);
-            }
+            Gson gson = new Gson();
+
+            out.write(gson.toJson(Main.accounts).getBytes());
 
             out.close();
         } catch (IOException e) {
@@ -33,18 +40,17 @@ public class DataManager {
         }
     }
 
-    public static void loadAccounts(){
+    public static void loadAccountsJSON(){
         try {
-            File accountsFile = new File(ACCOUNTS_FILE);
+            File accountsFile = new File(JSON_ACCOUNTS_FILE);
 
             if(accountsFile.exists()){
-                ObjectInputStream in = new ObjectInputStream(new FileInputStream(ACCOUNTS_FILE));
+                FileInputStream in = new FileInputStream(JSON_ACCOUNTS_FILE);
 
-                int accountsNumber = in.readInt();
-                for(int i = 0; i < accountsNumber; i++){
-                    Account acc = Account.loadAccount(in);
-                    Main.accounts.put(acc.getUsername(), acc);
-                }
+                Gson gson = new Gson();
+
+                Type type = new TypeToken<HashMap<String, Account>>(){}.getType();
+                Main.accounts = gson.fromJson(new String(in.readAllBytes()), type);
 
                 in.close();
             }
@@ -54,16 +60,15 @@ public class DataManager {
         }
     }
 
-    public static void storeModules(){
+    public static void storeModulesJSON(){
         try {
             System.out.print(new File(DATA_DIRECTORY).mkdir());
 
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(MODULES_FILE));
+            FileOutputStream out = new FileOutputStream(JSON_MODULES_FILE);
 
-            out.writeInt(Main.modules.size());
-            for (Module module: Main.modules.values()) {
-                module.storeModule(out);
-            }
+            Gson gson = new Gson();
+
+            out.write(gson.toJson(Main.modules).getBytes());
 
             out.close();
         } catch (IOException e) {
@@ -71,23 +76,20 @@ public class DataManager {
         }
     }
 
-    public static void loadModules(){
+    public static void loadModulesJSON(){
         try {
-            File modulesFile = new File(MODULES_FILE);
-
-            ObjectInputStream in;
+            File modulesFile = new File(JSON_MODULES_FILE);
 
             if(modulesFile.exists()){
-                in = new ObjectInputStream(new FileInputStream(MODULES_FILE));
+                FileInputStream in = new FileInputStream(JSON_MODULES_FILE);
 
-                int modulesNumber = in.readInt();
-                for(int i = 0; i < modulesNumber; i++){
-                    Module module = Module.loadModule(in);
-                    Main.modules.put(module.getCode(), module);
-                }
+                Gson gson = new Gson();
+
+                Type type = new TypeToken<HashMap<String, Module>>(){}.getType();
+                Main.modules = gson.fromJson(new String(in.readAllBytes()), type);
 
                 in.close();
-            } else {
+            } else  {
                 ModulesAdder.addAll();
             }
 
@@ -96,14 +98,17 @@ public class DataManager {
         }
     }
 
-    public static void updateRememberMe(boolean rememberMe){
+    public static void updateRememberMeJSON(boolean rememberMe){
         try {
             System.out.print(new File(DATA_DIRECTORY).mkdir());
 
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(REMEMBER_ME_FILE));
+            FileOutputStream out = new FileOutputStream(JSON_REMEMBER_ME_FILE);
 
-            out.writeBoolean(rememberMe);
-            out.writeUTF(rememberMe ? Main.currentUser.getUsername() : "");
+            Gson gson = new Gson();
+
+            String[] rememberMeData = new String[]{String.valueOf(rememberMe), rememberMe ? Main.currentUser.getUsername() : ""};
+
+            out.write(gson.toJson(rememberMeData).getBytes());
 
             out.close();
         } catch (IOException e) {
@@ -111,15 +116,20 @@ public class DataManager {
         }
     }
 
-    public static void loadRememberMe(){
+    public static void loadRememberMeJSON(){
         try {
-            File rememberMeFile = new File(REMEMBER_ME_FILE);
+            File accountsFile = new File(JSON_REMEMBER_ME_FILE);
 
-            if(rememberMeFile.exists()){
-                ObjectInputStream in = new ObjectInputStream(new FileInputStream(REMEMBER_ME_FILE));
+            if(accountsFile.exists()){
+                FileInputStream in = new FileInputStream(JSON_REMEMBER_ME_FILE);
 
-                if(in.readBoolean()){
-                    Main.currentUser = Main.accounts.get(in.readUTF());
+                Gson gson = new Gson();
+
+                Type type = new TypeToken<String[]>(){}.getType();
+                String[] data = gson.fromJson(new String(in.readAllBytes()), type);
+
+                if(data[0].equals(String.valueOf(true))){
+                    Main.currentUser = Main.accounts.get(data[1]);
                 }
 
                 in.close();

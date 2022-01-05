@@ -67,7 +67,7 @@ public class StaffSignupPanel extends JPanel{
 
                         // Switch to the staff home page after successfully creating a new staff account.
                         MainFrame.getFrame().showCard(MainFrame.STAFF_MODULE_KEY);
-                        DataManager.storeAccounts();
+                        DataManager.storeAccountsJSON();
                     } else {
                         String message = "The passwords don't match.";
                         JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);

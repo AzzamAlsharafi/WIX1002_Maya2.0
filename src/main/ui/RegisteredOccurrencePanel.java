@@ -48,7 +48,7 @@ class RegisteredOccurrencePanel extends JPanel {
                     if(answer == JOptionPane.YES_OPTION){
                         Main.currentUser.getOccurrences().remove(occ);
                         parent.redraw();
-                        DataManager.storeAccounts();
+                        DataManager.storeAccountsJSON();
                     }
                 }
             });

@@ -94,7 +94,7 @@ public class StudentSignupPanel extends JPanel{
 
                             // Switch to the student home page after successfully creating a new student account.
                             MainFrame.getFrame().showCard(MainFrame.STUDENT_MODULE_KEY);
-                            DataManager.storeAccounts();
+                            DataManager.storeAccountsJSON();
                         } else {
                             String message = "Please enter a valid English score.";
                             JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);

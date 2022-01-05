@@ -37,7 +37,7 @@ public class LoginPanel extends JPanel{
             if(!usernameField.getText().isBlank() && !passwordField.getText().isBlank()){
                 if (Main.accounts.containsKey(username) && Main.accounts.get(username).getPassword().equals(password)) {
                     Main.currentUser = Main.accounts.get(username);
-                    DataManager.updateRememberMe(rememberMeCheckBox.isSelected());
+                    DataManager.updateRememberMeJSON(rememberMeCheckBox.isSelected());
                     MainFrame.getFrame().showCard(MainFrame.MODULE_KEY);
                 } else {
                     String message = "This username / matric number doesn't exist, \nor the password is incorrect.";

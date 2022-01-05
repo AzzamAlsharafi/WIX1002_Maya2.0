@@ -76,7 +76,7 @@ class OccurrencePanel extends JPanel {
                                     if (isNotOverlapping(moduleOcc) && checkActualStudents(occurrence)) {
                                         Main.currentUser.getOccurrences().add(moduleOcc);
                                         parent.redraw();
-                                        DataManager.storeAccounts();
+                                        DataManager.storeAccountsJSON();
                                     } else {
                                         Main.currentUser.getOccurrences().add(index, registered);
                                     }
@@ -101,7 +101,7 @@ class OccurrencePanel extends JPanel {
                                     if (((StudentModulePanel) parent).currentCredits + module.getCredit() <= Main.maxCreditsPerStudent) {
                                         Main.currentUser.getOccurrences().add(moduleOcc);
                                         parent.redraw();
-                                        DataManager.storeAccounts();
+                                        DataManager.storeAccountsJSON();
                                     } else {
                                         message = String.format("Registering %s will put you over %d credits.", moduleOcc.split("_")[0], Main.maxCreditsPerStudent);
                                         title = "Unable to register";
@@ -167,7 +167,7 @@ class OccurrencePanel extends JPanel {
                                     module.getOccurrences().remove(occurrence);
                                     ((StaffModulePanel) parent).updateAllOccurrences();
                                     parent.redraw();
-                                    DataManager.storeModules();
+                                    DataManager.storeModulesJSON();
                                 }
                             }
                         }
