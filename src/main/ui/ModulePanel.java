@@ -33,7 +33,7 @@ public abstract class ModulePanel extends JPanel {
             String code = occ.getCode();
             String title = Main.modules.get(occ.getCode()).getTitle();
 
-            boolean titleResult = FuzzySearch.partialRatio(restSearch.toLowerCase(), title.toLowerCase()) > 80;
+            boolean titleResult = FuzzySearch.partialRatio(restSearch.toLowerCase(), title.toLowerCase()) > 70;
 
             boolean result;
             if(codeSearch.isBlank()){
