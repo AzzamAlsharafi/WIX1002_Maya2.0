@@ -1,13 +1,17 @@
 package main.ui;
 
 import main.Main;
+import main.object.Module;
 import main.object.Occurrence;
 import main.util.ColorsManager;
+import main.util.DataManager;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -16,13 +20,29 @@ import java.util.*;
 // This is used to show a timetable of the registered occurrences for students and staff.
 public class TimetablePanel extends JPanel {
 
+    final String[] daysOfWeek = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+    final SimpleDateFormat format = new SimpleDateFormat("h:mm a");
+
     final int START_HOUR = 9;
     final int END_HOUR = 21;
 
     final static int STUDENT_MODE = 0;
     final static int STAFF_MODE = 1;
 
-    TimetablePanel(int mode){
+    int mode;
+    ModulePanel caller;
+
+    String underEdit = "";
+
+    TimetablePanel(int mode, ModulePanel caller){
+        this.mode = mode;
+        this.caller = caller;
+
+        redraw();
+    }
+
+    void redraw(){
+        removeAll();
 
         // Make a list of all the registered occurrence for the current user.
         List<Occurrence> registered = new ArrayList<>();
@@ -96,8 +116,6 @@ public class TimetablePanel extends JPanel {
 
             String text = data.get(keyString);
 
-            System.out.println(text);
-
             JLabel label = new JLabel(text.split("\n")[0]);
             label.setToolTipText(String.format("%s", Main.modules.get(text.split(" ")[0]).getTitle()));
 
@@ -116,6 +134,24 @@ public class TimetablePanel extends JPanel {
             if(mode == STAFF_MODE){
                 c2.gridy = 1;
                 panel.add(label2, c2);
+
+                // Select the current cell for changing its time.
+                panel.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        if(underEdit.equals(text)){
+                            underEdit = "";
+                            redraw();
+                        } else {
+                            underEdit = text;
+                            redraw();
+                        }
+                    }
+                });
+
+                if(underEdit.equals(text)){
+                    panel.setBackground(Color.LIGHT_GRAY);
+                }
             }
 
             int y = startHour - (START_HOUR - 1);
@@ -138,12 +174,72 @@ public class TimetablePanel extends JPanel {
                 c.gridy = y;
                 c.gridheight = 1;
 
+                final int finalX = x;
+                final int finalY = y;
+
                 JPanel panel = new JPanel();
                 panel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+
+                if(mode == STAFF_MODE){
+                    panel.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseEntered(MouseEvent e) {
+                            if(!underEdit.isBlank()){
+                                panel.setBackground(Color.LIGHT_GRAY);
+                            }
+                        }
+
+                        @Override
+                        public void mouseExited(MouseEvent e){
+                            panel.setBackground(UIManager.getColor("Panel.background"));
+                        }
+
+                        @Override
+                        public void mousePressed(MouseEvent e){
+                            if(!underEdit.isBlank()){
+                                List<Occurrence> occurrences = Occurrence.getOccurrencesFromUnderEdit(underEdit);
+                                Module module = Main.modules.get(occurrences.get(0).getCode());
+
+                                String day = daysOfWeek[finalX - 1];
+
+                                Calendar cal = Calendar.getInstance();
+                                cal.set(Calendar.HOUR_OF_DAY, finalY - 1 + START_HOUR);
+                                cal.set(Calendar.MINUTE, 0);
+
+                                String startTime = format.format(cal.getTime());
+
+                                cal.set(Calendar.HOUR_OF_DAY, finalY - 1 + START_HOUR + occurrences.get(0).getHours());
+
+                                String endTime = format.format(cal.getTime());
+
+                                String time = String.format("%s %s - %s\n", day, startTime, endTime);
+
+                                for (Occurrence occ: occurrences) {
+                                    module.getOccurrences().remove(occ);
+
+                                    Occurrence newOcc = new Occurrence(occ.getCode(), occ.getTutor(), time, occ.getTargetStudents(), occ.getOccurrenceNumber(), occ.getActivityType());
+
+                                    module.getOccurrences().add(newOcc);
+                                }
+
+                                DataManager.storeModulesJSON();
+
+                                underEdit = "";
+                                redraw();
+
+                                ((StaffModulePanel) caller).updateAllOccurrences();
+                                caller.redraw();
+                            }
+                        }
+                    });
+                }
 
                 add(panel, c);
             }
         }
+
+        revalidate();
+        repaint();
     }
 
     // This is used to generate the blue cells at the borders of the table.

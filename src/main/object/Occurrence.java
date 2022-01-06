@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -67,6 +68,23 @@ public class Occurrence {
             case OCC_TYPE_TUTORIAL -> {return "Tutorial";}
             default -> {return "Default";}
         }
+    }
+
+    // Returns length of the occurrence in hours.
+    public int getHours(){
+        SimpleDateFormat format = new SimpleDateFormat("E h:m a");
+
+        try {
+            String[] timeS = time.split(" ");
+            Date start = format.parse(String.format("%s %s %s", timeS[0], timeS[1], timeS[2]));
+            Date end = format.parse(String.format("%s %s %s", timeS[0], timeS[4], timeS[5]));
+
+            return (int) (end.getTime() - start.getTime()) / 3600000;
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 
     static public int getActivityFromString(String string){
@@ -148,6 +166,18 @@ public class Occurrence {
         } else {
             return Main.modules.get(codeAndOcc[0]).getOccurrences().stream().filter(o -> o.getOccurrenceNumber() == Integer.parseInt(codeAndOcc[1]) && o.getActivityString().equals(codeAndOcc[2])).toList();
         }
+    }
+
+    // Returns a list of Occurrence objects from String e.g. "WIX1002 L\n1, 2, 3, 4",
+    // This will return all Occurrence objects from WIX1002, that are Lectures and are from
+    // occurrences 1, 2, 3 and 4.
+    // This is used from TimetablePanel.
+    public static List<Occurrence> getOccurrencesFromUnderEdit(String underEdit){
+        String code = underEdit.split(" ")[0];
+        char type = underEdit.split("\n")[0].split(" ")[1].charAt(0);
+        List<Integer> occurrences = Arrays.stream(underEdit.split("\n")[1].split(", ")).map(Integer::parseInt).toList();
+
+        return Main.modules.get(code).getOccurrences().stream().filter(o -> occurrences.contains(o.getOccurrenceNumber()) && o.getActivityString().charAt(0) == type).toList();
     }
 
     public void storeOccurrence(ObjectOutputStream out) throws IOException {
