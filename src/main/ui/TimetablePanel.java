@@ -139,12 +139,14 @@ public class TimetablePanel extends JPanel {
                 panel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mousePressed(MouseEvent e) {
-                        if(underEdit.equals(text)){
-                            underEdit = "";
-                            redraw();
-                        } else {
-                            underEdit = text;
-                            redraw();
+                        if(Main.modules.get(text.split(" ")[0]).getCoordinator().equalsIgnoreCase(Main.currentUser.getFullName())) {
+                            if (underEdit.equals(text)) {
+                                underEdit = "";
+                                redraw();
+                            } else {
+                                underEdit = text;
+                                redraw();
+                            }
                         }
                     }
                 });
