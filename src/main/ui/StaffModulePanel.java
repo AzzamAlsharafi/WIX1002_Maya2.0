@@ -14,8 +14,6 @@ import java.util.List;
 // This class is the home page for staff users.
 public class StaffModulePanel extends ModulePanel {
 
-    List<Occurrence> allOccurrences = new ArrayList<>();
-    List<Occurrence> availableOccurrences = new ArrayList<>();
     JPanel container;
     JPanel registeredContainer;
 
@@ -188,24 +186,5 @@ public class StaffModulePanel extends ModulePanel {
         container.repaint();
         registeredContainer.revalidate();
         registeredContainer.repaint();
-    }
-
-    // This is used to filter the list of occurrence based on the text in the search field.
-    @Override
-    public void filter(String toFilter){
-        for (Occurrence occ: allOccurrences) {
-            String title = String.format("%s - %s", occ.getCode(), Main.modules.get(occ.getCode()).getTitle());
-
-            if(title.toLowerCase().contains(toFilter.toLowerCase())){
-                if(!availableOccurrences.contains(occ)){
-                    availableOccurrences.add(occ);
-                }
-            } else {
-                availableOccurrences.remove(occ);
-            }
-        }
-
-        availableOccurrences.sort(new OccurrenceComparator());
-        redraw();
     }
 }
