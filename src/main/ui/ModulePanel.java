@@ -3,6 +3,7 @@ package main.ui;
 import main.Main;
 import main.object.Occurrence;
 import main.util.OccurrenceComparator;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -16,11 +17,32 @@ public abstract class ModulePanel extends JPanel {
     abstract void redraw();
 
     // This is used to filter the list of occurrence based on the text in the search field.
+    // This method implements fuzzy search only for titles of modules and not codes.
     void filter(String toFilter){
-        for (Occurrence occ: allOccurrences) {
-            String title = String.format("%s - %s", occ.getCode(), Main.modules.get(occ.getCode()).getTitle());
+        String codeSearch = "";
+        String restSearch = "";
 
-            if(title.toLowerCase().contains(toFilter.toLowerCase())){
+        if(toFilter.contains("-")){
+            codeSearch = toFilter.substring(0, toFilter.indexOf("-")).strip();
+            restSearch = toFilter.substring(toFilter.indexOf("-") + 1).strip();
+        } else {
+            restSearch = toFilter.strip();
+        }
+
+        for (Occurrence occ: allOccurrences) {
+            String code = occ.getCode();
+            String title = Main.modules.get(occ.getCode()).getTitle();
+
+            boolean titleResult = FuzzySearch.partialRatio(restSearch.toLowerCase(), title.toLowerCase()) > 80;
+
+            boolean result;
+            if(codeSearch.isBlank()){
+                result = code.toLowerCase().contains(restSearch.toLowerCase()) || titleResult;
+            } else {
+                result = code.toLowerCase().contains(codeSearch.toLowerCase()) && (titleResult || restSearch.isBlank());
+            }
+
+            if(result){
                 if(!availableOccurrences.contains(occ)){
                     availableOccurrences.add(occ);
                 }
