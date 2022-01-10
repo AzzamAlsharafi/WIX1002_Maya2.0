@@ -6,8 +6,7 @@ import main.util.OccurrenceComparator;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 // This is the super class for StudentModulePanel, and StaffModulePanel.
 public abstract class ModulePanel extends JPanel {
@@ -31,7 +30,7 @@ public abstract class ModulePanel extends JPanel {
 
         for (Occurrence occ: allOccurrences) {
             String code = occ.getCode();
-            String title = Main.modules.get(occ.getCode()).getTitle();
+            String title = Main.modules.get(occ.getCode()).getTitle().concat(" ").concat(occ.getTutor());
 
             boolean titleResult = FuzzySearch.partialRatio(restSearch.toLowerCase(), title.toLowerCase()) > 70;
 
