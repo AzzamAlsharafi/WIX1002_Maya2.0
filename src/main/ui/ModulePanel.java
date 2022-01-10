@@ -18,6 +18,8 @@ public abstract class ModulePanel extends JPanel {
     // This is used to filter the list of occurrence based on the text in the search field.
     // This method implements fuzzy search only for titles of modules and not codes.
     void filter(String toFilter){
+        Map<Occurrence, Integer> ratios = new HashMap<>();
+
         String codeSearch = "";
         String restSearch = "";
 
@@ -32,7 +34,8 @@ public abstract class ModulePanel extends JPanel {
             String code = occ.getCode();
             String title = Main.modules.get(occ.getCode()).getTitle().concat(" ").concat(occ.getTutor());
 
-            boolean titleResult = FuzzySearch.partialRatio(restSearch.toLowerCase(), title.toLowerCase()) > 70;
+            int ratio = FuzzySearch.partialRatio(restSearch.toLowerCase(), title.toLowerCase());
+            boolean titleResult = ratio > 70;
 
             boolean result;
             if(codeSearch.isBlank()){
@@ -41,16 +44,21 @@ public abstract class ModulePanel extends JPanel {
                 result = code.toLowerCase().contains(codeSearch.toLowerCase()) && (titleResult || restSearch.isBlank());
             }
 
-            if(result){
-                if(!availableOccurrences.contains(occ)){
-                    availableOccurrences.add(occ);
-                }
-            } else {
-                availableOccurrences.remove(occ);
+            if(result) {
+                ratios.put(occ, 100 - ratio);
             }
         }
 
-        availableOccurrences.sort(new OccurrenceComparator());
+        List<Map.Entry<Occurrence, Integer>> entries = new ArrayList<>(ratios.entrySet());
+        entries.sort(Map.Entry.comparingByKey(new OccurrenceComparator()));
+        entries.sort(Map.Entry.comparingByValue());
+        
+        availableOccurrences.clear();
+
+        for (Map.Entry<Occurrence, Integer> occEntry: entries) {
+            availableOccurrences.add(occEntry.getKey());
+        }
+
         redraw();
     }
 }
